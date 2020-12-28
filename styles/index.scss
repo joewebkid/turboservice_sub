@@ -1,0 +1,67 @@
+.imageLogo {
+  max-height: 50px;
+  margin-left: 20px;
+  position: relative;
+  top: -9px;
+}
+.sb {
+  display: flex;
+  justify-content: space-between;
+}
+.b500 {
+  font-weight: 500;
+}
+
+.leftStatBlock {
+  display: block;
+  text-align: left;
+}
+
+.table.repairs-orders tbody tr {
+  &:nth-of-type(even) {
+    // border-bottom: 2px #afafaf solid;
+    border-bottom: 2px solid #dee2e6;
+  }
+  &.success {
+    background-color: rgb(83 195 88 / 22%);
+
+    &:nth-of-type(even) {
+      border-bottom: 2px #4caf50 solid;
+    }
+  }
+  &:nth-of-type(even) {
+    & td {
+      border-top-width: 0px;
+      text-align: left;
+    }
+  }
+}
+
+.sizesSelBlock {
+  width: 161px;
+  margin: 10px 0;
+  & .selectCont {
+    margin: 0 7px;
+    max-width: 70;
+    display: inline-block;
+  }
+}
+
+.filterControll {
+  position: relative;
+  & .loadingSpin {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+  }
+}
+
+.w500 {
+  font-weight: 500;
+}
+// .table tbody tr:nth-of-type(even) td {
+//   border-top-width: 0px;
+//   & .
+// }
+// .success {
+// }
