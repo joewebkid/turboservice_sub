@@ -69,6 +69,9 @@ a {
   font-weight: 600;
   text-decoration: none;
 }
+.orders-list-container {
+  max-width: 1425px;
+}
 .formGroupCenter {
   display: flex;
   justify-content: center;

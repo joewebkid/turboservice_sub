@@ -1,8 +1,43 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Button, DropdownButton, Dropdown, Table } from "react-bootstrap";
 import FlexBlock from "../../atoms/FlexBlock";
 
-const OrderInfoSection = () => {
+const get_types = (callback, SESSIONID) => {
+  if (SESSIONID)
+    axios
+      .get(
+        "https://zenon.basgroup.ru:55723/api-v2/Contractors/OrderTypesList/?SESSIONID=" +
+          SESSIONID,
+        {
+          auth: {
+            username: "RID_vol",
+            password: "1",
+          },
+        }
+      )
+      .then(function (response) {
+        const { data } = response;
+        const { result } = data;
+        const { Response } = result;
+        const { OrderTypesList } = Response;
+
+        callback(OrderTypesList.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+};
+
+const OrderInfoSection = (props) => {
+  const { order_info, id, SESSIONID } = props;
+
+  const [types, setTypes] = useState([]);
+
+  useEffect(() => {
+    if (SESSIONID) get_types(setTypes, SESSIONID);
+  }, [id, SESSIONID]);
+
   return (
     <>
       <Table style={{ maxWidth: 500 }}>
@@ -13,7 +48,7 @@ const OrderInfoSection = () => {
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
                 <input
-                  value="25213"
+                  value={order_info["CONTRACTOR_WORKORDER"]}
                   className="form-control"
                   placehorder="repair order"
                 />
@@ -26,7 +61,7 @@ const OrderInfoSection = () => {
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
                 <input
-                  value="H55NV"
+                  value={order_info["VEHICLE_MILEAGE"]}
                   className="form-control"
                   placehorder="repair order"
                 />
@@ -37,23 +72,25 @@ const OrderInfoSection = () => {
             <th scope="row">Order type</th>
 
             <td>
-              <FlexBlock justify="flex-end" style={{ position: "relative" }}>
-                <DropdownButton
-                  menuAlign="right"
-                  title="Contractor repair / To"
-                  id="dropdown-menu-align-right"
-                >
-                  <Dropdown.Item eventKey="1">
-                    Contractor repair / To
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                  <Dropdown.Item eventKey="3">
-                    Something else here
-                  </Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
-                </DropdownButton>
-              </FlexBlock>
+              {types[0] ? (
+                <FlexBlock justify="flex-end" style={{ position: "relative" }}>
+                  <DropdownButton
+                    menuAlign="right"
+                    title={types[0].ORDER_TYPE_NAME}
+                    id="dropdown-menu-align-right"
+                  >
+                    {types.map((t) => {
+                      return (
+                        <Dropdown.Item eventKey={t.ORDER_TYPE_ID}>
+                          {t.ORDER_TYPE_NAME}
+                        </Dropdown.Item>
+                      );
+                    })}
+                  </DropdownButton>
+                </FlexBlock>
+              ) : (
+                <></>
+              )}
             </td>
           </tr>
         </tbody>

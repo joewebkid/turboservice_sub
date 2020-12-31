@@ -1,52 +1,63 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import CustomLink from "../../atoms/LInk";
+import CustomLink from "../../atoms/CustomLink";
 import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
 
-const TopSection = () => {
+const TopSection = (props) => {
+  const { order_info } = props;
   return (
     <>
       <Section className="text-center mb-4">
         <h5>
-          Repair order for TLT request # 1238 (repair order # 25213) from
-          03/03/2020
+          Repair order for TLT request # {order_info["REQUEST_NUMBER"]} (repair
+          order # {order_info["WORKORDER_NUMBER"]}) from{" "}
+          {order_info["REQUEST_DATE"]}
         </h5>
         <Row className="text-left border p-4 mb-4">
-          <Col sm={5}>
-            <div>MAN Lions City Gl A40 Euro 6+AC 2015/2017</div>
+          <Col sm={6}>
+            <div>{order_info["VEHICLE"]}</div>
             <FlexBlock justify="space-between">
-              <span>Registration: 05/08/2018 </span>
-              <span> Manufacture year: 2017</span>
+              <span>
+                Registration: {order_info["VEHICLE_REGISTRATION_DATE"]}
+              </span>
+              <span>
+                {" "}
+                Manufacture year: {order_info["VEHICLE_MANUFACTURE_YEAR"]}
+              </span>
             </FlexBlock>
             <FlexBlock justify="space-between">
               <span style={{ whiteSpace: "nowrap", display: "block" }}>
                 TLT contact:
               </span>
               <span className="text-right">
-                Klauda Tilt +3756789929,{" "}
-                <CustomLink href="mailto:kt@tallinnlt.ee">
-                  kt@tallinnlt.ee
-                </CustomLink>
+                {order_info["CONTACT_NAME"]} {order_info["CONTACT_PHONE"]},{" "}
+                {order_info["CONTACT_EMAIL"] ? (
+                  <CustomLink href={"mailto:" + order_info["CONTACT_EMAIL"]}>
+                    {order_info["CONTACT_EMAIL"]}
+                  </CustomLink>
+                ) : (
+                  <></>
+                )}
               </span>
             </FlexBlock>
           </Col>
           <Col sm>
             <FlexBlock justify="space-between">
               <span>LPMR</span>
-              <span>456TAK</span>
+              <span>{order_info["PLATE_NUMBER"]}</span>
             </FlexBlock>
             <FlexBlock justify="space-between">
               <span>GARAGE #:</span>
-              <span>2456</span>
+              <span>{order_info["GARAGE_NUMBER"]}</span>
             </FlexBlock>
             <FlexBlock justify="space-between">
               <span>Status</span>
-              <b>New</b>
+              <b>{order_info["ORDER_STATUS_NAME"]}</b>
             </FlexBlock>
           </Col>
           <Col sm className="text-right">
-            WMAA40ZZ22HF004525
+            {order_info["VIN"]}
           </Col>
         </Row>
       </Section>

@@ -1,35 +1,138 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import FilterInput from "../atoms/FilterInput.jsx/FilterInput";
+import Block from "../atoms/Block";
+import FilterData from "../atoms/FilterInput/FilterData";
+import FilterInput from "../atoms/FilterInput/FilterInput";
+import StatusesSelect from "../atoms/FilterInput/StatusesSelect";
+import useDebounce from "../atoms/FilterInput/useDebounce";
+
+const filter_callback = (
+  callback,
+  SESSIONID,
+  search_string,
+  setIsSearching
+) => {
+  if (SESSIONID)
+    return axios
+      .get(
+        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderList?SESSIONID=" +
+          SESSIONID +
+          (search_string ? "&" + search_string : ""),
+        {
+          auth: {
+            username: "RID_vol",
+            password: "1",
+          },
+        }
+      )
+      .then(function (response) {
+        const { data } = response;
+        const { result } = data;
+        const { Response } = result;
+        const { WorkorderList } = Response;
+        // console.log(response);
+        callback(WorkorderList.data);
+        setIsSearching(false);
+        return response;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  else
+    return new Promise((resolve, reject) => {
+      return [];
+    });
+};
 
 const Filter = (props) => {
-  const { headers } = props;
-  const [validated, setValidated] = useState(false);
+  const { headers, statuses, saveData, SESSIONID } = props;
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+  const [filter_values, saveFilterValues] = useState(false);
+  const [selected_statuses, setSelectedStatuses] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [search_string, setSearchString] = useState(false);
 
-    setValidated(true);
-  };
+  const debouncedSearchTerm = useDebounce(search_string, 500);
+
+  // console.log(debouncedSearchTerm);
+  useEffect(() => {
+    setIsSearching(true);
+    let stringInput = Object.keys(filter_values)
+      .map(function (i) {
+        return [i, filter_values[i]].join("=");
+      })
+      .join("&");
+    if (selected_statuses)
+      stringInput =
+        stringInput +
+        "&" +
+        selected_statuses
+          .map(function (s) {
+            return ["OrderStatusID[]", s].join("=");
+          })
+          .join("&");
+    setSearchString(stringInput);
+  }, [filter_values, selected_statuses]);
+
+  useEffect(() => {
+    filter_callback(saveData, SESSIONID, search_string, setIsSearching);
+  }, [debouncedSearchTerm]);
+
+  // const handleSubmit = (event) => {
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //   }
+
+  //   setValidated(true);
+  // };
+
   return (
     <>
-      {headers.map(() => (
-        <th>
-          <FilterInput
-            template={(props) => (
+      {headers.map((h) => (
+        <th className={isSearching ? "loadingBlock" : ""}>
+          {h.type == "text" ? (
+            <Block className="filterControll">
               <Form.Control
                 required
                 type="text"
-                placeholder="First name"
-                defaultValue="Mark"
-                {...props}
+                placeholder="ALL"
+                onChange={(e) => {
+                  saveFilterValues({
+                    ...filter_values,
+                    [h.filter]: e.target.value,
+                  });
+                }}
               />
-            )}
-          />
+            </Block>
+          ) : h.type == "date" ? (
+            <FilterData
+              {...props}
+              setFilterStartDate={(e) => {
+                saveFilterValues({
+                  ...filter_values,
+                  [h.filterTo]: e,
+                });
+              }}
+              setFilterEndDate={(e) => {
+                saveFilterValues({
+                  ...filter_values,
+                  [h.filterFrom]: e,
+                });
+              }}
+            />
+          ) : h.type == "select" ? (
+            <StatusesSelect
+              {...props}
+              saveFilterValues={(values) => {
+                setSelectedStatuses(values);
+              }}
+            />
+          ) : (
+            <></>
+          )}
         </th>
       ))}
     </>

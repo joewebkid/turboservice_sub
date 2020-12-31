@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p 4000"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "date-fns": "^2.16.1",
     "next": "10.0.4",
