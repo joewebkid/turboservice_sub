@@ -13,63 +13,70 @@ import Attached from "./Attached";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-const get_order_info = (callback, id, router, SESSIONID) => {
-  if (id && SESSIONID)
-    axios
-      .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderHeader/" +
-          id +
-          "?SESSIONID=" +
-          SESSIONID,
-        {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
-        }
-      )
-      .then(function (response) {
-        const { data } = response;
-        const { result } = data;
-        const { Response } = result;
-        const { WorkorderHeader } = Response;
+const get_order_info = (callback, id, router, SESSIONID, auth_data) => {
+  axios
+    .get(
+      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderHeader/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID,
+      {
+        auth: auth_data,
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderHeader } = Response;
 
-        callback(WorkorderHeader.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-        router.push("/login?session");
-      });
+      callback(WorkorderHeader.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+      router.push("/login?session");
+    });
 };
 
 const Index = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, auth_data } = props;
   const router = useRouter();
 
   const [order_info, setOrderInfo] = useState([]);
 
   useEffect(() => {
-    if (SESSIONID && router)
-      get_order_info(setOrderInfo, router.query.id, router, SESSIONID);
-  }, [router, SESSIONID]);
+    if (SESSIONID && auth_data && router)
+      get_order_info(
+        setOrderInfo,
+        router.query.id,
+        router,
+        SESSIONID,
+        auth_data
+      );
+  }, [router, SESSIONID, auth_data]);
 
   return (
     <>
-      <TopSection order_info={order_info} SESSIONID={SESSIONID} />
-      <RequestSection order_info={order_info} SESSIONID={SESSIONID} />
+      <TopSection order_info={order_info} />
+      <RequestSection order_info={order_info} />
 
       <FlexBlock justify="space-between" style={{ position: "relative" }}>
         <OrderInfoSection
           order_info={order_info}
           SESSIONID={SESSIONID}
+          auth_data={auth_data}
           id={router.query.id}
         />
-        <TimeInfoSection order_info={order_info} SESSIONID={SESSIONID} />
+        <TimeInfoSection
+          order_info={order_info}
+          SESSIONID={SESSIONID}
+          auth_data={auth_data}
+        />
       </FlexBlock>
-      <JobsSection SESSIONID={SESSIONID} />
-      <MaterialsSection SESSIONID={SESSIONID} />
-      <Recomendation SESSIONID={SESSIONID} />
-      <Attached SESSIONID={SESSIONID} />
+      <JobsSection SESSIONID={SESSIONID} auth_data={auth_data} />
+      <MaterialsSection SESSIONID={SESSIONID} auth_data={auth_data} />
+      <Recomendation SESSIONID={SESSIONID} auth_data={auth_data} />
+      <Attached SESSIONID={SESSIONID} auth_data={auth_data} />
     </>
   );
 };

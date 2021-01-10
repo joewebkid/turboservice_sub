@@ -3,9 +3,10 @@ import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 
 import axios from "axios";
-const save_user_data = (response, SESSIONID) => {
+const save_user_data = (response, SESSIONID, user_auth_data) => {
   localStorage.setItem("user_info", response);
   localStorage.setItem("SESSIONID", SESSIONID);
+  localStorage.setItem("auth_data", user_auth_data);
   return true;
 };
 const auth_login = (
@@ -28,7 +29,16 @@ const auth_login = (
       const { Status, Message, Response } = result;
       if (Status == 0) {
         callback_error("");
-        if (callback_success(JSON.stringify(Response), SESSIONID)) {
+        if (
+          callback_success(
+            JSON.stringify(Response),
+            SESSIONID,
+            JSON.stringify({
+              username: login,
+              password: password,
+            })
+          )
+        ) {
           router.push("/");
           return SESSIONID;
         }
@@ -46,8 +56,7 @@ const auth_login = (
 };
 export const LoginPage = () => {
   const router = useRouter();
-  // router.query.session
-  console.log(router.query.session == undefined);
+
   const [login, setLogin] = useState("RID_vol");
   const [password, setPassword] = useState("1");
 
@@ -89,7 +98,6 @@ export const LoginPage = () => {
             >
               <Button
                 variant="primary"
-                // type="submit"
                 className="btnSubmit"
                 onClick={() =>
                   auth_login(login, password, setError, save_user_data, router)

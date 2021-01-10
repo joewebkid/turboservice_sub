@@ -8,68 +8,60 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import CustomLink from "../../atoms/CustomLink";
 
-const get_jobs = (callback, id, SESSIONID) => {
-  if (id && SESSIONID)
-    axios
-      .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderJobs/" +
-          id +
-          "?SESSIONID=" +
-          SESSIONID,
-        {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
-        }
-      )
-      .then(function (response) {
-        const { data } = response;
-        const { result } = data;
-        const { Response } = result;
-        const { WorkorderJobs } = Response;
+const get_jobs = (callback, id, SESSIONID, auth_data) => {
+  axios
+    .get(
+      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderJobs/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID,
+      {
+        auth: auth_data,
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderJobs } = Response;
 
-        callback(WorkorderJobs.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      callback(WorkorderJobs.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 };
 
-const set_job = (callback, id, SESSIONID) => {
-  if (id && SESSIONID)
-    axios
-      .post(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderJobs/" +
-          id +
-          "?SESSIONID=" +
-          SESSIONID,
-        {
-          params: {
-            username: "RID_vol",
-          },
+const set_job = (callback, id, SESSIONID, auth_data) => {
+  axios
+    .post(
+      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderJobs/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID,
+      {
+        params: {
+          username: "RID_vol",
         },
-        {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      )
-      .then(function (response) {
-        const { data } = response;
-        const { result } = data;
-        const { Response } = result;
-        const { WorkorderJobs } = Response;
+      },
+      {
+        auth: auth_data,
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderJobs } = Response;
 
-        callback(WorkorderJobs.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      callback(WorkorderJobs.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 };
 
 const addNew = (jobs, setJobs, jobs_struct) => {
@@ -95,7 +87,7 @@ const popover = (
 );
 
 const JobsSection = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, auth_data } = props;
   const router = useRouter();
 
   const [jobs, setJobs] = useState([]);
@@ -103,7 +95,8 @@ const JobsSection = (props) => {
   let jobsSum = {};
 
   useEffect(() => {
-    get_jobs(setJobs, router.query.id, SESSIONID);
+    if (SESSIONID && auth_data && router && router.query && router.query.id)
+      get_jobs(setJobs, router.query.id, SESSIONID, auth_data);
   }, [router]);
   // console.log(jobs);
   return (
@@ -163,7 +156,6 @@ const JobsSection = (props) => {
                         onChange={(e) => {
                           tempArr[key][struct.slug] = e.target.value;
 
-                          // set_job(console.log, router.query.id, SESSIONID);
                           setJobs([...tempArr]);
                         }}
                       />
@@ -175,7 +167,7 @@ const JobsSection = (props) => {
             <tr>
               {jobs_struct.map((s) => {
                 const num = Number(Number(jobsSum[s.slug]).toFixed(2));
-                // console.log(typeof num);
+
                 return (
                   <td scope="col">
                     <Block className={s.hide ? "d-none" : "show"}>

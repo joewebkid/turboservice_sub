@@ -8,18 +8,17 @@ import Filter from "../../molecules/Filter";
 import { headers, entity_sizes } from "./data";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Fade from "react-reveal/Fade";
+
 // Contractors/OrderStatusesList
-const get_statuses = (callback, router, SESSIONID) => {
+const get_statuses = (callback, router, SESSIONID, auth_data) => {
   if (SESSIONID)
     axios
       .get(
         "https://zenon.basgroup.ru:55723/api-v2/Contractors/OrderStatusesList?SESSIONID=" +
           SESSIONID,
         {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
+          auth: auth_data,
         }
       )
       .then(function (response) {
@@ -35,17 +34,14 @@ const get_statuses = (callback, router, SESSIONID) => {
         router.push("/login?session");
       });
 };
-const get_orders = (callback, SESSIONID) => {
+const get_orders = (callback, SESSIONID, auth_data) => {
   if (SESSIONID)
     axios
       .get(
         "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderList?SESSIONID=" +
           SESSIONID,
         {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
+          auth: auth_data,
         }
       )
       .then(function (response) {
@@ -62,7 +58,7 @@ const get_orders = (callback, SESSIONID) => {
 };
 
 const RepairsOrders = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, auth_data } = props;
   const router = useRouter();
 
   const [orders, setOrders] = useState([]);
@@ -74,10 +70,12 @@ const RepairsOrders = (props) => {
   const [elems_count, setElemCountOnPage] = useState(10);
 
   useEffect(() => {
-    get_orders(setOrders, SESSIONID);
-    get_statuses(setStatuses, router, SESSIONID);
-    setCurrentPage(0);
-  }, [SESSIONID]);
+    if (auth_data && SESSIONID) {
+      get_orders(setOrders, SESSIONID, auth_data);
+      get_statuses(setStatuses, router, SESSIONID, auth_data);
+      setCurrentPage(0);
+    }
+  }, [SESSIONID, auth_data]);
 
   useEffect(() => {
     const orders_length = orders.length;
@@ -101,140 +99,143 @@ const RepairsOrders = (props) => {
       )
     );
   }, [current_page]);
-
+  if (current_page == -1) return <></>;
   return (
-    <Section className="border p-4 text-center mb-4">
-      <h3>Repair orders</h3>
+    <Fade>
+      <Section className="border p-4 text-center mb-4">
+        <h3>Repair orders</h3>
 
-      <Table responsive className="text-center repairs-orders">
-        <thead>
-          <tr>
-            <Filter
-              headers={headers}
-              statuses={statuses}
-              saveData={setOrders}
-              SESSIONID={SESSIONID}
-            />
-          </tr>
-          <tr>
-            {headers.map((e) => (
-              <th scope="col" style={e.style ? e.style : {}}>
-                {e.title}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {ordersByPage.map((order) => (
-            <>
-              <tr
-                c={order["ORDER_STATUS_ID"]}
-                className={
-                  order["ORDER_STATUS_ID"] == 2
-                    ? "success"
-                    : order["ORDER_STATUS_ID"] == 1
-                    ? "warning"
-                    : "second"
-                }
-              >
-                {headers.map((e, k) => {
-                  let val = order[e.slug];
-                  if (e.type == "date" && val) {
-                    const d = new Date(val);
-                    val =
-                      d.getDate() +
-                      "." +
-                      (d.getMonth() + 1) +
-                      "." +
-                      d.getFullYear();
-                  }
-                  return (
-                    <td scope="col" key={k}>
-                      {val}
-                    </td>
-                  );
-                })}
-              </tr>
-              <tr
-                className={
-                  order["ORDER_STATUS_ID"] == 2
-                    ? "success"
-                    : order["ORDER_STATUS_ID"] == 1
-                    ? "warning"
-                    : "second"
-                }
-              >
-                <td scope="col" colspan="10">
-                  <FlexBlock justify="space-between">
-                    <Block>{order["REQUEST_TEXT"]}</Block>
-                    <CustomLink href={"/order/" + order["REQUEST_NUMBER"]}>
-                      Edit
-                    </CustomLink>
-                  </FlexBlock>
-                </td>
-              </tr>
-            </>
-          ))}
-        </tbody>
-      </Table>
-
-      <Block className="sizesSelBlock">
-        Show
-        <Block className="selectCont">
-          <select
-            className="form-control"
-            style={{ padding: ".15rem .15rem" }}
-            onChange={(e) => setElemCountOnPage(e.target.value)}
-          >
-            {entity_sizes.map((e) => (
-              <option selected={e == elems_count}>{e}</option>
-            ))}
-          </select>
-        </Block>
-        entries
-      </Block>
-
-      <FlexBlock justify="space-between">
-        <Pagination>
-          {pages ? (
-            <>
-              {/* <Pagination.First /> */}
-              <Pagination.Prev
-                onClick={() =>
-                  setCurrentPage(current_page ? current_page - 1 : 0)
-                }
+        <Table responsive className="text-center repairs-orders">
+          <thead>
+            <tr>
+              <Filter
+                headers={headers}
+                statuses={statuses}
+                saveData={setOrders}
+                SESSIONID={SESSIONID}
+                auth_data={auth_data}
               />
-              {/* <Pagination.Ellipsis /> */}
-              {[...Array(pages).keys()].map((k) => (
-                <Pagination.Item
-                  active={current_page == k}
-                  onClick={() => setCurrentPage(k)}
-                >
-                  {k + 1}
-                </Pagination.Item>
+            </tr>
+            <tr>
+              {headers.map((e) => (
+                <th scope="col" style={e.style ? e.style : {}}>
+                  {e.title}
+                </th>
               ))}
-              {/* <Pagination.Item>{11}</Pagination.Item>
+            </tr>
+          </thead>
+          <tbody>
+            {ordersByPage.map((order) => (
+              <>
+                <tr
+                  c={order["ORDER_STATUS_ID"]}
+                  className={
+                    order["ORDER_STATUS_ID"] == 2
+                      ? "success"
+                      : order["ORDER_STATUS_ID"] == 1
+                      ? "warning"
+                      : "second"
+                  }
+                >
+                  {headers.map((e, k) => {
+                    let val = order[e.slug];
+                    if (e.type == "date" && val) {
+                      const d = new Date(val);
+                      val =
+                        d.getDate() +
+                        "." +
+                        (d.getMonth() + 1) +
+                        "." +
+                        d.getFullYear();
+                    }
+                    return (
+                      <td scope="col" key={k}>
+                        {val}
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr
+                  className={
+                    order["ORDER_STATUS_ID"] == 2
+                      ? "success"
+                      : order["ORDER_STATUS_ID"] == 1
+                      ? "warning"
+                      : "second"
+                  }
+                >
+                  <td scope="col" colspan="10">
+                    <FlexBlock justify="space-between">
+                      <Block>{order["REQUEST_TEXT"]}</Block>
+                      <CustomLink href={"/order/" + order["REQUEST_NUMBER"]}>
+                        Edit
+                      </CustomLink>
+                    </FlexBlock>
+                  </td>
+                </tr>
+              </>
+            ))}
+          </tbody>
+        </Table>
+
+        <Block className="sizesSelBlock">
+          Show
+          <Block className="selectCont">
+            <select
+              className="form-control"
+              style={{ padding: ".15rem .15rem" }}
+              onChange={(e) => setElemCountOnPage(e.target.value)}
+            >
+              {entity_sizes.map((e) => (
+                <option selected={e == elems_count}>{e}</option>
+              ))}
+            </select>
+          </Block>
+          entries
+        </Block>
+
+        <FlexBlock justify="space-between">
+          <Pagination>
+            {pages ? (
+              <>
+                {/* <Pagination.First /> */}
+                <Pagination.Prev
+                  onClick={() =>
+                    setCurrentPage(current_page ? current_page - 1 : 0)
+                  }
+                />
+                {/* <Pagination.Ellipsis /> */}
+                {[...Array(pages).keys()].map((k) => (
+                  <Pagination.Item
+                    active={current_page == k}
+                    onClick={() => setCurrentPage(k)}
+                  >
+                    {k + 1}
+                  </Pagination.Item>
+                ))}
+                {/* <Pagination.Item>{11}</Pagination.Item>
               <Pagination.Item active>{12}</Pagination.Item>
               <Pagination.Item>{13}</Pagination.Item>
               <Pagination.Item disabled>{14}</Pagination.Item> */}
-              {/* <Pagination.Ellipsis /> */}
-              <Pagination.Next
-                onClick={() =>
-                  setCurrentPage(
-                    current_page != pages - 1 ? current_page + 1 : pages - 1
-                  )
-                }
-              />
-              {/* <Pagination.Last /> */}
-            </>
-          ) : (
-            <></>
-          )}
-        </Pagination>
+                {/* <Pagination.Ellipsis /> */}
+                <Pagination.Next
+                  onClick={() =>
+                    setCurrentPage(
+                      current_page != pages - 1 ? current_page + 1 : pages - 1
+                    )
+                  }
+                />
+                {/* <Pagination.Last /> */}
+              </>
+            ) : (
+              <></>
+            )}
+          </Pagination>
 
-        <CustomLink>Contact developers</CustomLink>
-      </FlexBlock>
-    </Section>
+          <CustomLink>Contact support</CustomLink>
+        </FlexBlock>
+      </Section>
+    </Fade>
   );
 };
 

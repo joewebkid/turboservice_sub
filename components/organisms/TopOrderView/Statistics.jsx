@@ -3,17 +3,14 @@ import { Table } from "react-bootstrap";
 import { statistic } from "./data";
 import axios from "axios";
 
-const get_stat = (callback, SESSIONID) => {
+const get_stat = (callback, SESSIONID, auth_data) => {
   if (SESSIONID)
     axios
       .get(
         "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkshopStatistics30Days?SESSIONID=" +
           SESSIONID,
         {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
+          auth: auth_data,
         }
       )
       .then(function (response) {
@@ -21,7 +18,7 @@ const get_stat = (callback, SESSIONID) => {
         const { result } = data;
         const { Response } = result;
         const { WorkshopStatistics30Days } = Response;
-        // console.log(response);
+
         callback(WorkshopStatistics30Days.data[0]);
       })
       .catch(function (error) {
@@ -30,11 +27,11 @@ const get_stat = (callback, SESSIONID) => {
 };
 
 const Statistics = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, auth_data } = props;
   useEffect(() => {
-    if (SESSIONID) get_stat(setStats, SESSIONID);
-  }, [SESSIONID]);
-  console.log(SESSIONID);
+    if (SESSIONID && auth_data) get_stat(setStats, SESSIONID, auth_data);
+  }, [SESSIONID, auth_data]);
+
   const [stats, setStats] = useState([]);
   // AVERAGE_NORM_HOURS: "1.0000"
   // AVERAGE_VEHICLE_REPAIR_TIME: null

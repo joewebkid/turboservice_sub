@@ -8,41 +8,40 @@ import { jobs_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 import CustomLink from "../../atoms/CustomLink";
 
-const get_files = (callback, id, SESSIONID) => {
-  if (id && SESSIONID)
-    axios
-      .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderFiles/" +
-          id +
-          "?SESSIONID=" +
-          SESSIONID,
-        {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
-        }
-      )
-      .then(function (response) {
-        const { data } = response;
-        const { result } = data;
-        const { Response } = result;
-        const { WorkorderFiles } = Response;
+const get_files = (callback, id, SESSIONID, auth_data) => {
+  axios
+    .get(
+      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderFiles/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID,
+      {
+        auth: auth_data,
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderFiles } = Response;
 
-        callback(WorkorderFiles.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      callback(WorkorderFiles.data);
+      return response;
+    })
+    .catch(function (error) {
+      console.log(error);
+      return error;
+    });
 };
 const Attached = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, auth_data } = props;
   const router = useRouter();
 
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
-    get_files(setFiles, router.query.id, SESSIONID);
+    if (SESSIONID && auth_data && router && router.query && router.query.id)
+      console.log(get_files(setFiles, router.query.id, SESSIONID, auth_data));
   }, [router]);
 
   return (

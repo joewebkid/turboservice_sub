@@ -7,33 +7,29 @@ import Block from "../../atoms/Block";
 import { recomendation as recomendations_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 
-const get_recomendations = (callback, id, router, SESSIONID) => {
-  if (id && SESSIONID)
-    axios
-      .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderAdvices/" +
-          id +
-          "?SESSIONID=" +
-          SESSIONID,
-        {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
-        }
-      )
-      .then(function (response) {
-        const { data } = response;
-        const { result } = data;
-        const { Response } = result;
-        const { WorkorderAdvices } = Response;
+const get_recomendations = (callback, id, router, SESSIONID, auth_data) => {
+  axios
+    .get(
+      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderAdvices/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID,
+      {
+        auth: auth_data,
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderAdvices } = Response;
 
-        callback(WorkorderAdvices.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-        // router.push("/login");
-      });
+      callback(WorkorderAdvices.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+      // router.push("/login");
+    });
 };
 
 const addNew = (recomendations, setRecomendations, recomendations_struct) => {
@@ -49,17 +45,23 @@ const addNew = (recomendations, setRecomendations, recomendations_struct) => {
 };
 
 const Recomendation = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, auth_data } = props;
   const router = useRouter();
 
   const [recomendations, setRecomendations] = useState([]);
   let tempArr = recomendations;
 
   useEffect(() => {
-    if (SESSIONID && router)
-      get_recomendations(setRecomendations, router.query.id, router, SESSIONID);
-  }, [router, SESSIONID]);
-  console.log("recomendations", recomendations);
+    if (SESSIONID && auth_data && router && router.query && router.query.id)
+      get_recomendations(
+        setRecomendations,
+        router.query.id,
+        router,
+        SESSIONID,
+        auth_data
+      );
+  }, [router, SESSIONID, auth_data]);
+  // console.log("recomendations", recomendations);
   return (
     <>
       <Section className="text-center mb-1">

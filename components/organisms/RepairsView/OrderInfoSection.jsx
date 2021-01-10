@@ -3,17 +3,14 @@ import axios from "axios";
 import { Button, DropdownButton, Dropdown, Table } from "react-bootstrap";
 import FlexBlock from "../../atoms/FlexBlock";
 
-const get_types = (callback, SESSIONID) => {
+const get_types = (callback, SESSIONID, auth_data) => {
   if (SESSIONID)
     axios
       .get(
         "https://zenon.basgroup.ru:55723/api-v2/Contractors/OrderTypesList/?SESSIONID=" +
           SESSIONID,
         {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
+          auth: auth_data,
         }
       )
       .then(function (response) {
@@ -30,13 +27,13 @@ const get_types = (callback, SESSIONID) => {
 };
 
 const OrderInfoSection = (props) => {
-  const { order_info, id, SESSIONID } = props;
+  const { order_info, id, SESSIONID, auth_data } = props;
 
   const [types, setTypes] = useState([]);
 
   useEffect(() => {
-    if (SESSIONID) get_types(setTypes, SESSIONID);
-  }, [id, SESSIONID]);
+    if (SESSIONID && auth_data) get_types(setTypes, SESSIONID, auth_data);
+  }, [id, SESSIONID, auth_data]);
 
   return (
     <>

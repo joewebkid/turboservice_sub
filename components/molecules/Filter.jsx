@@ -11,19 +11,17 @@ const filter_callback = (
   callback,
   SESSIONID,
   search_string,
-  setIsSearching
+  setIsSearching,
+  auth_data
 ) => {
-  if (SESSIONID)
+  if ((SESSIONID, auth_data))
     return axios
       .get(
         "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderList?SESSIONID=" +
           SESSIONID +
           (search_string ? "&" + search_string : ""),
         {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
+          auth: auth_data,
         }
       )
       .then(function (response) {
@@ -31,9 +29,10 @@ const filter_callback = (
         const { result } = data;
         const { Response } = result;
         const { WorkorderList } = Response;
-        // console.log(response);
+
         callback(WorkorderList.data);
         setIsSearching(false);
+
         return response;
       })
       .catch(function (error) {
@@ -46,7 +45,7 @@ const filter_callback = (
 };
 
 const Filter = (props) => {
-  const { headers, statuses, saveData, SESSIONID } = props;
+  const { headers, statuses, saveData, SESSIONID, auth_data } = props;
 
   const [filter_values, saveFilterValues] = useState(false);
   const [selected_statuses, setSelectedStatuses] = useState(false);
@@ -76,7 +75,13 @@ const Filter = (props) => {
   }, [filter_values, selected_statuses]);
 
   useEffect(() => {
-    filter_callback(saveData, SESSIONID, search_string, setIsSearching);
+    filter_callback(
+      saveData,
+      SESSIONID,
+      search_string,
+      setIsSearching,
+      auth_data
+    );
   }, [debouncedSearchTerm]);
 
   // const handleSubmit = (event) => {

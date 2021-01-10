@@ -7,32 +7,29 @@ import Block from "../../atoms/Block";
 import { materials as materials_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 
-const get_parts = (callback, id, SESSIONID) => {
-  if (id && SESSIONID)
-    axios
-      .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderParts/" +
-          id +
-          "?SESSIONID=" +
-          SESSIONID,
-        {
-          auth: {
-            username: "RID_vol",
-            password: "1",
-          },
-        }
-      )
-      .then(function (response) {
-        const { data } = response;
-        const { result } = data;
-        const { Response } = result;
-        const { WorkorderParts } = Response;
+const get_parts = (callback, id, SESSIONID, auth_data) => {
+  axios
+    .get(
+      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderParts/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID,
+      {
+        auth: auth_data,
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderParts } = Response;
 
-        callback(WorkorderParts.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      callback(WorkorderParts.data);
+      return response;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 };
 
 const addNew = (materials, setMaterials, materials_struct) => {
@@ -48,7 +45,7 @@ const addNew = (materials, setMaterials, materials_struct) => {
 };
 
 const MaterialsSection = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, auth_data } = props;
   const router = useRouter();
   let material_sum = {};
 
@@ -56,8 +53,9 @@ const MaterialsSection = (props) => {
   let tempArr = materials;
 
   useEffect(() => {
-    get_parts(setMaterials, router.query.id, SESSIONID);
-  }, [router]);
+    if (SESSIONID && auth_data && router && router.query && router.query.id)
+      get_parts(setMaterials, router.query.id, SESSIONID, auth_data);
+  }, [router, auth_data]);
   console.log("materials", materials);
 
   return (
