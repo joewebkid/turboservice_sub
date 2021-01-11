@@ -3,15 +3,16 @@ import { Table } from "react-bootstrap";
 import { statistic } from "./data";
 import axios from "axios";
 
-const get_stat = (callback, SESSIONID, auth_data) => {
+const get_stat = (callback, SESSIONID) => {
   if (SESSIONID)
     axios
       .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkshopStatistics30Days?SESSIONID=" +
-          SESSIONID,
-        {
-          auth: auth_data,
-        }
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/Contractors/WorkshopStatistics30Days?SESSIONID=" +
+          SESSIONID
+        // {
+        //   auth: auth_data,
+        // }
       )
       .then(function (response) {
         const { data } = response;
@@ -26,13 +27,41 @@ const get_stat = (callback, SESSIONID, auth_data) => {
       });
 };
 
+const get_messages = (callback, SESSIONID) => {
+  if (SESSIONID)
+    axios
+      .get(
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/Contractors/GetMessages?SESSIONID=" +
+          SESSIONID
+        // {
+        //   auth: auth_data,
+        // }
+      )
+      .then(function (response) {
+        const { data } = response;
+        const { result } = data;
+        const { Response } = result;
+        const { Messages } = Response;
+
+        callback(Messages.data[0]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+};
+
 const Statistics = (props) => {
-  const { SESSIONID, auth_data } = props;
+  const { SESSIONID } = props;
   useEffect(() => {
-    if (SESSIONID && auth_data) get_stat(setStats, SESSIONID, auth_data);
-  }, [SESSIONID, auth_data]);
+    if (SESSIONID) {
+      get_stat(setStats, SESSIONID);
+      get_messages(setMessages, SESSIONID);
+    }
+  }, [SESSIONID]);
 
   const [stats, setStats] = useState([]);
+  const [messages, setMessages] = useState([]);
   // AVERAGE_NORM_HOURS: "1.0000"
   // AVERAGE_VEHICLE_REPAIR_TIME: null
   // ID: 1

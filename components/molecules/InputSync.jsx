@@ -6,7 +6,6 @@ import FilterData from "../atoms/FilterInput/FilterData";
 import FilterInput from "../atoms/FilterInput/FilterInput";
 import StatusesSelect from "../atoms/FilterInput/StatusesSelect";
 import useDebounce from "../atoms/FilterInput/useDebounce";
-import { formatDate } from "./data";
 
 const filter_callback = (
   callback,
@@ -15,12 +14,15 @@ const filter_callback = (
   setIsSearching,
   auth_data
 ) => {
-  if (SESSIONID)
+  if ((SESSIONID, auth_data))
     return axios
       .get(
         "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderList?SESSIONID=" +
           SESSIONID +
-          (search_string ? "&" + search_string : "")
+          (search_string ? "&" + search_string : ""),
+        {
+          auth: auth_data,
+        }
       )
       .then(function (response) {
         const { data } = response;
@@ -35,15 +37,31 @@ const filter_callback = (
       })
       .catch(function (error) {
         console.log(error);
+        setIsSearching(false);
       });
   else
     return new Promise((resolve, reject) => {
+      setIsSearching(false);
       return [];
     });
 };
 
-const Filter = (props) => {
-  const { headers, statuses, saveData, SESSIONID } = props;
+const InputSync = (props) => {
+  const {
+    headers,
+    statuses,
+    saveData,
+    SESSIONID,
+    auth_data,
+    Сontainer,
+  } = props;
+
+  const ContainerSync = (props) => {
+    const { children } = props;
+    if (container) return Сontainer;
+    else return <th {...props}>{children}</th>;
+    // container
+  };
 
   const [filter_values, saveFilterValues] = useState(false);
   const [selected_statuses, setSelectedStatuses] = useState(false);
@@ -73,7 +91,13 @@ const Filter = (props) => {
   }, [filter_values, selected_statuses]);
 
   useEffect(() => {
-    filter_callback(saveData, SESSIONID, search_string, setIsSearching);
+    filter_callback(
+      saveData,
+      SESSIONID,
+      search_string,
+      setIsSearching,
+      auth_data
+    );
   }, [debouncedSearchTerm]);
 
   // const handleSubmit = (event) => {
@@ -89,7 +113,7 @@ const Filter = (props) => {
   return (
     <>
       {headers.map((h) => (
-        <th className={isSearching ? "loadingBlock" : ""}>
+        <ContainerSync>
           {h.type == "text" ? (
             <Block className="filterControll">
               <Form.Control
@@ -108,24 +132,16 @@ const Filter = (props) => {
             <FilterData
               {...props}
               setFilterStartDate={(e) => {
-                console.log("set start date", e);
-                const formDate = formatDate(e);
-                if (formDate) {
-                  saveFilterValues({
-                    ...filter_values,
-                    [h.filterFrom]: formDate,
-                  });
-                }
+                saveFilterValues({
+                  ...filter_values,
+                  [h.filterTo]: e,
+                });
               }}
               setFilterEndDate={(e) => {
-                console.log("set end date", e);
-                const formDate = formatDate(e);
-                if (formDate) {
-                  saveFilterValues({
-                    ...filter_values,
-                    [h.filterTo]: formDate,
-                  });
-                }
+                saveFilterValues({
+                  ...filter_values,
+                  [h.filterFrom]: e,
+                });
               }}
             />
           ) : h.type == "select" ? (
@@ -138,7 +154,7 @@ const Filter = (props) => {
           ) : (
             <></>
           )}
-        </th>
+        </ContainerSync>
       ))}
     </>
   );
@@ -218,4 +234,4 @@ const Filter = (props) => {
   // );
 };
 
-export default Filter;
+export default InputSync;

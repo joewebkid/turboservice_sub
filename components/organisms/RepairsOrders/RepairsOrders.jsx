@@ -11,15 +11,13 @@ import { useRouter } from "next/router";
 import Fade from "react-reveal/Fade";
 
 // Contractors/OrderStatusesList
-const get_statuses = (callback, router, SESSIONID, auth_data) => {
+const get_statuses = (callback, router, SESSIONID) => {
   if (SESSIONID)
     axios
       .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/OrderStatusesList?SESSIONID=" +
-          SESSIONID,
-        {
-          auth: auth_data,
-        }
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/Contractors/OrderStatusesList?SESSIONID=" +
+          SESSIONID
       )
       .then(function (response) {
         const { data } = response;
@@ -34,15 +32,13 @@ const get_statuses = (callback, router, SESSIONID, auth_data) => {
         router.push("/login?session");
       });
 };
-const get_orders = (callback, SESSIONID, auth_data) => {
+const get_orders = (callback, SESSIONID) => {
   if (SESSIONID)
     axios
       .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderList?SESSIONID=" +
-          SESSIONID,
-        {
-          auth: auth_data,
-        }
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/Contractors/WorkorderList?SESSIONID=" +
+          SESSIONID
       )
       .then(function (response) {
         const { data } = response;
@@ -58,7 +54,7 @@ const get_orders = (callback, SESSIONID, auth_data) => {
 };
 
 const RepairsOrders = (props) => {
-  const { SESSIONID, auth_data } = props;
+  const { SESSIONID } = props;
   const router = useRouter();
 
   const [orders, setOrders] = useState([]);
@@ -70,12 +66,12 @@ const RepairsOrders = (props) => {
   const [elems_count, setElemCountOnPage] = useState(10);
 
   useEffect(() => {
-    if (auth_data && SESSIONID) {
-      get_orders(setOrders, SESSIONID, auth_data);
-      get_statuses(setStatuses, router, SESSIONID, auth_data);
+    if (SESSIONID) {
+      get_orders(setOrders, SESSIONID);
+      get_statuses(setStatuses, router, SESSIONID);
       setCurrentPage(0);
     }
-  }, [SESSIONID, auth_data]);
+  }, [SESSIONID]);
 
   useEffect(() => {
     const orders_length = orders.length;
@@ -113,7 +109,6 @@ const RepairsOrders = (props) => {
                 statuses={statuses}
                 saveData={setOrders}
                 SESSIONID={SESSIONID}
-                auth_data={auth_data}
               />
             </tr>
             <tr>
@@ -164,7 +159,7 @@ const RepairsOrders = (props) => {
                       : "second"
                   }
                 >
-                  <td scope="col" colspan="10">
+                  <td scope="col" colSpan="10">
                     <FlexBlock justify="space-between">
                       <Block>{order["REQUEST_TEXT"]}</Block>
                       <CustomLink href={"/order/" + order["REQUEST_NUMBER"]}>

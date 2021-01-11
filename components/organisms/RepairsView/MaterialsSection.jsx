@@ -6,17 +6,16 @@ import Section from "../../atoms/Section";
 import Block from "../../atoms/Block";
 import { materials as materials_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
+import useDebounce from "../../atoms/FilterInput/useDebounce";
 
-const get_parts = (callback, id, SESSIONID, auth_data) => {
+const get_parts = (callback, id, SESSIONID) => {
   axios
     .get(
-      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderParts/" +
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderParts/" +
         id +
         "?SESSIONID=" +
-        SESSIONID,
-      {
-        auth: auth_data,
-      }
+        SESSIONID
     )
     .then(function (response) {
       const { data } = response;
@@ -26,6 +25,38 @@ const get_parts = (callback, id, SESSIONID, auth_data) => {
 
       callback(WorkorderParts.data);
       return response;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+const set_materials = (callback, id, SESSIONID, changedMaterials) => {
+  const PART_ID = changedMaterials.PART_ID;
+
+  axios
+    .post(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderPart/" +
+        id +
+        (PART_ID ? "/" + PART_ID : "") +
+        "?SESSIONID=" +
+        SESSIONID,
+      changedMaterials,
+      {
+        // auth: auth_data,
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderParts } = Response;
+
+      callback(WorkorderParts.data);
     })
     .catch(function (error) {
       console.log(error);
@@ -45,18 +76,47 @@ const addNew = (materials, setMaterials, materials_struct) => {
 };
 
 const MaterialsSection = (props) => {
-  const { SESSIONID, auth_data } = props;
+  const { SESSIONID } = props;
   const router = useRouter();
   let material_sum = {};
 
+  const [addNewStringFlag, setAddNewStringFlag] = useState(1);
+  const [changedStringId, setChangedStringId] = useState(0);
   const [materials, setMaterials] = useState([]);
   let tempArr = materials;
 
+  const debouncedSearchTerm = useDebounce(materials, 500);
+
   useEffect(() => {
-    if (SESSIONID && auth_data && router && router.query && router.query.id)
-      get_parts(setMaterials, router.query.id, SESSIONID, auth_data);
-  }, [router, auth_data]);
-  console.log("materials", materials);
+    console.log(materials[changedStringId]);
+    if (SESSIONID && router && router.query && router.query.id) {
+      if (addNewStringFlag) {
+        setAddNewStringFlag(0);
+        return;
+      }
+
+      if (materials[changedStringId]) {
+        const changedMaterials = materials[changedStringId];
+        const isFull = !Object.keys(changedMaterials).find(
+          (e) => e != "PART_ID" && !changedMaterials[e]
+        );
+
+        if (isFull)
+          set_materials(
+            console.log,
+            router.query.id,
+            SESSIONID,
+            changedMaterials
+          );
+      }
+    }
+  }, [debouncedSearchTerm]);
+
+  useEffect(() => {
+    if (SESSIONID && router && router.query && router.query.id)
+      get_parts(setMaterials, router.query.id, SESSIONID);
+  }, [router]);
+  // console.log("materials", materials);
 
   return (
     <>
@@ -65,9 +125,9 @@ const MaterialsSection = (props) => {
         <Table className="relative">
           <thead>
             <tr>
-              {materials_struct.map((e) => (
-                <th scope="col">{e.title}</th>
-              ))}
+              {materials_struct.map((e) =>
+                e.type != "hidden" ? <th scope="col">{e.title}</th> : <></>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -78,7 +138,7 @@ const MaterialsSection = (props) => {
                   material_sum[struct.slug] =
                     material_sum[struct.slug] + Number(material[struct.slug]);
 
-                  return (
+                  return struct.type != "hidden" ? (
                     <td scope="col">
                       <input
                         value={material[struct.slug]}
@@ -90,21 +150,28 @@ const MaterialsSection = (props) => {
 
                           // set_job(console.log, router.query.id, SESSIONID);
                           setMaterials([...tempArr]);
+                          setChangedStringId(key);
                         }}
                       />
                     </td>
+                  ) : (
+                    <></>
                   );
                 })}
               </tr>
             ))}
             <tr>
-              {materials_struct.map((struct) => (
-                <td scope="col">
-                  <Block className={struct.hide ? "d-none" : "show"}>
-                    {material_sum[struct.slug]}
-                  </Block>
-                </td>
-              ))}
+              {materials_struct.map((struct) =>
+                struct.type != "hidden" ? (
+                  <td scope="col">
+                    <Block className={struct.hide ? "d-none" : "show"}>
+                      {material_sum[struct.slug]}
+                    </Block>
+                  </td>
+                ) : (
+                  <></>
+                )
+              )}
             </tr>
           </tbody>
           <Button
@@ -112,7 +179,10 @@ const MaterialsSection = (props) => {
             variant="success"
             title="Add new"
             className="addNewString"
-            onClick={() => addNew(materials, setMaterials, materials_struct)}
+            onClick={() => {
+              setAddNewStringFlag(1);
+              addNew(materials, setMaterials, materials_struct);
+            }}
           >
             +
           </Button>
@@ -147,23 +217,3 @@ const MaterialsSection = (props) => {
 };
 
 export default MaterialsSection;
-{
-  /* <table class="table table-bordered table-responsive" style="max-width: 230px; margin-bottom: 0">
-            <thead>
-              <tr>
-                <th scope="col" style="width: 40%">Total</th>
-                <th scope="col" style="width: 40%">0</th>
-              </tr>
-            </thead>
-            <tbody style=" width: 100%">
-              <tr style="">
-                <th scope="row">VAT</th>
-                <td>0</td>
-              </tr>
-              <tr style="">
-                <th scope="row">Grand Total</th>
-                <td>5</td>
-              </tr>
-            </tbody>
-          </table> */
-}

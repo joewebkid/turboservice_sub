@@ -11,13 +11,11 @@ import CustomLink from "../../atoms/CustomLink";
 const get_files = (callback, id, SESSIONID, auth_data) => {
   axios
     .get(
-      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderFiles/" +
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderFiles/" +
         id +
         "?SESSIONID=" +
-        SESSIONID,
-      {
-        auth: auth_data,
-      }
+        SESSIONID
     )
     .then(function (response) {
       const { data } = response;
@@ -34,14 +32,15 @@ const get_files = (callback, id, SESSIONID, auth_data) => {
     });
 };
 const Attached = (props) => {
-  const { SESSIONID, auth_data } = props;
+  const { SESSIONID } = props;
   const router = useRouter();
 
+  const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
-    if (SESSIONID && auth_data && router && router.query && router.query.id)
-      console.log(get_files(setFiles, router.query.id, SESSIONID, auth_data));
+    if (SESSIONID && router && router.query && router.query.id)
+      console.log(get_files(setFiles, router.query.id, SESSIONID));
   }, [router]);
 
   return (

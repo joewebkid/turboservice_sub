@@ -52,7 +52,7 @@ const FilterData = (props) => {
               <Form.Control
                 type="text"
                 {...endDateInputProps}
-                disabled
+                // disabled
                 placeholder="TO"
                 setEffectValue={endDate}
                 style={{

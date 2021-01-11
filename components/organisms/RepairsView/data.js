@@ -21,6 +21,11 @@ export const jobs_struct = [
     slug: "JOB_PRICE",
     type: "number",
   },
+  {
+    title: "Id",
+    slug: "JOB_ID",
+    type: "hidden",
+  },
 ];
 // JOB_ID
 // JOB_NAME
@@ -62,10 +67,11 @@ export const materials = [
     style: { width: 80 },
     slug: "PART_AMOUNT",
   },
-  // {
-  //   title: "Summ",
-  //   slug: "PART_CODE",
-  // },
+  {
+    title: "Id",
+    slug: "PART_ID",
+    type: "hidden",
+  },
 ];
 // PART_ID
 // PART_CODE
@@ -83,6 +89,11 @@ export const recomendation = [
   {
     title: "Fix before",
     slug: "ADVICE_FIX_BEFORE",
+  },
+  {
+    title: "Id",
+    slug: "ADVICE_ID",
+    type: "hidden",
   },
 ];
 // Recommendation	Fix before

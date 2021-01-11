@@ -26,7 +26,7 @@ const StatusesSelect = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {statuses.map((status) => (
+        {statuses.map((status, key) => (
           <Dropdown.Item
             onClick={(e) => {
               setSelected({
@@ -37,6 +37,7 @@ const StatusesSelect = (props) => {
                     : true,
               });
             }}
+            key={key}
           >
             <input
               type="checkbox"

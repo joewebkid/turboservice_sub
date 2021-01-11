@@ -10,13 +10,14 @@ import FlexBlock from "../../atoms/FlexBlock";
 const get_recomendations = (callback, id, router, SESSIONID, auth_data) => {
   axios
     .get(
-      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderAdvices/" +
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderAdvices/" +
         id +
         "?SESSIONID=" +
-        SESSIONID,
-      {
-        auth: auth_data,
-      }
+        SESSIONID
+      // {
+      //   auth: auth_data,
+      // }
     )
     .then(function (response) {
       const { data } = response;
@@ -48,6 +49,7 @@ const Recomendation = (props) => {
   const { SESSIONID, auth_data } = props;
   const router = useRouter();
 
+  const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [recomendations, setRecomendations] = useState([]);
   let tempArr = recomendations;
 
@@ -70,8 +72,10 @@ const Recomendation = (props) => {
         <Table className="relative">
           <thead>
             <tr>
-              {recomendations_struct.map((e) => (
-                <th scope="col">{e.title}</th>
+              {recomendations_struct.map((e, k) => (
+                <th scope="col" key={k}>
+                  {e.title}
+                </th>
               ))}
             </tr>
           </thead>
@@ -96,8 +100,8 @@ const Recomendation = (props) => {
               </tr>
             ))}
             <tr>
-              {recomendations_struct.map((struct) => (
-                <td scope="col">
+              {recomendations_struct.map((struct, key) => (
+                <td scope="col" key={key}>
                   <Block style={{ opacity: 0 }}>1</Block>
                 </td>
               ))}

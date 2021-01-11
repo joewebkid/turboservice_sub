@@ -7,23 +7,22 @@ import FlexBlock from "../../atoms/FlexBlock";
 import { useRouter } from "next/router";
 import axios from "axios";
 import CustomLink from "../../atoms/CustomLink";
+import useDebounce from "../../atoms/FilterInput/useDebounce";
 
-const get_jobs = (callback, id, SESSIONID, auth_data) => {
+const get_jobs = (callback, id, SESSIONID) => {
   axios
     .get(
-      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderJobs/" +
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderJobs/" +
         id +
         "?SESSIONID=" +
-        SESSIONID,
-      {
-        auth: auth_data,
-      }
+        SESSIONID
     )
     .then(function (response) {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
-      const { WorkorderJobs } = Response;
+      const WorkorderJobs = Response["WorkorderJobs"];
 
       callback(WorkorderJobs.data);
     })
@@ -32,20 +31,20 @@ const get_jobs = (callback, id, SESSIONID, auth_data) => {
     });
 };
 
-const set_job = (callback, id, SESSIONID, auth_data) => {
+const set_job = (callback, id, SESSIONID, changedJobs) => {
+  const JOB_ID = changedJobs.JOB_ID;
+
   axios
     .post(
-      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderJobs/" +
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderJob/" +
         id +
+        (JOB_ID ? "/" + JOB_ID : "") +
         "?SESSIONID=" +
         SESSIONID,
+      changedJobs,
       {
-        params: {
-          username: "RID_vol",
-        },
-      },
-      {
-        auth: auth_data,
+        // auth: auth_data,
         headers: {
           "Content-type": "application/json",
         },
@@ -75,7 +74,7 @@ const addNew = (jobs, setJobs, jobs_struct) => {
 
   setJobs([...jobs, empty_object]);
 };
-const changeHandler = (value, slug, setJobs, jobs, key) => {};
+// const changeHandler = (value, slug, setJobs, jobs, key) => {};
 
 const popover = (
   <Popover id="popover-basic">
@@ -87,18 +86,43 @@ const popover = (
 );
 
 const JobsSection = (props) => {
-  const { SESSIONID, auth_data } = props;
+  const { SESSIONID } = props;
   const router = useRouter();
 
   const [jobs, setJobs] = useState([]);
+  const [addNewStringFlag, setAddNewStringFlag] = useState(1);
+  const [changedStringId, setChangedStringId] = useState(0);
   let tempArr = jobs;
   let jobsSum = {};
 
+  const debouncedSearchTerm = useDebounce(jobs, 500);
+
   useEffect(() => {
-    if (SESSIONID && auth_data && router && router.query && router.query.id)
-      get_jobs(setJobs, router.query.id, SESSIONID, auth_data);
+    console.log("Come here", addNewStringFlag);
+
+    if (SESSIONID && router && router.query && router.query.id) {
+      if (addNewStringFlag) {
+        setAddNewStringFlag(0);
+        return;
+      }
+
+      if (jobs[changedStringId]) {
+        const changedJobs = jobs[changedStringId];
+        const isFull = !Object.keys(changedJobs).find(
+          (e) => e != "JOB_ID" && !changedJobs[e]
+        );
+
+        if (isFull)
+          set_job(console.log, router.query.id, SESSIONID, changedJobs);
+      }
+    }
+  }, [debouncedSearchTerm]);
+
+  useEffect(() => {
+    if (SESSIONID && router && router.query && router.query.id)
+      get_jobs(setJobs, router.query.id, SESSIONID);
   }, [router]);
-  // console.log(jobs);
+
   return (
     <>
       <Section className="text-center mb-1 relative">
@@ -131,11 +155,18 @@ const JobsSection = (props) => {
         <Table>
           <thead>
             <tr>
-              {jobs_struct.map((e) => (
-                <th scope="col" style={e.width ? { width: e.width } : {}}>
-                  {e.title}
-                </th>
-              ))}
+              {jobs_struct.map((struct) =>
+                struct.type != "hidden" ? (
+                  <th
+                    scope="col"
+                    style={struct.width ? { width: struct.width } : {}}
+                  >
+                    {struct.title}
+                  </th>
+                ) : (
+                  <></>
+                )
+              )}
             </tr>
           </thead>
           <tbody>
@@ -146,35 +177,36 @@ const JobsSection = (props) => {
                   jobsSum[struct.slug] =
                     jobsSum[struct.slug] + Number(job[struct.slug]);
 
-                  console.log(job[struct.slug]);
-                  return (
-                    <td scope="col">
-                      <input
-                        value={job[struct.slug]}
-                        className="form-control"
-                        placehorder="repair order"
-                        onChange={(e) => {
-                          tempArr[key][struct.slug] = e.target.value;
+                  if (struct.type != "hidden")
+                    return (
+                      <td scope="col">
+                        <input
+                          value={job[struct.slug]}
+                          className="form-control"
+                          placehorder="repair order"
+                          onChange={(e) => {
+                            tempArr[key][struct.slug] = e.target.value;
 
-                          setJobs([...tempArr]);
-                        }}
-                      />
-                    </td>
-                  );
+                            setJobs([...tempArr]);
+                            setChangedStringId(key);
+                          }}
+                        />
+                      </td>
+                    );
                 })}
               </tr>
             ))}
             <tr>
-              {jobs_struct.map((s) => {
-                const num = Number(Number(jobsSum[s.slug]).toFixed(2));
-
-                return (
-                  <td scope="col">
-                    <Block className={s.hide ? "d-none" : "show"}>
-                      {!num ? 0 : num}
-                    </Block>
-                  </td>
-                );
+              {jobs_struct.map((struct) => {
+                const num = Number(Number(jobsSum[struct.slug]).toFixed(2));
+                if (struct.type != "hidden")
+                  return (
+                    <td scope="col">
+                      <Block className={struct.hide ? "d-none" : "show"}>
+                        {!num ? 0 : num}
+                      </Block>
+                    </td>
+                  );
               })}
             </tr>
           </tbody>
@@ -184,7 +216,10 @@ const JobsSection = (props) => {
           variant="success"
           title="Add new"
           className="addNewString"
-          onClick={() => addNew(jobs, setJobs, jobs_struct)}
+          onClick={() => {
+            setAddNewStringFlag(1);
+            addNew(jobs, setJobs, jobs_struct);
+          }}
         >
           +
         </Button>

@@ -13,16 +13,14 @@ import Attached from "./Attached";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-const get_order_info = (callback, id, router, SESSIONID, auth_data) => {
+const set_order_info = (callback, id, router, SESSIONID) => {
   axios
-    .get(
-      "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderHeader/" +
+    .post(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderHeader/" +
         id +
         "?SESSIONID=" +
-        SESSIONID,
-      {
-        auth: auth_data,
-      }
+        SESSIONID
     )
     .then(function (response) {
       const { data } = response;
@@ -34,49 +32,62 @@ const get_order_info = (callback, id, router, SESSIONID, auth_data) => {
     })
     .catch(function (error) {
       console.log(error);
-      router.push("/login?session");
+      // router.push("/login?session");
+    });
+};
+
+const get_order_info = (callback, id, router, SESSIONID) => {
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderHeader/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderHeader } = Response;
+
+      callback(WorkorderHeader.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+      // router.push("/login?session");
     });
 };
 
 const Index = (props) => {
-  const { SESSIONID, auth_data } = props;
+  const { SESSIONID } = props;
   const router = useRouter();
 
   const [order_info, setOrderInfo] = useState([]);
+  // const [order_info, setOrderInfo] = useState([]);
 
   useEffect(() => {
-    if (SESSIONID && auth_data && router)
-      get_order_info(
-        setOrderInfo,
-        router.query.id,
-        router,
-        SESSIONID,
-        auth_data
-      );
-  }, [router, SESSIONID, auth_data]);
+    if (SESSIONID && router && router.query.id)
+      get_order_info(setOrderInfo, router.query.id, router, SESSIONID);
+  }, [router, SESSIONID]);
 
   return (
     <>
       <TopSection order_info={order_info} />
-      <RequestSection order_info={order_info} />
+      <RequestSection order_info={order_info} callback={() => console.log(1)} />
 
       <FlexBlock justify="space-between" style={{ position: "relative" }}>
         <OrderInfoSection
           order_info={order_info}
           SESSIONID={SESSIONID}
-          auth_data={auth_data}
           id={router.query.id}
         />
-        <TimeInfoSection
-          order_info={order_info}
-          SESSIONID={SESSIONID}
-          auth_data={auth_data}
-        />
+        <TimeInfoSection order_info={order_info} SESSIONID={SESSIONID} />
       </FlexBlock>
-      <JobsSection SESSIONID={SESSIONID} auth_data={auth_data} />
-      <MaterialsSection SESSIONID={SESSIONID} auth_data={auth_data} />
-      <Recomendation SESSIONID={SESSIONID} auth_data={auth_data} />
-      <Attached SESSIONID={SESSIONID} auth_data={auth_data} />
+      <JobsSection SESSIONID={SESSIONID} />
+      <MaterialsSection SESSIONID={SESSIONID} />
+      <Recomendation SESSIONID={SESSIONID} />
+      <Attached SESSIONID={SESSIONID} />
     </>
   );
 };

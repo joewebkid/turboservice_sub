@@ -1,9 +1,9 @@
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import RepairsOrders from "../components/organisms/RepairsOrders/RepairsOrders";
-import TopOrderView from "../components/organisms/TopOrderView/TopOrderView";
+
+import { Container } from "react-bootstrap";
+import VehiclesList from "../../components/organisms/VehiclesList/VehiclesList";
+import TopOrderView from "../../components/organisms/TopOrderView/TopOrderView";
 
 const get_user_data = (callback, router) => {
   const user_info = localStorage.getItem("user_info");
@@ -15,7 +15,7 @@ const get_user_data = (callback, router) => {
   return SESSIONID;
 };
 
-export default function Home() {
+const Vehicles = () => {
   const router = useRouter();
   useEffect(() => {
     setSESSIONID(get_user_data(setUserInfo, router));
@@ -24,9 +24,16 @@ export default function Home() {
   const [SESSIONID, setSESSIONID] = useState(false);
 
   return (
-    <Container fluid className="login-container orders-list-container">
-      <TopOrderView statistics user_info={user_info} SESSIONID={SESSIONID} />
-      <RepairsOrders SESSIONID={SESSIONID} />
+    <Container className="login-container">
+      <TopOrderView
+        statistics
+        user_info={user_info}
+        auth_data={null}
+        SESSIONID={SESSIONID}
+      />
+      <VehiclesList SESSIONID={SESSIONID} />
     </Container>
   );
-}
+};
+
+export default Vehicles;

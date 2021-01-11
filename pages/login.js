@@ -6,7 +6,7 @@ import axios from "axios";
 const save_user_data = (response, SESSIONID, user_auth_data) => {
   localStorage.setItem("user_info", response);
   localStorage.setItem("SESSIONID", SESSIONID);
-  localStorage.setItem("auth_data", user_auth_data);
+  // localStorage.setItem("auth_data", user_auth_data);
   return true;
 };
 const auth_login = (
@@ -17,7 +17,7 @@ const auth_login = (
   router
 ) => {
   return axios
-    .get("https://zenon.basgroup.ru:55723/api-v2/auth/login", {
+    .get(process.env.NEXT_PUBLIC_URL + "/api-v2/auth/login", {
       auth: {
         username: login,
         password: password,

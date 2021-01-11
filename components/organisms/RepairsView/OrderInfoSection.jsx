@@ -3,15 +3,16 @@ import axios from "axios";
 import { Button, DropdownButton, Dropdown, Table } from "react-bootstrap";
 import FlexBlock from "../../atoms/FlexBlock";
 
-const get_types = (callback, SESSIONID, auth_data) => {
+const get_types = (callback, SESSIONID) => {
   if (SESSIONID)
     axios
       .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/OrderTypesList/?SESSIONID=" +
-          SESSIONID,
-        {
-          auth: auth_data,
-        }
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/Contractors/OrderTypesList/?SESSIONID=" +
+          SESSIONID
+        // {
+        //   auth: auth_data,
+        // }
       )
       .then(function (response) {
         const { data } = response;
@@ -27,13 +28,13 @@ const get_types = (callback, SESSIONID, auth_data) => {
 };
 
 const OrderInfoSection = (props) => {
-  const { order_info, id, SESSIONID, auth_data } = props;
+  const { order_info, id, SESSIONID } = props;
 
   const [types, setTypes] = useState([]);
 
   useEffect(() => {
-    if (SESSIONID && auth_data) get_types(setTypes, SESSIONID, auth_data);
-  }, [id, SESSIONID, auth_data]);
+    if (SESSIONID) get_types(setTypes, SESSIONID);
+  }, [id, SESSIONID]);
 
   return (
     <>
@@ -45,7 +46,7 @@ const OrderInfoSection = (props) => {
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
                 <input
-                  value={order_info["CONTRACTOR_WORKORDER"]}
+                  value={order_info["CONTRACTOR_WORKORDER"] || ""}
                   className="form-control"
                   placehorder="repair order"
                 />
@@ -58,7 +59,7 @@ const OrderInfoSection = (props) => {
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
                 <input
-                  value={order_info["VEHICLE_MILEAGE"]}
+                  value={order_info["VEHICLE_MILEAGE"] || ""}
                   className="form-control"
                   placehorder="repair order"
                 />
@@ -76,9 +77,9 @@ const OrderInfoSection = (props) => {
                     title={types[0].ORDER_TYPE_NAME}
                     id="dropdown-menu-align-right"
                   >
-                    {types.map((t) => {
+                    {types.map((t, k) => {
                       return (
-                        <Dropdown.Item eventKey={t.ORDER_TYPE_ID}>
+                        <Dropdown.Item eventKey={t.ORDER_TYPE_ID} key={k}>
                           {t.ORDER_TYPE_NAME}
                         </Dropdown.Item>
                       );

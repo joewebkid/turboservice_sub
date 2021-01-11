@@ -83,6 +83,9 @@
 
 .loadingBlock {
   position: relative;
+  & .nice-dates-popover {
+    display: none !important;
+  }
   &:after {
     content: "";
     position: absolute;

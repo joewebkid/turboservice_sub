@@ -6,7 +6,7 @@ import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
 
 const RequestSection = (props) => {
-  const { order_info } = props;
+  const { order_info, callback } = props;
   return (
     <>
       <Section className="text-center">
@@ -21,7 +21,7 @@ const RequestSection = (props) => {
             className="p-1 mb-2 text-right"
             style={{ whiteSpace: "nowrap", marginLeft: 40 }}
           >
-            <Button variant="warning" className="mr-2">
+            <Button variant="warning" className="mr-2" onClick={callback}>
               Start jobs
             </Button>
             <Button variant="success">Finish repair order</Button>
