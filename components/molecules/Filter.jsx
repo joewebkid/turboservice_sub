@@ -73,6 +73,7 @@ const Filter = (props) => {
   }, [filter_values, selected_statuses]);
 
   useEffect(() => {
+    console.log(search_string);
     filter_callback(saveData, SESSIONID, search_string, setIsSearching);
   }, [debouncedSearchTerm]);
 

@@ -29,8 +29,8 @@ export const headers = [
     title: "Expected issue",
     type: "date",
     slug: "EXPECTED_ISSUE_DATE",
-    filterTo: "JobStartedTo",
-    filterFrom: "JobStartedFrom",
+    filterTo: "JobStartedTo1",
+    filterFrom: "JobStartedFrom1",
   },
   {
     title: "Vehicle",

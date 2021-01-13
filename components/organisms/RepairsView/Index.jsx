@@ -13,14 +13,15 @@ import Attached from "./Attached";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-const set_order_info = (callback, id, router, SESSIONID) => {
+const set_order_info = (callback, id, router, SESSIONID, order_info) => {
   axios
     .post(
       process.env.NEXT_PUBLIC_URL +
         "/api-v2/Contractors/WorkorderHeader/" +
         id +
         "?SESSIONID=" +
-        SESSIONID
+        SESSIONID,
+      order_info
     )
     .then(function (response) {
       const { data } = response;
@@ -51,11 +52,12 @@ const get_order_info = (callback, id, router, SESSIONID) => {
       const { Response } = result;
       const { WorkorderHeader } = Response;
 
-      callback(WorkorderHeader.data);
+      if (WorkorderHeader.data) callback(WorkorderHeader.data);
+      else router.push("/login?session");
     })
     .catch(function (error) {
       console.log(error);
-      // router.push("/login?session");
+      router.push("/login?session");
     });
 };
 
@@ -73,6 +75,16 @@ const Index = (props) => {
 
   return (
     <>
+      <div
+        onClick={() => {
+          set_order_info(console.log, router.query.id, router, SESSIONID, {
+            ...order_info,
+            ORDER_STATUS_ID: 1,
+          });
+        }}
+      >
+        12e3
+      </div>
       <TopSection order_info={order_info} />
       <RequestSection order_info={order_info} callback={() => console.log(1)} />
 

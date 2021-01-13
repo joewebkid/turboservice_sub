@@ -24,6 +24,7 @@ const get_stat = (callback, SESSIONID) => {
       })
       .catch(function (error) {
         console.log(error);
+        // router.push("/login?session");
       });
 };
 

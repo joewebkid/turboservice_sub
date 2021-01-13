@@ -8,12 +8,13 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import CustomLink from "../../atoms/CustomLink";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
+import MessageToast from "./MessageToast";
 
 const get_jobs = (callback, id, SESSIONID) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_URL +
-        "/api-v2/Contractors/WorkorderJobs/" +
+        "/api-v2/Contractors/WorkorderContractJobs/" +
         id +
         "?SESSIONID=" +
         SESSIONID
@@ -22,8 +23,8 @@ const get_jobs = (callback, id, SESSIONID) => {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
-      const WorkorderJobs = Response["WorkorderJobs"];
-
+      const WorkorderJobs = Response["WorkorderContractJobs"];
+      console.log(WorkorderJobs);
       callback(WorkorderJobs.data);
     })
     .catch(function (error) {
@@ -31,13 +32,14 @@ const get_jobs = (callback, id, SESSIONID) => {
     });
 };
 
-const set_job = (callback, id, SESSIONID, changedJobs) => {
+const set_job = (callback, id, SESSIONID, changedJobs, setMessage) => {
   const JOB_ID = changedJobs.JOB_ID;
+  // delete changedJobs["JOB_ID"];
 
   axios
     .post(
       process.env.NEXT_PUBLIC_URL +
-        "/api-v2/Contractors/WorkorderJob/" +
+        "/api-v2/Contractors/WorkorderContractJob/" +
         id +
         (JOB_ID ? "/" + JOB_ID : "") +
         "?SESSIONID=" +
@@ -47,6 +49,7 @@ const set_job = (callback, id, SESSIONID, changedJobs) => {
         // auth: auth_data,
         headers: {
           "Content-type": "application/json",
+          // "Content-type": "application/x-www-form-urlencoded",
         },
       }
     )
@@ -55,14 +58,20 @@ const set_job = (callback, id, SESSIONID, changedJobs) => {
       const { result } = data;
       const { Response } = result;
       const { WorkorderJobs } = Response;
-
+      setMessage({ type: "success", text: "success", show: true });
+      setTimeout(() => {
+        setMessage({});
+      }, 2000);
       callback(WorkorderJobs.data);
     })
     .catch(function (error) {
+      setMessage({ type: "error", text: "error", show: true });
+      setTimeout(() => {
+        setMessage({});
+      }, 2500);
       console.log(error);
     });
 };
-
 const addNew = (jobs, setJobs, jobs_struct) => {
   const titles = jobs_struct.map((s) => {
     return s.slug;
@@ -92,6 +101,7 @@ const JobsSection = (props) => {
   const [jobs, setJobs] = useState([]);
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [changedStringId, setChangedStringId] = useState(0);
+  const [message, setMessage] = useState({});
   let tempArr = jobs;
   let jobsSum = {};
 
@@ -113,18 +123,25 @@ const JobsSection = (props) => {
         );
 
         if (isFull)
-          set_job(console.log, router.query.id, SESSIONID, changedJobs);
+          set_job(
+            console.log,
+            router.query.id,
+            SESSIONID,
+            changedJobs,
+            setMessage
+          );
       }
     }
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)
-      get_jobs(setJobs, router.query.id, SESSIONID);
+      get_jobs(setJobs, router.query.id, SESSIONID, setMessage);
   }, [router]);
 
   return (
     <>
+      {message.show ? <MessageToast {...message} /> : <></>}
       <Section className="text-center mb-1 relative">
         <FlexBlock justify="flex-end" className="mb-1">
           <FlexBlock>

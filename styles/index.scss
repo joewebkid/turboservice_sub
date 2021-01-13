@@ -105,7 +105,55 @@
 .relative {
   position: relative;
 }
+.toast {
+  position: fixed !important;
+  border-radius: 0 !important;
+  padding: 0.15rem 1.25rem !important;
 
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  transition: 0.3s opacity;
+  opacity: 0;
+  &:after {
+    transition: 2s width;
+    content: "";
+    width: 0%;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #ff8590;
+  }
+  &.toHide {
+    opacity: 1;
+    &:after {
+      width: 100%;
+    }
+    &.hideIt {
+      opacity: 0;
+    }
+  }
+}
+.toast-error {
+  @extend .toast;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  &:after {
+    background: #ff8590;
+  }
+}
+.toast-success {
+  @extend .toast;
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  &:after {
+    background: #509961;
+  }
+}
 // .table tbody tr:nth-of-type(even) td {
 //   border-top-width: 0px;
 //   & .

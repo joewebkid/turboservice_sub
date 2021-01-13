@@ -162,7 +162,7 @@ const RepairsOrders = (props) => {
                   <td scope="col" colSpan="10">
                     <FlexBlock justify="space-between">
                       <Block>{order["REQUEST_TEXT"]}</Block>
-                      <CustomLink href={"/order/" + order["REQUEST_NUMBER"]}>
+                      <CustomLink href={"/order/" + order["WORKORDER_ID"]}>
                         Edit
                       </CustomLink>
                     </FlexBlock>

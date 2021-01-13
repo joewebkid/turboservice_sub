@@ -12,7 +12,7 @@ const get_parts = (callback, id, SESSIONID) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_URL +
-        "/api-v2/Contractors/WorkorderParts/" +
+        "/api-v2/Contractors/WorkorderContractParts/" +
         id +
         "?SESSIONID=" +
         SESSIONID
@@ -21,9 +21,9 @@ const get_parts = (callback, id, SESSIONID) => {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
-      const { WorkorderParts } = Response;
+      const { WorkorderContractParts } = Response;
 
-      callback(WorkorderParts.data);
+      callback(WorkorderContractParts.data);
       return response;
     })
     .catch(function (error) {
@@ -37,14 +37,13 @@ const set_materials = (callback, id, SESSIONID, changedMaterials) => {
   axios
     .post(
       process.env.NEXT_PUBLIC_URL +
-        "/api-v2/Contractors/WorkorderPart/" +
+        "/api-v2/Contractors/WorkorderContractPart/" +
         id +
         (PART_ID ? "/" + PART_ID : "") +
         "?SESSIONID=" +
         SESSIONID,
       changedMaterials,
       {
-        // auth: auth_data,
         headers: {
           "Content-type": "application/json",
         },
@@ -54,9 +53,9 @@ const set_materials = (callback, id, SESSIONID, changedMaterials) => {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
-      const { WorkorderParts } = Response;
+      const { WorkorderContractPart } = Response;
 
-      callback(WorkorderParts.data);
+      callback(WorkorderContractPart.data);
     })
     .catch(function (error) {
       console.log(error);
