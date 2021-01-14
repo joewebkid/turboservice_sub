@@ -57,12 +57,12 @@ const set_job = (callback, id, SESSIONID, changedJobs, setMessage) => {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
-      const { WorkorderJobs } = Response;
+      const { WorkorderContractJob } = Response;
       setMessage({ type: "success", text: "success", show: true });
       setTimeout(() => {
         setMessage({});
       }, 2000);
-      callback(WorkorderJobs.data);
+      callback(WorkorderContractJob.data);
     })
     .catch(function (error) {
       setMessage({ type: "error", text: "error", show: true });
