@@ -7,6 +7,8 @@ import Block from "../../atoms/Block";
 import { recomendation as recomendations_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
+import FilterData from "../../atoms/FilterInput/FilterData";
+import DataInput from "../../atoms/DataInput";
 
 const get_recomendations = (callback, id, router, SESSIONID) => {
   axios
@@ -128,7 +130,7 @@ const Recomendation = (props) => {
             <tr>
               {recomendations_struct.map((e, k) =>
                 e.type != "hidden" ? (
-                  <th scope="col" key={k}>
+                  <th scope="col" key={k} style={e.style ? e.style : {}}>
                     {e.title}
                   </th>
                 ) : (
@@ -139,27 +141,50 @@ const Recomendation = (props) => {
           </thead>
           <tbody>
             {recomendations.map((recomendation, key) => (
-              <tr key={key}>
-                {recomendations_struct.map((struct, ik) =>
-                  struct.type != "hidden" ? (
-                    <td scope="col" key={ik}>
-                      <input
-                        value={recomendation[struct.slug]}
-                        className="form-control"
-                        placehorder="repair order"
-                        onChange={(e) => {
-                          tempArr[key][struct.slug] = e.target.value;
+              <>
+                <tr key={key}>
+                  {recomendations_struct.map((struct, ik) =>
+                    struct.type != "hidden" ? (
+                      <td scope="col" key={ik}>
+                        {struct.type == "date" ? (
+                          <DataInput callback={console.log} />
+                        ) : (
+                          <input
+                            value={recomendation[struct.slug]}
+                            className="form-control"
+                            placehorder="repair order"
+                            onChange={(e) => {
+                              tempArr[key][struct.slug] = e.target.value;
 
-                          setRecomendations([...tempArr]);
-                          setChangedStringId(key);
-                        }}
-                      />
-                    </td>
-                  ) : (
-                    <></>
-                  )
-                )}
-              </tr>
+                              setRecomendations([...tempArr]);
+                              setChangedStringId(key);
+                            }}
+                          />
+                        )}
+                      </td>
+                    ) : (
+                      <></>
+                    )
+                  )}
+                </tr>
+                <tr>
+                  <td className="strTr">
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      title="Add new"
+                      className="deleteNewString"
+                      onClick={() => {
+                        console.log("er");
+                        // setAddNewStringFlag(1);
+                        // addNew(jobs, setJobs, jobs_struct);
+                      }}
+                    >
+                      ✕
+                    </Button>
+                  </td>
+                </tr>
+              </>
             ))}
             <tr>
               {recomendations_struct.map((struct, key) =>

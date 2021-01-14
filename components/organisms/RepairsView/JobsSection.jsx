@@ -32,6 +32,40 @@ const get_jobs = (callback, id, SESSIONID) => {
     });
 };
 
+const delete_jobs = (callback, id, SESSIONID, setMessage) => {
+  axios
+    .delete(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderContractJobs/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID,
+      {
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderContractJobs } = Response;
+      setMessage({ type: "success", text: "success", show: true });
+      setTimeout(() => {
+        setMessage({});
+      }, 2000);
+      callback(WorkorderContractJobs.data);
+    })
+    .catch(function (error) {
+      setMessage({ type: "error", text: "error", show: true });
+      setTimeout(() => {
+        setMessage({});
+      }, 2500);
+      console.log(error);
+    });
+};
+
 const set_job = (callback, id, SESSIONID, changedJobs, setMessage) => {
   const JOB_ID = changedJobs.JOB_ID;
   // delete changedJobs["JOB_ID"];
@@ -141,6 +175,13 @@ const JobsSection = (props) => {
 
   return (
     <>
+      <div
+        onClick={() => {
+          delete_jobs(console.log, router.query.id, SESSIONID, setMessage);
+        }}
+      >
+        Удалить все
+      </div>
       {message.show ? <MessageToast {...message} /> : <></>}
       <Section className="text-center mb-1 relative">
         <FlexBlock justify="flex-end" className="mb-1">
@@ -188,30 +229,49 @@ const JobsSection = (props) => {
           </thead>
           <tbody>
             {jobs.map((job, key) => (
-              <tr key={key}>
-                {jobs_struct.map((struct) => {
-                  if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
-                  jobsSum[struct.slug] =
-                    jobsSum[struct.slug] + Number(job[struct.slug]);
+              <>
+                <tr key={key}>
+                  {jobs_struct.map((struct) => {
+                    if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
+                    jobsSum[struct.slug] =
+                      jobsSum[struct.slug] + Number(job[struct.slug]);
 
-                  if (struct.type != "hidden")
-                    return (
-                      <td scope="col">
-                        <input
-                          value={job[struct.slug]}
-                          className="form-control"
-                          placehorder="repair order"
-                          onChange={(e) => {
-                            tempArr[key][struct.slug] = e.target.value;
+                    if (struct.type != "hidden")
+                      return (
+                        <td scope="col">
+                          <input
+                            value={job[struct.slug]}
+                            className="form-control"
+                            placehorder="repair order"
+                            onChange={(e) => {
+                              tempArr[key][struct.slug] = e.target.value;
 
-                            setJobs([...tempArr]);
-                            setChangedStringId(key);
-                          }}
-                        />
-                      </td>
-                    );
-                })}
-              </tr>
+                              setJobs([...tempArr]);
+                              setChangedStringId(key);
+                            }}
+                          />
+                        </td>
+                      );
+                  })}
+                </tr>
+                <tr>
+                  <td className="strTr">
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      title="Add new"
+                      className="deleteNewString"
+                      onClick={() => {
+                        console.log("er");
+                        // setAddNewStringFlag(1);
+                        // addNew(jobs, setJobs, jobs_struct);
+                      }}
+                    >
+                      ✕
+                    </Button>
+                  </td>
+                </tr>
+              </>
             ))}
             <tr>
               {jobs_struct.map((struct) => {

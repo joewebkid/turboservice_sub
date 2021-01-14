@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 import FlexBlock from "../../atoms/FlexBlock";
+import Fade from "react-reveal/Fade";
 
 const TimeInfoSection = (props) => {
   const { order_info } = props;
@@ -31,13 +32,19 @@ const TimeInfoSection = (props) => {
           <th scope="row">Start jobs</th>
 
           <td>
-            <FlexBlock justify="flex-end" style={{ position: "relative" }}>
-              <input
-                value={JOB_STARTED_DATE}
-                className="form-control"
-                placehorder=""
-              />
-            </FlexBlock>
+            {order_info["ORDER_STATUS_ID"] != 0 ? (
+              <Fade>
+                <FlexBlock justify="flex-end" style={{ position: "relative" }}>
+                  <input
+                    value={JOB_STARTED_DATE}
+                    className="form-control"
+                    placehorder=""
+                  />
+                </FlexBlock>
+              </Fade>
+            ) : (
+              <></>
+            )}
           </td>
         </tr>
         <tr>
@@ -56,15 +63,7 @@ const TimeInfoSection = (props) => {
         <tr>
           <th scope="row">Jobs done</th>
 
-          <td>
-            <FlexBlock justify="flex-end" style={{ position: "relative" }}>
-              <input
-                value={JOBS_DONE_DATE}
-                className="form-control"
-                placehorder=""
-              />
-            </FlexBlock>
-          </td>
+          <td>{JOBS_DONE_DATE}</td>
         </tr>
       </tbody>
     </Table>

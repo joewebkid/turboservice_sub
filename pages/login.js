@@ -49,8 +49,7 @@ const auth_login = (
       console.log(response.data);
     })
     .catch(function (error) {
-      console.log(error);
-      callback_error(error);
+      if (typeof error) callback_error(error);
       return false;
     });
 };

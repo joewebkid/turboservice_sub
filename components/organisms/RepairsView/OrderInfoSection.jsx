@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, DropdownButton, Dropdown, Table } from "react-bootstrap";
+import useDebounce from "../../atoms/FilterInput/useDebounce";
 import FlexBlock from "../../atoms/FlexBlock";
 
 const get_types = (callback, SESSIONID) => {
@@ -28,13 +29,20 @@ const get_types = (callback, SESSIONID) => {
 };
 
 const OrderInfoSection = (props) => {
-  const { order_info, id, SESSIONID } = props;
+  const { order_info, id, SESSIONID, callback } = props;
 
   const [types, setTypes] = useState([]);
+  const [order_info_section, SetOrderInfo] = useState(order_info);
 
   useEffect(() => {
     if (SESSIONID) get_types(setTypes, SESSIONID);
   }, [id, SESSIONID]);
+
+  const debouncedSearchTerm = useDebounce(order_info_section, 500);
+
+  useEffect(() => {
+    callback(order_info_section);
+  }, [debouncedSearchTerm]);
 
   return (
     <>
@@ -46,9 +54,15 @@ const OrderInfoSection = (props) => {
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
                 <input
-                  value={order_info["CONTRACTOR_WORKORDER"] || ""}
+                  value={order_info_section["CONTRACTOR_WORKORDER"] || ""}
                   className="form-control"
                   placehorder="repair order"
+                  onChange={(e) =>
+                    SetOrderInfo({
+                      ...order_info,
+                      CONTRACTOR_WORKORDER: e.target.value,
+                    })
+                  }
                 />
               </FlexBlock>
             </td>
@@ -59,9 +73,15 @@ const OrderInfoSection = (props) => {
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
                 <input
-                  value={order_info["VEHICLE_MILEAGE"] || ""}
+                  value={order_info_section["VEHICLE_MILEAGE"] || ""}
                   className="form-control"
                   placehorder="repair order"
+                  onChange={(e) =>
+                    SetOrderInfo({
+                      ...order_info,
+                      VEHICLE_MILEAGE: e.target.value,
+                    })
+                  }
                 />
               </FlexBlock>
             </td>

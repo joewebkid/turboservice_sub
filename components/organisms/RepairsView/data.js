@@ -55,7 +55,7 @@ export const materials = [
     title: "Product name",
     hide: true,
     slug: "PART_NAME",
-    style: { width: 375 },
+    style: { width: 400 },
   },
   {
     title: "Price",
@@ -85,10 +85,14 @@ export const recomendation = [
   {
     title: "Recommendation",
     slug: "ADVICE_TEXT",
+    type: "text",
+    // style: { width: "88%" },
   },
   {
     title: "Fix before",
     slug: "ADVICE_FIX_BEFORE",
+    type: "date",
+    style: { width: 132 },
   },
   {
     title: "Id",

@@ -67,7 +67,7 @@ const put_file = (callback, id, SESSIONID, file) => {
     });
 };
 
-const delete_file = (callback, id, SESSIONID, file_name) => {
+const delete_file = (callback, id, SESSIONID, file_name, files) => {
   axios
     .delete(
       process.env.NEXT_PUBLIC_URL +
@@ -87,10 +87,10 @@ const delete_file = (callback, id, SESSIONID, file_name) => {
     .then(function (response) {
       const { data } = response;
       const { result } = data;
-      const { Response } = result;
-      const { WorkorderFile } = Response;
+      const { Message } = result;
 
-      callback(WorkorderFile.data);
+      if (Message == "Ok")
+        callback(files.filter((f) => f.FILE_NAME != file_name));
       return response;
     })
     .catch(function (error) {
@@ -112,6 +112,8 @@ const Attached = (props) => {
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [files, setFiles] = useState([]);
 
+  console.log(files);
+
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)
       get_files(setFiles, router.query.id, SESSIONID);
@@ -120,33 +122,48 @@ const Attached = (props) => {
   return (
     <>
       <Section className="text-center mb-1">
-        <Block className="text-left w500">Attached files</Block>
-        {files.map((f) => (
-          <Block className="text-left">
+        <Block className="text-left w500  mb-1">Attached files</Block>
+        {files.map((f, key) => (
+          <Block className="text-left" key={key}>
             <CustomLink href={f.FILE_URL}>{f.FILE_NAME}</CustomLink>
             <span
               className="deleteLink"
               onClick={() => {
-                delete_file(setFiles, router.query.id, SESSIONID, f.FILE_NAME);
+                delete_file(
+                  setFiles,
+                  router.query.id,
+                  SESSIONID,
+                  f.FILE_NAME,
+                  files,
+                  key
+                );
               }}
             >
               ✕
             </span>
           </Block>
         ))}
-        <input
-          type="file"
-          className="form-control-file"
-          id="attachedFile"
-          onChange={(e) =>
-            _handleFileChange(
-              e,
-              (WorkorderFile) => setFiles([...files, WorkorderFile]),
-              router.query.id,
-              SESSIONID
-            )
-          }
-        ></input>
+
+        <label
+          className="btn btn-secondary mr-1 mt-2"
+          style={{ float: "left" }}
+        >
+          Download file
+          <input
+            id="attachedFile"
+            onChange={(e) =>
+              _handleFileChange(
+                e,
+                (WorkorderFile) => setFiles([...files, WorkorderFile]),
+                router.query.id,
+                SESSIONID
+              )
+            }
+            type="file"
+            class="form-control-file"
+            style={{ display: "none" }}
+          ></input>
+        </label>
       </Section>
     </>
   );

@@ -7,6 +7,7 @@ import Block from "../../atoms/Block";
 import { materials as materials_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
+import MessageToast from "./MessageToast";
 
 const get_parts = (callback, id, SESSIONID) => {
   axios
@@ -27,6 +28,40 @@ const get_parts = (callback, id, SESSIONID) => {
       return response;
     })
     .catch(function (error) {
+      console.log(error);
+    });
+};
+
+const delete_materials = (callback, id, SESSIONID, setMessage) => {
+  axios
+    .delete(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderContractParts/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID,
+      {
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderContractParts } = Response;
+      setMessage({ type: "success", text: "success", show: true });
+      setTimeout(() => {
+        setMessage({});
+      }, 2000);
+      callback(WorkorderContractJobs.data);
+    })
+    .catch(function (error) {
+      setMessage({ type: "error", text: "error", show: true });
+      setTimeout(() => {
+        setMessage({});
+      }, 2500);
       console.log(error);
     });
 };
@@ -81,6 +116,7 @@ const MaterialsSection = (props) => {
 
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [changedStringId, setChangedStringId] = useState(0);
+  const [message, setMessage] = useState({});
   const [materials, setMaterials] = useState([]);
   let tempArr = materials;
 
@@ -119,6 +155,14 @@ const MaterialsSection = (props) => {
 
   return (
     <>
+      <div
+        onClick={() => {
+          delete_materials(console.log, router.query.id, SESSIONID, setMessage);
+        }}
+      >
+        Удалить все
+      </div>
+      {message.show ? <MessageToast {...message} /> : <></>}
       <Section className="text-center mb-1">
         <Block className="text-left w500">Spare parts and materials</Block>
         <Table className="relative">
@@ -131,33 +175,53 @@ const MaterialsSection = (props) => {
           </thead>
           <tbody>
             {materials.map((material, key) => (
-              <tr>
-                {materials_struct.map((struct) => {
-                  if (!material_sum[struct.slug]) material_sum[struct.slug] = 0;
-                  material_sum[struct.slug] =
-                    material_sum[struct.slug] + Number(material[struct.slug]);
+              <>
+                <tr>
+                  {materials_struct.map((struct) => {
+                    if (!material_sum[struct.slug])
+                      material_sum[struct.slug] = 0;
+                    material_sum[struct.slug] =
+                      material_sum[struct.slug] + Number(material[struct.slug]);
 
-                  return struct.type != "hidden" ? (
-                    <td scope="col">
-                      <input
-                        value={material[struct.slug]}
-                        className="form-control"
-                        placehorder="repair order"
-                        style={struct.style}
-                        onChange={(e) => {
-                          tempArr[key][struct.slug] = e.target.value;
+                    return struct.type != "hidden" ? (
+                      <td scope="col">
+                        <input
+                          value={material[struct.slug]}
+                          className="form-control"
+                          placehorder="repair order"
+                          style={struct.style}
+                          onChange={(e) => {
+                            tempArr[key][struct.slug] = e.target.value;
 
-                          // set_job(console.log, router.query.id, SESSIONID);
-                          setMaterials([...tempArr]);
-                          setChangedStringId(key);
-                        }}
-                      />
-                    </td>
-                  ) : (
-                    <></>
-                  );
-                })}
-              </tr>
+                            // set_job(console.log, router.query.id, SESSIONID);
+                            setMaterials([...tempArr]);
+                            setChangedStringId(key);
+                          }}
+                        />
+                      </td>
+                    ) : (
+                      <></>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <td className="strTr">
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      title="Add new"
+                      className="deleteNewString"
+                      onClick={() => {
+                        console.log("er");
+                        // setAddNewStringFlag(1);
+                        // addNew(jobs, setJobs, jobs_struct);
+                      }}
+                    >
+                      ✕
+                    </Button>
+                  </td>
+                </tr>
+              </>
             ))}
             <tr>
               {materials_struct.map((struct) =>
