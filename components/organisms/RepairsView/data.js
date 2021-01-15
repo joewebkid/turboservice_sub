@@ -4,22 +4,26 @@ export const jobs_struct = [
     width: "60%",
     slug: "JOB_NAME",
     type: "string",
+    xmlName: "name",
     hide: true,
   },
   {
     title: "Norm hours",
     slug: "JOB_NORM_HOUR",
     type: "number",
+    xmlName: "norm_hour",
   },
   {
     title: "Amount",
     slug: "JOB_AMOUNT",
     type: "number",
+    xmlName: "amount",
   },
   {
     title: "Price",
     slug: "JOB_PRICE",
     type: "number",
+    xmlName: "price",
   },
   {
     title: "Id",

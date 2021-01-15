@@ -37,10 +37,10 @@
     }
   }
   &.warning {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgb(255 152 0 / 13%);
 
     &:nth-of-type(odd) {
-      border-top: 2px #afafaf solid;
+      border-top: 2px #ff9800 solid;
     }
   }
   &:nth-of-type(even) {
@@ -171,3 +171,27 @@
 // }
 // .success {
 // }
+.nice-dates-popover {
+  max-width: 340px !important;
+  & .nice-dates-day {
+    // height: 45px !important;
+  }
+  & .nice-dates-day:after,
+  & .nice-dates-day:before {
+    // border-radius: 0px;
+  }
+}
+.datapicker-top-left {
+  & .nice-dates-popover {
+    // right: 0;
+    right: 132px;
+    margin-top: -40px;
+  }
+}
+
+.delFilter {
+  position: absolute;
+  // right: -3px;
+  margin-left: 116px;
+  top: 38%;
+}

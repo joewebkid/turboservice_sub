@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
-import JobsSection from "./JobsSection";
+// import JobsSection from "./JobsSection";
 import OrderInfoSection from "./OrderInfoSection";
 import RequestSection from "./RequestSection";
 import TimeInfoSection from "./TimeInfoSection";
@@ -11,9 +11,16 @@ import MaterialsSection from "./MaterialsSection";
 import Recomendation from "./Recomendation";
 import Attached from "./Attached";
 import { useRouter } from "next/router";
-import Fade from "react-reveal/Fade";
+// import Fade from "react-reveal/Fade";
 import axios from "axios";
 import { formatDateForPost } from "../../molecules/data";
+// import XMLData from "./repair_data.xml";
+// import repair_data
+// import { XMLParser } from "react-xml-parser";
+// var XMLParser = require('react-xml-parser');
+import dynamic from "next/dynamic";
+
+const JobsSection = dynamic(() => import("./JobsSection"), { ssr: false });
 
 const set_order_info = (callback, id, router, SESSIONID, order_info) => {
   axios
@@ -23,14 +30,13 @@ const set_order_info = (callback, id, router, SESSIONID, order_info) => {
         id +
         "?SESSIONID=" +
         SESSIONID,
-      order_info
+      { ...order_info, JOBS_DONE_DATE: "" }
     )
     .then(function (response) {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
       const { WorkorderHeader } = Response;
-
       callback(WorkorderHeader.data);
     })
     .catch(function (error) {
@@ -59,8 +65,10 @@ const get_order_info = (callback, id, router, SESSIONID) => {
         else router.push("/login?session");
       })
       .catch(function (error) {
-        console.log(error);
-        router.push("/login?session");
+        // console.log(error);
+        if (error.response && error.response.status == 401) {
+          router.push("/login?session");
+        }
       });
 };
 
@@ -69,17 +77,19 @@ const Index = (props) => {
   const router = useRouter();
 
   const [order_info, setOrderInfo] = useState(false);
+  const [refresh, setRefresh] = useState(0);
   // const [order_info, setOrderInfo] = useState([]);
 
   useEffect(() => {
-    if (SESSIONID && router && router.query.id)
+    if (SESSIONID && router && router.query.id) {
       get_order_info(setOrderInfo, router.query.id, router, SESSIONID);
+    }
   }, [router, SESSIONID]);
 
   return (
     <>
       {order_info ? (
-        <Fade>
+        <>
           <TopSection order_info={order_info} />
           {/* Button group for order start and finish */}
           <RequestSection
@@ -99,11 +109,10 @@ const Index = (props) => {
             callback_done={() => {
               set_order_info(setOrderInfo, router.query.id, router, SESSIONID, {
                 ...order_info,
-                // ORDER_STATUS_ID: 0,
-                JOB_STARTED_DATE: formatDateForPost(),
-                // CONTRACTOR_WORKORDER: "666",
+                JOBS_DONE_DATE: formatDateForPost(),
               });
             }}
+            status={order_info["ORDER_STATUS_ID"]}
           />
 
           <FlexBlock justify="space-between" style={{ position: "relative" }}>
@@ -124,19 +133,53 @@ const Index = (props) => {
                   }
                 );
               }}
+              status={order_info["ORDER_STATUS_ID"]}
             />
             {/* Start time, Estimated and jobs done time */}
-            <TimeInfoSection order_info={order_info} SESSIONID={SESSIONID} />
+            <TimeInfoSection
+              order_info={order_info}
+              SESSIONID={SESSIONID}
+              callback={(order_info_section) => {
+                set_order_info(
+                  setOrderInfo,
+                  router.query.id,
+                  router,
+                  SESSIONID,
+                  {
+                    ...order_info,
+                    ...order_info_section,
+                  }
+                );
+              }}
+              status={order_info["ORDER_STATUS_ID"]}
+            />
           </FlexBlock>
           {/* Jobs list */}
-          <JobsSection SESSIONID={SESSIONID} />
+          <JobsSection
+            SESSIONID={SESSIONID}
+            refreshPage={() => setRefresh(refresh + 1)}
+            refresh={refresh}
+            status={order_info["ORDER_STATUS_ID"]}
+          />
           {/* Spare parts and materials */}
-          <MaterialsSection SESSIONID={SESSIONID} />
+          <MaterialsSection
+            SESSIONID={SESSIONID}
+            refresh={refresh}
+            status={order_info["ORDER_STATUS_ID"]}
+          />
           {/* Recomendation lists */}
-          <Recomendation SESSIONID={SESSIONID} />
+          <Recomendation
+            SESSIONID={SESSIONID}
+            refresh={refresh}
+            status={order_info["ORDER_STATUS_ID"]}
+          />
           {/* Attached files list */}
-          <Attached SESSIONID={SESSIONID} />
-        </Fade>
+          <Attached
+            SESSIONID={SESSIONID}
+            refresh={refresh}
+            status={order_info["ORDER_STATUS_ID"]}
+          />
+        </>
       ) : (
         <></>
       )}

@@ -17,7 +17,7 @@ export const formatDate = (e) => {
   }
 };
 
-export const formatDateForPost = (e = false) => {
+export const formatDateForPost = (e = false, type = false) => {
   let month, day, year;
   const d = e ? new Date(e) : new Date();
   (month = "" + (d.getMonth() + 1)),
@@ -27,5 +27,5 @@ export const formatDateForPost = (e = false) => {
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
 
-  return [year, month, day].join("-") + " 00:00:00";
+  return [year, month, day].join("-") + (!type ? " 00:00:00" : "");
 };

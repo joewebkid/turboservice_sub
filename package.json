@@ -17,6 +17,7 @@
     "react-dom": "17.0.1",
     "react-nice-dates": "^3.0.7",
     "react-reveal": "^1.2.2",
+    "react-xml-parser": "^1.1.8",
     "sass": "^1.30.0"
   }
 }

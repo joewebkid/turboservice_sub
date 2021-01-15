@@ -70,10 +70,13 @@ const Filter = (props) => {
           })
           .join("&");
     setSearchString(stringInput);
+    setTimeout(() => {
+      setIsSearching(false);
+    }, 500);
   }, [filter_values, selected_statuses]);
 
   useEffect(() => {
-    console.log(search_string);
+    // console.log(search_string);
     filter_callback(saveData, SESSIONID, search_string, setIsSearching);
   }, [debouncedSearchTerm]);
 
@@ -108,25 +111,14 @@ const Filter = (props) => {
           ) : h.type == "date" ? (
             <FilterData
               {...props}
-              setFilterStartDate={(e) => {
-                console.log("set start date", e);
+              setFilterEndDate={(e, eTo) => {
                 const formDate = formatDate(e);
-                if (formDate) {
-                  saveFilterValues({
-                    ...filter_values,
-                    [h.filterFrom]: formDate,
-                  });
-                }
-              }}
-              setFilterEndDate={(e) => {
-                console.log("set end date", e);
-                const formDate = formatDate(e);
-                if (formDate) {
-                  saveFilterValues({
-                    ...filter_values,
-                    [h.filterTo]: formDate,
-                  });
-                }
+                const formDateTo = formatDate(eTo);
+                saveFilterValues({
+                  ...filter_values,
+                  [h.filterFrom]: formDate,
+                  [h.filterTo]: formDateTo,
+                });
               }}
             />
           ) : h.type == "select" ? (

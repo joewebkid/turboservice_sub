@@ -32,7 +32,7 @@ const RequestSection = (props) => {
                   Start jobs
                 </Button>
               </Fade>
-            ) : (
+            ) : order_info["ORDER_STATUS_ID"] == 1 ? (
               <Fade>
                 <Button
                   variant="danger"
@@ -45,6 +45,8 @@ const RequestSection = (props) => {
                   Finish repair order
                 </Button>
               </Fade>
+            ) : (
+              <></>
             )}
           </FlexBlock>
         </FlexBlock>

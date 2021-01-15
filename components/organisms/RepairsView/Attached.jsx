@@ -112,7 +112,7 @@ const Attached = (props) => {
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [files, setFiles] = useState([]);
 
-  console.log(files);
+  // console.log(files);
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)
@@ -148,7 +148,7 @@ const Attached = (props) => {
           className="btn btn-secondary mr-1 mt-2"
           style={{ float: "left" }}
         >
-          Download file
+          Upload file
           <input
             id="attachedFile"
             onChange={(e) =>

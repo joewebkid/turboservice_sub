@@ -50,12 +50,14 @@ const delete_materials = (callback, id, SESSIONID, setMessage) => {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
-      const { WorkorderContractParts } = Response;
-      setMessage({ type: "success", text: "success", show: true });
-      setTimeout(() => {
-        setMessage({});
-      }, 2000);
-      callback(WorkorderContractJobs.data);
+      const { Message } = Response;
+      if (Message == "Ok") {
+        setMessage({ type: "success", text: "success", show: true });
+        setTimeout(() => {
+          setMessage({});
+        }, 2500);
+        callback(WorkorderContractJobs.data);
+      }
     })
     .catch(function (error) {
       setMessage({ type: "error", text: "error", show: true });
@@ -66,7 +68,14 @@ const delete_materials = (callback, id, SESSIONID, setMessage) => {
     });
 };
 
-const set_materials = (callback, id, SESSIONID, changedMaterials) => {
+const set_materials = (
+  callback,
+  id,
+  SESSIONID,
+  changedMaterials,
+  setMessage,
+  materials
+) => {
   const PART_ID = changedMaterials.PART_ID;
 
   axios
@@ -87,13 +96,67 @@ const set_materials = (callback, id, SESSIONID, changedMaterials) => {
     .then(function (response) {
       const { data } = response;
       const { result } = data;
-      const { Response } = result;
+      const { Response, Message } = result;
       const { WorkorderContractPart } = Response;
-
-      callback(WorkorderContractPart.data);
+      if (Message == "Ok") {
+        setMessage({ type: "success", text: "success", show: true });
+        setTimeout(() => {
+          setMessage({});
+        }, 2500);
+        callback(
+          materials.map((e) =>
+            changedMaterials.PART_NAME == e.PART_NAME
+              ? WorkorderContractPart.data
+              : e
+          )
+        );
+        // callback([]);
+      } else {
+        setMessage({ type: "error", text: "error", show: true });
+        setTimeout(() => {
+          setMessage({});
+        }, 2500);
+      }
     })
     .catch(function (error) {
       console.log(error);
+      setMessage({ type: "error", text: "error", show: true });
+      setTimeout(() => {
+        setMessage({});
+      }, 2500);
+      console.log(error);
+    });
+};
+
+const delete_material = (callback, id, SESSIONID, PART_ID, materials) => {
+  axios
+    .delete(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderContractPart/" +
+        id +
+        "/" +
+        PART_ID +
+        "?SESSIONID=" +
+        SESSIONID,
+      {
+        headers: {
+          "Content-type": "application/json",
+          // "Content-type": "application/x-www-form-urlencoded",
+        },
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Message } = result;
+
+      if (Message == "Ok")
+        callback(materials.filter((f) => f.PART_ID != PART_ID));
+      return response;
+    })
+    .catch(function (error) {
+      console.log(error);
+      return error;
     });
 };
 
@@ -110,7 +173,7 @@ const addNew = (materials, setMaterials, materials_struct) => {
 };
 
 const MaterialsSection = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, refresh, status } = props;
   const router = useRouter();
   let material_sum = {};
 
@@ -118,12 +181,12 @@ const MaterialsSection = (props) => {
   const [changedStringId, setChangedStringId] = useState(0);
   const [message, setMessage] = useState({});
   const [materials, setMaterials] = useState([]);
+  const [temp_materials, setTempMaterials] = useState([]);
   let tempArr = materials;
 
-  const debouncedSearchTerm = useDebounce(materials, 500);
+  const debouncedSearchTerm = useDebounce(temp_materials, 500);
 
   useEffect(() => {
-    console.log(materials[changedStringId]);
     if (SESSIONID && router && router.query && router.query.id) {
       if (addNewStringFlag) {
         setAddNewStringFlag(0);
@@ -138,10 +201,12 @@ const MaterialsSection = (props) => {
 
         if (isFull)
           set_materials(
-            console.log,
+            setMaterials,
             router.query.id,
             SESSIONID,
-            changedMaterials
+            changedMaterials,
+            setMessage,
+            materials
           );
       }
     }
@@ -150,21 +215,33 @@ const MaterialsSection = (props) => {
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)
       get_parts(setMaterials, router.query.id, SESSIONID);
-  }, [router]);
+  }, [router, refresh]);
   // console.log("materials", materials);
 
   return (
     <>
-      <div
-        onClick={() => {
-          delete_materials(console.log, router.query.id, SESSIONID, setMessage);
-        }}
-      >
-        Удалить все
-      </div>
       {message.show ? <MessageToast {...message} /> : <></>}
       <Section className="text-center mb-1">
-        <Block className="text-left w500">Spare parts and materials</Block>
+        <FlexBlock className="text-left w500" justify="space-between">
+          Spare parts and materials
+          {status != 2 ? (
+            <Block
+              className="text-left btn btn-link"
+              onClick={() => {
+                delete_materials(
+                  console.log,
+                  router.query.id,
+                  SESSIONID,
+                  setMessage
+                );
+              }}
+            >
+              Удалить все
+            </Block>
+          ) : (
+            <></>
+          )}
+        </FlexBlock>
         <Table className="relative">
           <thead>
             <tr>
@@ -185,42 +262,65 @@ const MaterialsSection = (props) => {
 
                     return struct.type != "hidden" ? (
                       <td scope="col">
-                        <input
-                          value={material[struct.slug]}
-                          className="form-control"
-                          placehorder="repair order"
-                          style={struct.style}
-                          onChange={(e) => {
-                            tempArr[key][struct.slug] = e.target.value;
+                        {status != 2 ? (
+                          <input
+                            value={material[struct.slug]}
+                            className="form-control"
+                            placehorder="repair order"
+                            style={struct.style}
+                            onChange={(e) => {
+                              tempArr[key][struct.slug] = e.target.value;
 
-                            // set_job(console.log, router.query.id, SESSIONID);
-                            setMaterials([...tempArr]);
-                            setChangedStringId(key);
-                          }}
-                        />
+                              // set_job(console.log, router.query.id, SESSIONID);
+                              setTempMaterials([...tempArr]);
+                              setChangedStringId(key);
+                            }}
+                          />
+                        ) : (
+                          <FlexBlock
+                            style={{
+                              width: 198,
+                              float: "right",
+                              paddingLeft: 10,
+                            }}
+                          >
+                            {material[struct.slug]}
+                          </FlexBlock>
+                        )}
                       </td>
                     ) : (
                       <></>
                     );
                   })}
                 </tr>
-                <tr>
-                  <td className="strTr">
-                    <Button
-                      size="sm"
-                      variant="danger"
-                      title="Add new"
-                      className="deleteNewString"
-                      onClick={() => {
-                        console.log("er");
-                        // setAddNewStringFlag(1);
-                        // addNew(jobs, setJobs, jobs_struct);
-                      }}
-                    >
-                      ✕
-                    </Button>
-                  </td>
-                </tr>
+                {status != 2 ? (
+                  <tr>
+                    <td className="strTr">
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        title={"Delete " + material["PART_NAME"]}
+                        className="deleteNewString"
+                        onClick={() => {
+                          // console.log("er");
+                          delete_material(
+                            setMaterials,
+                            router.query.id,
+                            SESSIONID,
+                            material["PART_ID"],
+                            materials
+                          );
+                          // setAddNewStringFlag(1);
+                          // addNew(jobs, setJobs, jobs_struct);
+                        }}
+                      >
+                        ✕
+                      </Button>
+                    </td>
+                  </tr>
+                ) : (
+                  <></>
+                )}
               </>
             ))}
             <tr>
@@ -237,18 +337,22 @@ const MaterialsSection = (props) => {
               )}
             </tr>
           </tbody>
-          <Button
-            size="sm"
-            variant="success"
-            title="Add new"
-            className="addNewString"
-            onClick={() => {
-              setAddNewStringFlag(1);
-              addNew(materials, setMaterials, materials_struct);
-            }}
-          >
-            +
-          </Button>
+          {status != 2 ? (
+            <Button
+              size="sm"
+              variant="success"
+              title="Add new"
+              className="addNewString"
+              onClick={() => {
+                setAddNewStringFlag(1);
+                addNew(materials, setMaterials, materials_struct);
+              }}
+            >
+              +
+            </Button>
+          ) : (
+            <></>
+          )}
         </Table>
         <FlexBlock justify="flex-end">
           <Table bordered style={{ maxWidth: 230, marginBottom: 0 }}>

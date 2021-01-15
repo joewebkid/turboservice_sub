@@ -29,7 +29,9 @@ const get_statuses = (callback, router, SESSIONID) => {
       })
       .catch(function (error) {
         console.log(error);
-        router.push("/login?session");
+        if (error.response && error.response.status == 401) {
+          router.push("/login?session");
+        }
       });
 };
 const get_orders = (callback, SESSIONID) => {

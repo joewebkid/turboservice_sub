@@ -30,6 +30,7 @@ const get_types = (callback, SESSIONID) => {
 
 const OrderInfoSection = (props) => {
   const { order_info, id, SESSIONID, callback } = props;
+  const status = order_info["ORDER_STATUS_ID"];
 
   const [types, setTypes] = useState([]);
   const [order_info_section, SetOrderInfo] = useState(order_info);
@@ -53,17 +54,29 @@ const OrderInfoSection = (props) => {
 
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
-                <input
-                  value={order_info_section["CONTRACTOR_WORKORDER"] || ""}
-                  className="form-control"
-                  placehorder="repair order"
-                  onChange={(e) =>
-                    SetOrderInfo({
-                      ...order_info,
-                      CONTRACTOR_WORKORDER: e.target.value,
-                    })
-                  }
-                />
+                {status != 2 ? (
+                  <input
+                    value={order_info_section["CONTRACTOR_WORKORDER"] || ""}
+                    className="form-control"
+                    placehorder="repair order"
+                    onChange={(e) =>
+                      SetOrderInfo({
+                        ...order_info,
+                        CONTRACTOR_WORKORDER: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  <FlexBlock
+                    style={{
+                      width: 198,
+                      float: "right",
+                      paddingLeft: 10,
+                    }}
+                  >
+                    {order_info_section["CONTRACTOR_WORKORDER"] || ""}
+                  </FlexBlock>
+                )}
               </FlexBlock>
             </td>
           </tr>
@@ -72,17 +85,29 @@ const OrderInfoSection = (props) => {
 
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
-                <input
-                  value={order_info_section["VEHICLE_MILEAGE"] || ""}
-                  className="form-control"
-                  placehorder="repair order"
-                  onChange={(e) =>
-                    SetOrderInfo({
-                      ...order_info,
-                      VEHICLE_MILEAGE: e.target.value,
-                    })
-                  }
-                />
+                {status != 2 ? (
+                  <input
+                    value={order_info_section["VEHICLE_MILEAGE"] || ""}
+                    className="form-control"
+                    placehorder="repair order"
+                    onChange={(e) =>
+                      SetOrderInfo({
+                        ...order_info,
+                        VEHICLE_MILEAGE: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  <FlexBlock
+                    style={{
+                      width: 198,
+                      float: "right",
+                      paddingLeft: 10,
+                    }}
+                  >
+                    {order_info_section["VEHICLE_MILEAGE"] || ""}
+                  </FlexBlock>
+                )}
               </FlexBlock>
             </td>
           </tr>
@@ -99,7 +124,13 @@ const OrderInfoSection = (props) => {
                   >
                     {types.map((t, k) => {
                       return (
-                        <Dropdown.Item eventKey={t.ORDER_TYPE_ID} key={k}>
+                        <Dropdown.Item
+                          eventKey={t.ORDER_TYPE_ID}
+                          key={k}
+                          onClick={(e) => {
+                            console.log(e.target.innerText);
+                          }}
+                        >
                           {t.ORDER_TYPE_NAME}
                         </Dropdown.Item>
                       );
