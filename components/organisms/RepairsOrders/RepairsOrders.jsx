@@ -29,7 +29,10 @@ const get_statuses = (callback, router, SESSIONID) => {
       })
       .catch(function (error) {
         console.log(error);
-        if (error.response && error.response.status == 401) {
+        if (
+          error.response &&
+          (error.response.status == 401 || error.response.status == 404)
+        ) {
           router.push("/login?session");
         }
       });
