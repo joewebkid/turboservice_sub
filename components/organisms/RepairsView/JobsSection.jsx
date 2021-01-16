@@ -9,7 +9,7 @@ import axios from "axios";
 import CustomLink from "../../atoms/CustomLink";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
 import MessageToast from "./MessageToast";
-import XMLParser from "react-xml-parser";
+// import XMLParser from "react-xml-parser";
 import { parseXml } from "./DomXml";
 import { formatDateForPost } from "../../molecules/data";
 
