@@ -9,36 +9,19 @@ const save_user_data = (response, SESSIONID, user_auth_data) => {
   // localStorage.setItem("auth_data", user_auth_data);
   return true;
 };
-const auth_login = (
-  login,
-  password,
-  callback_error,
-  callback_success,
-  router
-) => {
+const auth_login = (login, callback_error, callback_success, router) => {
   return axios
-    .get(process.env.NEXT_PUBLIC_URL + "/api-v2/auth/login", {
-      auth: {
-        username: login,
-        password: password,
-      },
-    })
+    .get(
+      process.env.NEXT_PUBLIC_URL + "/api-v2/auth/remember?Login=" + login,
+      {}
+    )
     .then(function (response) {
       const { data } = response;
       const { result, SESSIONID } = data;
       const { Status, Message, Response } = result;
       if (Status == 0) {
         callback_error("");
-        if (
-          callback_success(
-            JSON.stringify(Response),
-            SESSIONID,
-            JSON.stringify({
-              username: login,
-              password: password,
-            })
-          )
-        ) {
+        if (callback_success("Success")) {
           router.push("/");
           return SESSIONID;
         }
@@ -53,19 +36,20 @@ const auth_login = (
       return false;
     });
 };
-export const LoginPage = () => {
+export const RememberPasswordPage = () => {
   const router = useRouter();
 
   const [login, setLogin] = useState("RID_vol");
-  const [password, setPassword] = useState("1");
 
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   return (
     <Container className="login-container">
       <Row className="login-row">
         <Col className="login-form-1" md="6">
           <h3>TLT Repair orders</h3>
+          <h5 className="text-secondary text-center">Restore password</h5>
 
           <Form>
             {router.query.session != undefined ? (
@@ -82,15 +66,8 @@ export const LoginPage = () => {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicPassword">
-              <Form.Control
-                type="password"
-                placeholder="Password *"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Group>
             {error ? <Alert variant="danger">{error}</Alert> : <></>}
+            {success ? <Alert variant="success">{success}</Alert> : <></>}
             <Form.Group
               controlId="formBasicPassword"
               className="formGroupCenter"
@@ -98,19 +75,17 @@ export const LoginPage = () => {
               <Button
                 variant="primary"
                 className="btnSubmit"
-                onClick={() =>
-                  auth_login(login, password, setError, save_user_data, router)
-                }
+                onClick={() => auth_login(login, setError, setSuccess, router)}
               >
-                Login
+                Restore
               </Button>
             </Form.Group>
             <Form.Group
               controlId="formBasicPassword"
               className="formGroupCenter"
             >
-              <a href="/remember" className="ForgetPwd">
-                Restore password
+              <a href="/login" className="ForgetPwd">
+                To sign in form
               </a>
             </Form.Group>
           </Form>
@@ -120,4 +95,4 @@ export const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RememberPasswordPage;
