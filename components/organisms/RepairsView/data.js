@@ -49,27 +49,32 @@ export const materials = [
     hide: true,
     slug: "PART_CODE",
     style: { width: 155 },
+    type: "string",
   },
   {
     title: "brand",
     hide: true,
+    style: { width: 200 },
     slug: "PART_BRAND",
   },
   {
     title: "Product name",
     hide: true,
     slug: "PART_NAME",
-    style: { width: 400 },
+    style: { width: 480 },
+    type: "string",
   },
   {
     title: "Price",
     style: { width: 80 },
     slug: "PART_PRICE",
+    type: "number",
   },
   {
     title: "Amount",
     style: { width: 80 },
     slug: "PART_AMOUNT",
+    type: "number",
   },
   {
     title: "Id",

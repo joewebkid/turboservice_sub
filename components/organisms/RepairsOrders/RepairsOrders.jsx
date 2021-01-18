@@ -232,7 +232,9 @@ const RepairsOrders = (props) => {
             )}
           </Pagination>
 
-          <CustomLink>Contact support</CustomLink>
+          <CustomLink href="mailto:Support@CarService.Software">
+            Contact support
+          </CustomLink>
         </FlexBlock>
       </Section>
     </Fade>

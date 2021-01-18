@@ -115,30 +115,44 @@ const OrderInfoSection = (props) => {
             <th scope="row">Order type</th>
 
             <td>
-              {types[0] ? (
-                <FlexBlock justify="flex-end" style={{ position: "relative" }}>
-                  <DropdownButton
-                    menuAlign="right"
-                    title={types[0].ORDER_TYPE_NAME}
-                    id="dropdown-menu-align-right"
+              {status != 2 ? (
+                types[0] ? (
+                  <FlexBlock
+                    justify="flex-end"
+                    style={{ position: "relative" }}
                   >
-                    {types.map((t, k) => {
-                      return (
-                        <Dropdown.Item
-                          eventKey={t.ORDER_TYPE_ID}
-                          key={k}
-                          onClick={(e) => {
-                            console.log(e.target.innerText);
-                          }}
-                        >
-                          {t.ORDER_TYPE_NAME}
-                        </Dropdown.Item>
-                      );
-                    })}
-                  </DropdownButton>
-                </FlexBlock>
+                    <DropdownButton
+                      menuAlign="right"
+                      title={
+                        order_info_section["ORDER_TYPE_NAME"] ||
+                        types[0].ORDER_TYPE_NAME
+                      }
+                      id="dropdown-menu-align-right"
+                    >
+                      {types.map((t, k) => {
+                        return (
+                          <Dropdown.Item
+                            eventKey={t.ORDER_TYPE_ID}
+                            key={k}
+                            onClick={(e) => {
+                              console.log(e.target.innerText);
+                            }}
+                            active={
+                              t.ORDER_TYPE_ID ==
+                              order_info_section["ORDER_TYPE_ID"]
+                            }
+                          >
+                            {t.ORDER_TYPE_NAME}
+                          </Dropdown.Item>
+                        );
+                      })}
+                    </DropdownButton>
+                  </FlexBlock>
+                ) : (
+                  <></>
+                )
               ) : (
-                <></>
+                <FlexBlock>{order_info_section["ORDER_TYPE_NAME"]}</FlexBlock>
               )}
             </td>
           </tr>

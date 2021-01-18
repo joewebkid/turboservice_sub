@@ -188,10 +188,11 @@
     margin-top: -40px;
   }
 }
-
+.deleteBlockRight {
+  position: relative;
+}
 .delFilter {
   position: absolute;
-  // right: -3px;
-  margin-left: 116px;
-  top: 38%;
+  left: -4px;
+  top: 10px;
 }

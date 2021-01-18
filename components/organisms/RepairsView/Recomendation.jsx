@@ -9,7 +9,7 @@ import FlexBlock from "../../atoms/FlexBlock";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
 import FilterData from "../../atoms/FilterInput/FilterData";
 import DataInput from "../../atoms/DataInput";
-import { formatDateForPost } from "../../molecules/data";
+import { formatDateForPost, formatDate } from "../../molecules/data";
 import MessageToast from "./MessageToast";
 
 const get_recomendations = (callback, id, router, SESSIONID) => {
@@ -44,7 +44,8 @@ const set_recomendations = (
   SESSIONID,
   changedRecomendations,
   setMessage,
-  recomendations
+  recomendations,
+  currentKey
 ) => {
   const ADVICE_ID = changedRecomendations.ADVICE_ID;
 
@@ -68,19 +69,20 @@ const set_recomendations = (
       const { result } = data;
 
       const { Response, Message } = result;
-      const { WorkorderAdvices } = Response;
+      const { WorkorderAdvice } = Response;
 
       if (Message == "Ok") {
-        console.log("success  status", result);
+        console.log("success  status", changedRecomendations);
         setMessage({ type: "success", text: "success", show: true });
         setTimeout(() => {
           setMessage({});
         }, 2500);
         callback(
-          recomendations.map((e) =>
+          recomendations.map((e, key) =>
             changedRecomendations.ADVICE_TEXT == e.ADVICE_TEXT &&
-            !changedRecomendations.ADVICE_ID
-              ? WorkorderAdvices.data
+            currentKey == key
+              ? // !changedRecomendations.ADVICE_ID
+                WorkorderAdvice.data
               : e
           )
         );
@@ -94,6 +96,7 @@ const set_recomendations = (
       }
     })
     .catch(function (error) {
+      console.log(error);
       setMessage({ type: "error", text: "error", show: true });
       setTimeout(() => {
         setMessage({});
@@ -158,7 +161,9 @@ const Recomendation = (props) => {
 
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [changedStringId, setChangedStringId] = useState(0);
+
   const [recomendations, setRecomendations] = useState([]);
+
   const [message, setMessage] = useState({});
   const [temp_recomendations, setTempRecomendations] = useState([]);
   let tempArr = recomendations;
@@ -186,7 +191,8 @@ const Recomendation = (props) => {
             SESSIONID,
             changedRecomendations,
             setMessage,
-            recomendations
+            recomendations,
+            changedStringId
           );
       }
     }
@@ -221,8 +227,10 @@ const Recomendation = (props) => {
             {recomendations.map((recomendation, key) => (
               <>
                 <tr key={key}>
-                  {recomendations_struct.map((struct, ik) =>
-                    struct.type != "hidden" ? (
+                  {recomendations_struct.map((struct, ik) => {
+                    const date = new Date();
+                    date.setMonth(date.getMonth() + 1);
+                    return struct.type != "hidden" ? (
                       <td scope="col" className="datapicker-top-left" key={ik}>
                         {status != 2 ? (
                           struct.type == "date" ? (
@@ -236,6 +244,7 @@ const Recomendation = (props) => {
                                 setChangedStringId(key);
                               }}
                               value={recomendation[struct.slug]}
+                              defaultDate={date}
                             />
                           ) : (
                             <input
@@ -253,19 +262,19 @@ const Recomendation = (props) => {
                         ) : (
                           <FlexBlock
                             style={{
-                              width: 198,
-                              float: "right",
                               paddingLeft: 10,
                             }}
                           >
-                            {recomendation[struct.slug]}
+                            {struct.type == "date"
+                              ? formatDate(recomendation[struct.slug])
+                              : recomendation[struct.slug]}
                           </FlexBlock>
                         )}
                       </td>
                     ) : (
                       <></>
-                    )
-                  )}
+                    );
+                  })}
                 </tr>
                 <tr>
                   <td className="strTr">

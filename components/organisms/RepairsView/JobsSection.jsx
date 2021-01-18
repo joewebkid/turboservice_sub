@@ -290,29 +290,8 @@ const xmlLoad = async (
       });
     }
   }
-  // console.log(
-  //   xml.getElementsByTagName("parsererror")[0].getElementsByTagName("div")[0]
-  //     .innerHTML
-  // );
-  // console.log(xml.documentElement.nodeName);
-  // console.log("parseXml", parseXml(xml_text));
-  // console.log(xmlObject.getElementsByTagName("parsererror"));
-
-  // console.log(xmlObject.getElementsByTagName("jobs")[0].childNodes);
-
-  // xmlObject.getElementsByTagName("jobs")[0].children.map((e, key) => {
-  //   console.log(e.attributes);
-  // });
-  // xmlObject.getElementsByTagName("parts")[0].children.map((e, key) => {
-  //   console.log(e.attributes);
-  // });
-  // xmlObject
-  //   .getElementsByTagName("recommendations")[0]
-  //   .children.map((e, key) => {
-  //     console.log(e.attributes);
-  //   });
-  // console.log(xmlObject.getElementsByTagName("jobs")[0].children);
 };
+
 const addNew = (jobs, setJobs, jobs_struct) => {
   const titles = jobs_struct.map((s) => {
     return s.slug;
@@ -343,7 +322,7 @@ const popover = (
 );
 
 const JobsSection = (props) => {
-  const { SESSIONID, refresh, refreshPage, status } = props;
+  const { SESSIONID, refresh, refreshPage, status, setTotal } = props;
   const router = useRouter();
 
   const [jobs, setJobs] = useState([]);
@@ -402,37 +381,48 @@ const JobsSection = (props) => {
               <></>
             )}
 
-            <label className="btn btn-secondary mr-1">
-              Load from file
-              <input
-                id="xmlFile"
-                type="file"
-                class="form-control-file"
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  xmlLoad(
-                    e,
-                    setErrorText,
-                    setMessage,
-                    router.query.id,
-                    SESSIONID,
-                    errorText,
-                    refreshPage
-                  );
-                  e.target.value = null;
-                }}
-              ></input>
-            </label>
-            <OverlayTrigger trigger="click" placement="left" overlay={popover}>
-              <Button
-                variant="secondary"
-                style={{
-                  height: 38,
-                }}
-              >
-                ?
-              </Button>
-            </OverlayTrigger>
+            {status != 2 ? (
+              <>
+                <label className="btn btn-secondary mr-1">
+                  Load from file
+                  <input
+                    id="xmlFile"
+                    type="file"
+                    class="form-control-file"
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      xmlLoad(
+                        e,
+                        setErrorText,
+                        setMessage,
+                        router.query.id,
+                        SESSIONID,
+                        errorText,
+                        refreshPage
+                      );
+                      e.target.value = null;
+                    }}
+                  ></input>
+                </label>
+
+                <OverlayTrigger
+                  trigger="click"
+                  placement="left"
+                  overlay={popover}
+                >
+                  <Button
+                    variant="secondary"
+                    style={{
+                      height: 38,
+                    }}
+                  >
+                    ?
+                  </Button>
+                </OverlayTrigger>
+              </>
+            ) : (
+              <></>
+            )}
           </FlexBlock>
         </FlexBlock>
 
@@ -478,18 +468,26 @@ const JobsSection = (props) => {
               <>
                 <tr key={key}>
                   {jobs_struct.map((struct) => {
+                    const value =
+                      struct.type == "number"
+                        ? Number(job[struct.slug]).toFixed(2)
+                        : job[struct.slug];
                     if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
                     jobsSum[struct.slug] =
                       jobsSum[struct.slug] + Number(job[struct.slug]);
+
+                    if (jobsSum && struct.slug == "JOB_AMOUNT")
+                      setTotal(jobsSum[struct.slug]);
 
                     if (struct.type != "hidden")
                       return (
                         <td scope="col">
                           {status != 2 ? (
                             <input
-                              value={job[struct.slug]}
+                              value={value}
                               className="form-control"
                               placehorder="repair order"
+                              // type={struct.slug}
                               onChange={(e) => {
                                 tempArr[key][struct.slug] = e.target.value;
 
@@ -500,8 +498,7 @@ const JobsSection = (props) => {
                           ) : (
                             <FlexBlock
                               style={{
-                                width: 198,
-                                float: "right",
+                                ...struct.style,
                                 paddingLeft: 10,
                               }}
                             >
@@ -529,8 +526,6 @@ const JobsSection = (props) => {
                             job["JOB_ID"],
                             jobs
                           );
-                          // setAddNewStringFlag(1);
-                          // addNew(jobs, setJobs, jobs_struct);
                         }}
                       >
                         ✕

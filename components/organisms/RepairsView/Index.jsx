@@ -22,7 +22,14 @@ import dynamic from "next/dynamic";
 
 const JobsSection = dynamic(() => import("./JobsSection"), { ssr: false });
 
-const set_order_info = (callback, id, router, SESSIONID, order_info) => {
+const set_order_info = (
+  callback,
+  id,
+  router,
+  SESSIONID,
+  order_info,
+  flag_action
+) => {
   axios
     .post(
       process.env.NEXT_PUBLIC_URL +
@@ -30,14 +37,18 @@ const set_order_info = (callback, id, router, SESSIONID, order_info) => {
         id +
         "?SESSIONID=" +
         SESSIONID,
-      { ...order_info, JOBS_DONE_DATE: "" }
+      order_info
     )
     .then(function (response) {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
       const { WorkorderHeader } = Response;
-      callback(WorkorderHeader.data);
+      if (flag_action == "done") {
+        router.push("/");
+      } else {
+        callback(WorkorderHeader.data);
+      }
     })
     .catch(function (error) {
       console.log(error);
@@ -77,6 +88,7 @@ const Index = (props) => {
   const router = useRouter();
 
   const [order_info, setOrderInfo] = useState(false);
+  const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(0);
   // const [order_info, setOrderInfo] = useState([]);
 
@@ -107,10 +119,23 @@ const Index = (props) => {
               });
             }}
             callback_done={() => {
-              set_order_info(setOrderInfo, router.query.id, router, SESSIONID, {
-                ...order_info,
-                JOBS_DONE_DATE: formatDateForPost(),
-              });
+              if (confirm("Are you sure you want to finish this order?")) {
+                set_order_info(
+                  setOrderInfo,
+                  router.query.id,
+                  router,
+                  SESSIONID,
+                  {
+                    ...order_info,
+                    ORDER_STATUS_ID: 2,
+                    ORDER_STATUS_NAME: "COMPLETED",
+                    JOBS_DONE_DATE: formatDateForPost(),
+                  },
+                  "done"
+                );
+              } else {
+                // alert("Вы нажали кнопку отмена");
+              }
             }}
             status={order_info["ORDER_STATUS_ID"]}
           />
@@ -160,12 +185,15 @@ const Index = (props) => {
             refreshPage={() => setRefresh(refresh + 1)}
             refresh={refresh}
             status={order_info["ORDER_STATUS_ID"]}
+            setTotal={setTotal}
           />
           {/* Spare parts and materials */}
           <MaterialsSection
             SESSIONID={SESSIONID}
             refresh={refresh}
             status={order_info["ORDER_STATUS_ID"]}
+            total={total}
+            setTotal={setTotal}
           />
           {/* Recomendation lists */}
           <Recomendation

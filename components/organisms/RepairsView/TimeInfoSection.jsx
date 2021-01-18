@@ -30,7 +30,7 @@ const TimeInfoSection = (props) => {
                 <FlexBlock
                   style={{ width: 198, float: "right", paddingLeft: 10 }}
                 >
-                  {formatDate(order_info.JOB_STARTED_DATE)}
+                  {formatDateForPost(order_info.JOB_STARTED_DATE)}
                 </FlexBlock>
               )
             ) : (
@@ -56,7 +56,7 @@ const TimeInfoSection = (props) => {
               <FlexBlock
                 style={{ width: 198, float: "right", paddingLeft: 10 }}
               >
-                {formatDate(order_info.EXPECTED_ISSUE_DATE)}
+                {formatDateForPost(order_info.EXPECTED_ISSUE_DATE)}
               </FlexBlock>
             )}
           </td>
@@ -66,7 +66,9 @@ const TimeInfoSection = (props) => {
 
           <td>
             <FlexBlock style={{ width: 198, float: "right", paddingLeft: 10 }}>
-              {formatDate(order_info.JOBS_DONE_DATE)}
+              {order_info.JOBS_DONE_DATE
+                ? formatDateForPost(order_info.JOBS_DONE_DATE)
+                : ""}
             </FlexBlock>
           </td>
         </tr>

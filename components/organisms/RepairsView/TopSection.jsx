@@ -6,6 +6,7 @@ import Section from "../../atoms/Section";
 
 const TopSection = (props) => {
   const { order_info } = props;
+  const status = order_info["ORDER_STATUS_ID"];
   return (
     <>
       <Section className="text-center mb-4">
@@ -53,7 +54,17 @@ const TopSection = (props) => {
             </FlexBlock>
             <FlexBlock justify="space-between">
               <span>Status</span>
-              <b>{order_info["ORDER_STATUS_NAME"]}</b>
+              <b
+                className={
+                  status == 2
+                    ? "text-success"
+                    : status == 1
+                    ? "text-warning"
+                    : "text-secondary"
+                }
+              >
+                {order_info["ORDER_STATUS_NAME"]}
+              </b>
             </FlexBlock>
           </Col>
           <Col sm className="text-right">

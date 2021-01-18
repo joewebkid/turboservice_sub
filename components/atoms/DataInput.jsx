@@ -5,7 +5,8 @@ import "react-nice-dates/build/style.css";
 import { formatDateForPost } from "../molecules/data";
 
 const DataInput = (props) => {
-  const [date, setDate] = useState(new Date());
+  const { defaultDate } = props;
+  const [date, setDate] = useState(defaultDate || new Date());
 
   useEffect(() => {
     if (date) props.callback(date);

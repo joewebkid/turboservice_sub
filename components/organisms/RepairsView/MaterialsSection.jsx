@@ -173,7 +173,7 @@ const addNew = (materials, setMaterials, materials_struct) => {
 };
 
 const MaterialsSection = (props) => {
-  const { SESSIONID, refresh, status } = props;
+  const { SESSIONID, refresh, status, setTotal, total } = props;
   const router = useRouter();
   let material_sum = {};
 
@@ -255,16 +255,25 @@ const MaterialsSection = (props) => {
               <>
                 <tr>
                   {materials_struct.map((struct) => {
+                    const value =
+                      struct.type == "number"
+                        ? Number(material[struct.slug]).toFixed(2)
+                        : material[struct.slug];
                     if (!material_sum[struct.slug])
                       material_sum[struct.slug] = 0;
                     material_sum[struct.slug] =
                       material_sum[struct.slug] + Number(material[struct.slug]);
+                    if (
+                      material_sum != undefined &&
+                      struct.slug == "PART_AMOUNT"
+                    )
+                      setTotal(material_sum[struct.slug]);
 
                     return struct.type != "hidden" ? (
                       <td scope="col">
                         {status != 2 ? (
                           <input
-                            value={material[struct.slug]}
+                            value={value}
                             className="form-control"
                             placehorder="repair order"
                             style={struct.style}
@@ -279,8 +288,7 @@ const MaterialsSection = (props) => {
                         ) : (
                           <FlexBlock
                             style={{
-                              width: 198,
-                              float: "right",
+                              ...struct.style,
                               paddingLeft: 10,
                             }}
                           >
@@ -362,18 +370,18 @@ const MaterialsSection = (props) => {
                   Total
                 </th>
                 <th scope="col" style={{ width: "40%" }}>
-                  0
+                  {total}
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th scope="row">VAT</th>
-                <td>0</td>
+                <td>{Number(total * 0.2).toFixed(2)}</td>
               </tr>
               <tr>
                 <th scope="row">Grand Total</th>
-                <td>0</td>
+                <td>{total + total * 0.2}</td>
               </tr>
             </tbody>
           </Table>

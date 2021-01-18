@@ -106,7 +106,7 @@ const _handleFileChange = (e, callback, id, SESSIONID) => {
 };
 
 const Attached = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, status } = props;
   const router = useRouter();
 
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
@@ -126,44 +126,52 @@ const Attached = (props) => {
         {files.map((f, key) => (
           <Block className="text-left" key={key}>
             <CustomLink href={f.FILE_URL}>{f.FILE_NAME}</CustomLink>
-            <span
-              className="deleteLink"
-              onClick={() => {
-                delete_file(
-                  setFiles,
-                  router.query.id,
-                  SESSIONID,
-                  f.FILE_NAME,
-                  files,
-                  key
-                );
-              }}
-            >
-              ✕
-            </span>
+
+            {status != 2 ? (
+              <span
+                className="deleteLink"
+                onClick={() => {
+                  delete_file(
+                    setFiles,
+                    router.query.id,
+                    SESSIONID,
+                    f.FILE_NAME,
+                    files,
+                    key
+                  );
+                }}
+              >
+                ✕
+              </span>
+            ) : (
+              <></>
+            )}
           </Block>
         ))}
-
-        <label
-          className="btn btn-secondary mr-1 mt-2"
-          style={{ float: "left" }}
-        >
-          Upload file
-          <input
-            id="attachedFile"
-            onChange={(e) =>
-              _handleFileChange(
-                e,
-                (WorkorderFile) => setFiles([...files, WorkorderFile]),
-                router.query.id,
-                SESSIONID
-              )
-            }
-            type="file"
-            class="form-control-file"
-            style={{ display: "none" }}
-          ></input>
-        </label>
+        {status != 2 ? (
+          <label
+            className="btn btn-secondary mr-1 mt-2"
+            style={{ float: "left" }}
+          >
+            Upload file
+            <input
+              id="attachedFile"
+              onChange={(e) =>
+                _handleFileChange(
+                  e,
+                  (WorkorderFile) => setFiles([...files, WorkorderFile]),
+                  router.query.id,
+                  SESSIONID
+                )
+              }
+              type="file"
+              class="form-control-file"
+              style={{ display: "none" }}
+            ></input>
+          </label>
+        ) : (
+          <></>
+        )}
       </Section>
     </>
   );

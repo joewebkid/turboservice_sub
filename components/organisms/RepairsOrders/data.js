@@ -1,9 +1,15 @@
 export const headers = [
+  // {
+  //   title: "TLT REQUEST #",
+  //   type: "text",
+  //   slug: "REQUEST_NUMBER",
+  //   filter: "RequestNumber",
+  // },2. Появилось поле CONTRACTOR_WORKORDER в журнале заказ-нарядов (номер или название в учетной системе подрядчика), ставить в таблице вторым, назвать "Our order #", параметр для поиска ContractorWorkorder.
   {
-    title: "TLT REQUEST #",
+    title: "Our order #",
     type: "text",
-    slug: "REQUEST_NUMBER",
-    filter: "RequestNumber",
+    slug: "CONTRACTOR_WORKORDER",
+    filter: "ContractorWorkorder",
   },
   {
     title: "Repair order #",

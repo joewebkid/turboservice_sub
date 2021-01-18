@@ -73,15 +73,17 @@ const FilterData = (props) => {
       </DateRangePicker>
 
       {startDate && endDate ? (
-        <FlexBlock
-          className="deleteLink delFilter"
-          onClick={() => {
-            setStartDate("");
-            setEndDate("");
-            setFilterEndDate(startDate, endDate);
-          }}
-        >
-          ✕
+        <FlexBlock className="deleteBlockRight">
+          <FlexBlock
+            className="deleteLink delFilter"
+            onClick={() => {
+              setStartDate("");
+              setEndDate("");
+              setFilterEndDate(startDate, endDate);
+            }}
+          >
+            ✕
+          </FlexBlock>
         </FlexBlock>
       ) : (
         <></>
