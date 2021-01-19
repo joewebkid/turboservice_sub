@@ -37,7 +37,7 @@ const FilterData = (props) => {
           <FlexBlock className="date-range">
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               {...startDateInputProps}
               style={{
                 padding: 0,

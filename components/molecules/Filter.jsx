@@ -15,6 +15,7 @@ const filter_callback = (
   setIsSearching,
   auth_data
 ) => {
+  console.log("Я иду на запрос", SESSIONID);
   if (SESSIONID)
     return axios
       .get(
@@ -92,8 +93,8 @@ const Filter = (props) => {
 
   return (
     <>
-      {headers.map((h) => (
-        <th className={isSearching ? "loadingBlock" : ""}>
+      {headers.map((h, key) => (
+        <th className={isSearching ? "loadingBlock" : ""} key={key}>
           {h.type == "text" ? (
             <Block className="filterControll">
               <Form.Control

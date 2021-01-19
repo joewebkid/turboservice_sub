@@ -38,26 +38,27 @@ const get_statuses = (callback, router, SESSIONID, setLoading) => {
         }
       });
 };
-const get_orders = (callback, SESSIONID) => {
-  if (SESSIONID)
-    axios
-      .get(
-        process.env.NEXT_PUBLIC_URL +
-          "/api-v2/Contractors/WorkorderList?SESSIONID=" +
-          SESSIONID
-      )
-      .then(function (response) {
-        const { data } = response;
-        const { result } = data;
-        const { Response } = result;
-        const { WorkorderList } = Response;
-        // console.log(response);
-        callback(WorkorderList.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-};
+// const get_orders = (callback, SESSIONID) => {
+//   console.log("Я иду на запрос", SESSIONID);
+//   if (SESSIONID)
+//     axios
+//       .get(
+//         process.env.NEXT_PUBLIC_URL +
+//           "/api-v2/Contractors/WorkorderList?SESSIONID=" +
+//           SESSIONID
+//       )
+//       .then(function (response) {
+//         const { data } = response;
+//         const { result } = data;
+//         const { Response } = result;
+//         const { WorkorderList } = Response;
+//         // console.log(response);
+//         callback(WorkorderList.data);
+//       })
+//       .catch(function (error) {
+//         console.log(error);
+//       });
+// };
 
 const RepairsOrders = (props) => {
   const { SESSIONID, setLoading } = props;
@@ -72,9 +73,9 @@ const RepairsOrders = (props) => {
   const [elems_count, setElemCountOnPage] = useState(10);
 
   useEffect(() => {
-    if (SESSIONID) {
-      get_orders(setOrders, SESSIONID);
-      get_statuses(setStatuses, router, SESSIONID, setLoading);
+    if (SESSIONID && router) {
+      // get_orders(setOrders, SESSIONID);
+      get_statuses(setStatuses, router, SESSIONID);
       setCurrentPage(0);
     }
   }, [SESSIONID]);
@@ -108,6 +109,11 @@ const RepairsOrders = (props) => {
       <Section className="loadscreen">
         <Spinner animation="grow" />
       </Section>
+    );  if (orders.length == 0)
+    return (
+      <Section className="loadscreen">
+        <Spinner animation="grow" />
+      </Section>
     );
   return (
     <Fade>
@@ -125,15 +131,15 @@ const RepairsOrders = (props) => {
               />
             </tr>
             <tr>
-              {headers.map((e) => (
-                <th scope="col" style={e.style ? e.style : {}}>
+              {headers.map((e, key) => (
+                <th scope="col" style={e.style ? e.style : {}} key={key}>
                   {e.title}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {ordersByPage.map((order) => (
+            {ordersByPage.map((order, key) => (
               <>
                 <tr
                   c={order["ORDER_STATUS_ID"]}
@@ -144,6 +150,7 @@ const RepairsOrders = (props) => {
                       ? "warning"
                       : "second"
                   }
+                  key={key}
                 >
                   {headers.map((e, k) => {
                     let val = order[e.slug];

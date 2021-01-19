@@ -88,9 +88,13 @@ const Statistics = (props) => {
                 return (
                   <>
                     {!k || !x ? (
-                      <th scope="row">{x}</th>
+                      <th scope="row" key={k}>
+                        {x}
+                      </th>
                     ) : (
-                      <td>{typeof x != "object" ? Number(x).toFixed(2) : x}</td>
+                      <td key={k}>
+                        {typeof x != "object" ? Number(x).toFixed(2) : x}
+                      </td>
                     )}
                   </>
                 );

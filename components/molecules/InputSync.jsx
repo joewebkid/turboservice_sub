@@ -14,6 +14,7 @@ const filter_callback = (
   setIsSearching,
   auth_data
 ) => {
+  console.log("Я иду на запрос", SESSIONID);
   if ((SESSIONID, auth_data))
     return axios
       .get(

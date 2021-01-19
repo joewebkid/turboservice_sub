@@ -87,13 +87,13 @@ const OrderInfoSection = (props) => {
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
                 {status != 2 ? (
                   <input
-                    value={order_info_section["VEHICLE_MILEAGE"] || ""}
+                    value={Number(order_info_section["VEHICLE_MILEAGE"]) || ""}
                     className="form-control"
                     placehorder="repair order"
                     onChange={(e) =>
                       SetOrderInfo({
                         ...order_info,
-                        VEHICLE_MILEAGE: e.target.value,
+                        VEHICLE_MILEAGE: Number(e.target.value),
                       })
                     }
                   />
@@ -105,7 +105,7 @@ const OrderInfoSection = (props) => {
                       paddingLeft: 10,
                     }}
                   >
-                    {order_info_section["VEHICLE_MILEAGE"] || ""}
+                    {Number(order_info_section["VEHICLE_MILEAGE"]) || ""}
                   </FlexBlock>
                 )}
               </FlexBlock>

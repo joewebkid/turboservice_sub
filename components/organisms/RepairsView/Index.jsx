@@ -19,6 +19,7 @@ import { formatDateForPost } from "../../molecules/data";
 // import { XMLParser } from "react-xml-parser";
 // var XMLParser = require('react-xml-parser');
 import dynamic from "next/dynamic";
+import MessageToast from "./MessageToast";
 
 const JobsSection = dynamic(() => import("./JobsSection"), { ssr: false });
 
@@ -28,7 +29,8 @@ const set_order_info = (
   router,
   SESSIONID,
   order_info,
-  flag_action
+  flag_action,
+  setMessage
 ) => {
   axios
     .post(
@@ -37,16 +39,24 @@ const set_order_info = (
         id +
         "?SESSIONID=" +
         SESSIONID,
-      order_info
+      {
+        ...order_info,
+        VEHICLE_MILEAGE: Number(order_info["VEHICLE_MILEAGE"]),
+      }
     )
     .then(function (response) {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
       const { WorkorderHeader } = Response;
+
       if (flag_action == "done") {
         router.push("/");
       } else {
+        setMessage({ type: "success", text: "success", show: true });
+        setTimeout(() => {
+          setMessage({});
+        }, 2500);
         callback(WorkorderHeader.data);
       }
     })
@@ -90,6 +100,7 @@ const Index = (props) => {
   const [order_info, setOrderInfo] = useState(false);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(0);
+  const [message, setMessage] = useState({});
   // const [order_info, setOrderInfo] = useState([]);
 
   useEffect(() => {
@@ -107,6 +118,7 @@ const Index = (props) => {
 
   return (
     <>
+      {message.show ? <MessageToast {...message} /> : <></>}
       {order_info ? (
         <>
           <TopSection order_info={order_info} />
@@ -114,16 +126,32 @@ const Index = (props) => {
           <RequestSection
             order_info={order_info}
             callback_start={() => {
-              set_order_info(setOrderInfo, router.query.id, router, SESSIONID, {
-                ...order_info,
-                JOB_STARTED_DATE: formatDateForPost(),
-              });
+              set_order_info(
+                setOrderInfo,
+                router.query.id,
+                router,
+                SESSIONID,
+                {
+                  ...order_info,
+                  JOB_STARTED_DATE: formatDateForPost(),
+                },
+                false,
+                setMessage
+              );
             }}
             callback_cancel={() => {
-              set_order_info(setOrderInfo, router.query.id, router, SESSIONID, {
-                ...order_info,
-                JOB_STARTED_DATE: "",
-              });
+              set_order_info(
+                setOrderInfo,
+                router.query.id,
+                router,
+                SESSIONID,
+                {
+                  ...order_info,
+                  JOB_STARTED_DATE: "",
+                },
+                false,
+                setMessage
+              );
             }}
             callback_done={() => {
               if (confirm("Are you sure you want to finish this order?")) {
@@ -162,7 +190,9 @@ const Index = (props) => {
                   {
                     ...order_info,
                     ...order_info_section,
-                  }
+                  },
+                  false,
+                  setMessage
                 );
               }}
               status={order_info["ORDER_STATUS_ID"]}
@@ -180,7 +210,9 @@ const Index = (props) => {
                   {
                     ...order_info,
                     ...order_info_section,
-                  }
+                  },
+                  false,
+                  setMessage
                 );
               }}
               status={order_info["ORDER_STATUS_ID"]}
