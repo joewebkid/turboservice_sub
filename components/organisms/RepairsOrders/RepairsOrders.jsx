@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pagination, Table } from "react-bootstrap";
+import { Pagination, Spinner, Table } from "react-bootstrap";
 import Block from "../../atoms/Block";
 import FlexBlock from "../../atoms/FlexBlock";
 import CustomLink from "../../atoms/CustomLink";
@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import Fade from "react-reveal/Fade";
 
 // Contractors/OrderStatusesList
-const get_statuses = (callback, router, SESSIONID) => {
+const get_statuses = (callback, router, SESSIONID, setLoading) => {
   if (SESSIONID)
     axios
       .get(
@@ -26,6 +26,7 @@ const get_statuses = (callback, router, SESSIONID) => {
         const { OrderStatusesList } = Response;
         // console.log(response);
         callback(OrderStatusesList.data);
+        setLoading(true);
       })
       .catch(function (error) {
         console.log(error);
@@ -59,7 +60,7 @@ const get_orders = (callback, SESSIONID) => {
 };
 
 const RepairsOrders = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, setLoading } = props;
   const router = useRouter();
 
   const [orders, setOrders] = useState([]);
@@ -73,7 +74,7 @@ const RepairsOrders = (props) => {
   useEffect(() => {
     if (SESSIONID) {
       get_orders(setOrders, SESSIONID);
-      get_statuses(setStatuses, router, SESSIONID);
+      get_statuses(setStatuses, router, SESSIONID, setLoading);
       setCurrentPage(0);
     }
   }, [SESSIONID]);
@@ -101,6 +102,13 @@ const RepairsOrders = (props) => {
     );
   }, [current_page]);
   if (current_page == -1) return <></>;
+
+  if (orders.length == 0)
+    return (
+      <Section className="loadscreen">
+        <Spinner animation="grow" />
+      </Section>
+    );
   return (
     <Fade>
       <Section className="border p-4 text-center mb-4">

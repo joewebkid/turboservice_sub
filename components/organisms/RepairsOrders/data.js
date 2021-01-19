@@ -49,13 +49,15 @@ export const headers = [
     title: "VIN",
     type: "text",
     slug: "VIN",
-    filter: "VIN",
+    // filter: "VIN",
+    filter: "VINContains",
   },
   {
     title: "Plate#",
     type: "text",
     slug: "PLATE_NUMBER",
-    filter: "Plate",
+    // filter: "Plate",
+    filter: "PlateContains",
   },
   {
     title: "Status",

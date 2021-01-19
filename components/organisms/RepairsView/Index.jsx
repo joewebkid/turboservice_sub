@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
 // import JobsSection from "./JobsSection";
@@ -73,7 +73,7 @@ const get_order_info = (callback, id, router, SESSIONID) => {
         const { WorkorderHeader } = Response;
 
         if (WorkorderHeader.data) callback(WorkorderHeader.data);
-        else router.push("/login?session");
+        // else router.push("/login?session");
       })
       .catch(function (error) {
         // console.log(error);
@@ -97,6 +97,13 @@ const Index = (props) => {
       get_order_info(setOrderInfo, router.query.id, router, SESSIONID);
     }
   }, [router, SESSIONID]);
+
+  if (!order_info)
+    return (
+      <Section className="loadscreen">
+        <Spinner animation="grow" />
+      </Section>
+    );
 
   return (
     <>

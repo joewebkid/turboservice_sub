@@ -22,11 +22,17 @@ export default function Home() {
   }, []);
   const [user_info, setUserInfo] = useState(false);
   const [SESSIONID, setSESSIONID] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   return (
     <Container fluid className="login-container orders-list-container">
-      <TopOrderView statistics user_info={user_info} SESSIONID={SESSIONID} />
-      <RepairsOrders SESSIONID={SESSIONID} />
+      <TopOrderView
+        statistics
+        user_info={user_info}
+        SESSIONID={SESSIONID}
+        loading={loading}
+      />
+      <RepairsOrders SESSIONID={SESSIONID} setLoading={setLoading} />
     </Container>
   );
 }
