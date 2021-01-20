@@ -170,8 +170,9 @@ const xmlLoad = async (
   // const xml_text = await file.text();
 
   const file = e.target.files[0];
-  var data = new FormData();
-  data.append("data", file, file.name);
+  const xml_text = await file.text();
+  // var data = new FormData();
+  // data.append("data", file, file.name);
 
   axios
     .post(
@@ -180,9 +181,9 @@ const xmlLoad = async (
         id +
         "?SESSIONID=" +
         SESSIONID,
-      data,
+      { data: xml_text },
       {
-        content: data,
+        // content: data,
         headers: {
           "Content-type": "application/json",
         },
@@ -196,6 +197,7 @@ const xmlLoad = async (
       console.log(WorkorderDetails);
       // callback(WorkorderFile.data);
       // return response;
+      refreshPage();
     })
     .catch(function (error) {
       console.log(error);
