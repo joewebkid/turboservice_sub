@@ -49,6 +49,14 @@ const StatusesSelect = (props) => {
             {status.ORDER_STATUS_NAME}
           </Dropdown.Item>
         ))}
+        <Dropdown.Divider />
+        <Dropdown.Item
+          onClick={() => {
+            setOpen(!open);
+          }}
+        >
+          Закрыть<span style={{ float: "right" }}>✕</span>
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
