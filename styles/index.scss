@@ -1,3 +1,8 @@
+a {
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+}
 .imageLogo {
   max-height: 50px;
   margin-left: 20px;
@@ -214,5 +219,6 @@
   & .table td,
   & .table th {
     padding: 0.65rem.36rem;
+    text-align: left;
   }
 }

@@ -296,7 +296,6 @@ const MaterialsSection = (props) => {
                             <FlexBlock
                               style={{
                                 ...struct.style,
-                                paddingLeft: 10,
                               }}
                             >
                               {material[struct.slug]}
@@ -308,13 +307,10 @@ const MaterialsSection = (props) => {
                       );
                     })}
                     <td scope="col">
-                      <FlexBlock
-                        style={{
-                          paddingLeft: 10,
-                        }}
-                      >
-                        {Number(material["PART_AMOUNT"]) *
-                          Number(material["PART_PRICE"])}
+                      <FlexBlock style={{ padding: "7px 0" }}>
+                        {Number(
+                          material["PART_AMOUNT"] * material["PART_PRICE"]
+                        ).toFixed(2)}
                       </FlexBlock>
                     </td>
                   </tr>
@@ -353,15 +349,22 @@ const MaterialsSection = (props) => {
               {materials_struct.map((struct) =>
                 struct.type != "hidden" ? (
                   <td scope="col">
-                    <Block className={struct.hide ? "d-none" : "show"}>
-                      {material_sum[struct.slug]}
+                    <Block
+                      className={struct.hide ? "d-none" : "show"}
+                      style={{}}
+                    >
+                      {Number(material_sum[struct.slug]).toFixed(2)}
                     </Block>
                   </td>
                 ) : (
                   <></>
                 )
               )}
-              <td>{material_sum["sum"]}</td>
+              <td>
+                <Block style={{}}>
+                  {Number(material_sum["sum"]).toFixed(2)}
+                </Block>
+              </td>
             </tr>
           </tbody>
           {status != 2 ? (
@@ -400,7 +403,7 @@ const MaterialsSection = (props) => {
               </tr>
               <tr>
                 <th scope="row">Grand Total</th>
-                <td>{total + total * 0.2}</td>
+                <td>{Number(total + total * 0.2).toFixed(2)}</td>
               </tr>
             </tbody>
           </Table>

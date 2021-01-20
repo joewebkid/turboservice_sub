@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import CustomLink from "../../atoms/CustomLink";
 import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
+import { formatDateForView } from "../../molecules/data";
 
 const TopSection = (props) => {
   const { order_info } = props;
@@ -13,14 +14,15 @@ const TopSection = (props) => {
         <h5>
           Repair order for TLT request # {order_info["REQUEST_NUMBER"]} (repair
           order # {order_info["WORKORDER_NUMBER"]}) from{" "}
-          {order_info["REQUEST_DATE"]}
+          {formatDateForView(order_info["REQUEST_DATE"], "/")}
         </h5>
         <Row className="text-left border p-4 mb-4">
           <Col sm={6}>
             <div>{order_info["VEHICLE"]}</div>
             <FlexBlock justify="space-between">
               <span>
-                Registration: {order_info["VEHICLE_REGISTRATION_DATE"]}
+                Registration:{" "}
+                {formatDateForView(order_info["VEHICLE_REGISTRATION_DATE"])}
               </span>
               <span>
                 {" "}

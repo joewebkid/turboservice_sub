@@ -16,6 +16,20 @@ export const formatDate = (e) => {
     return [year, month, day].join("-");
   }
 };
+export const formatDateForView = (e, symb = "-") => {
+  if (e) {
+    let month, day, year;
+    const d = new Date(e);
+    (month = "" + (d.getMonth() + 1)),
+      (day = "" + d.getDate()),
+      (year = d.getFullYear());
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [day, month, year].join(symb);
+  }
+};
 
 export const formatDateForPost = (e = false, type = false) => {
   let month, day, year;

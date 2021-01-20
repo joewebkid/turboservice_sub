@@ -11,12 +11,12 @@ export const headers = [
     slug: "CONTRACTOR_WORKORDER",
     filter: "ContractorWorkorder",
   },
-  {
-    title: "Repair order #",
-    type: "text",
-    slug: "WORKORDER_NUMBER",
-    filter: "RepairOrderNumber",
-  },
+  // {
+  //   title: "Repair order #",
+  //   type: "text",
+  //   slug: "WORKORDER_NUMBER",
+  //   filter: "RepairOrderNumber",
+  // },
   {
     title: "Request date",
     type: "date",

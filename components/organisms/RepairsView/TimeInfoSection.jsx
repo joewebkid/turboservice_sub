@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 import FlexBlock from "../../atoms/FlexBlock";
 import Fade from "react-reveal/Fade";
 import DataInput from "../../atoms/DataInput";
-import { formatDateForPost, formatDate } from "../../molecules/data";
+import { formatDateForPost, formatDateForView } from "../../molecules/data";
 
 const TimeInfoSection = (props) => {
   const { order_info } = props;
@@ -30,7 +30,7 @@ const TimeInfoSection = (props) => {
                 <FlexBlock
                   style={{ width: 198, float: "right", paddingLeft: 10 }}
                 >
-                  {formatDateForPost(order_info.JOB_STARTED_DATE)}
+                  {formatDateForView(order_info.JOB_STARTED_DATE)}
                 </FlexBlock>
               )
             ) : (
@@ -56,7 +56,7 @@ const TimeInfoSection = (props) => {
               <FlexBlock
                 style={{ width: 198, float: "right", paddingLeft: 10 }}
               >
-                {formatDateForPost(order_info.EXPECTED_ISSUE_DATE)}
+                {formatDateForView(order_info.EXPECTED_ISSUE_DATE)}
               </FlexBlock>
             )}
           </td>
@@ -67,7 +67,7 @@ const TimeInfoSection = (props) => {
           <td>
             <FlexBlock style={{ width: 198, float: "right", paddingLeft: 10 }}>
               {order_info.JOBS_DONE_DATE
-                ? formatDateForPost(order_info.JOBS_DONE_DATE)
+                ? formatDateForView(order_info.JOBS_DONE_DATE)
                 : ""}
             </FlexBlock>
           </td>

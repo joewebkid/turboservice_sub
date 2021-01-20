@@ -394,7 +394,8 @@ const JobsSection = (props) => {
                           : job[struct.slug];
                       if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
                       jobsSum[struct.slug] =
-                        jobsSum[struct.slug] + Number(job[struct.slug]);
+                        jobsSum[struct.slug] +
+                        Number(job[struct.slug]).toFixed(2);
 
                       // if (jobsSum && struct.slug == "JOB_AMOUNT")
 
@@ -419,22 +420,21 @@ const JobsSection = (props) => {
                               <FlexBlock
                                 style={{
                                   ...struct.style,
-                                  paddingLeft: 10,
                                 }}
                               >
-                                {job[struct.slug]}
+                                {struct.type == "number"
+                                  ? Number(job[struct.slug]).toFixed(2)
+                                  : job[struct.slug]}
                               </FlexBlock>
                             )}
                           </td>
                         );
                     })}
                     <td scope="col">
-                      <FlexBlock
-                        style={{
-                          paddingLeft: 10,
-                        }}
-                      >
-                        {job["JOB_AMOUNT"] * job["JOB_PRICE"]}
+                      <FlexBlock style={{ padding: "7px 0" }}>
+                        {Number(job["JOB_AMOUNT"] * job["JOB_PRICE"]).toFixed(
+                          2
+                        )}
                       </FlexBlock>
                     </td>
                   </tr>
@@ -469,17 +469,22 @@ const JobsSection = (props) => {
             })}
             <tr>
               {jobs_struct.map((struct) => {
-                const num = Number(Number(jobsSum[struct.slug]).toFixed(2));
+                const num = Number(jobsSum[struct.slug]);
                 if (struct.type != "hidden")
                   return (
                     <td scope="col">
-                      <Block className={struct.hide ? "d-none" : "show"}>
-                        {!num ? 0 : num}
+                      <Block
+                        className={struct.hide ? "d-none" : "show"}
+                        style={{}}
+                      >
+                        {!num ? "0.00" : num.toFixed(2)}
                       </Block>
                     </td>
                   );
               })}
-              <td>{jobsSum["sum"]}</td>
+              <td>
+                <Block style={{}}>{Number(jobsSum["sum"]).toFixed(2)}</Block>
+              </td>
             </tr>
           </tbody>
         </Table>

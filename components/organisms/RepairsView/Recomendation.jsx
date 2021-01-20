@@ -9,7 +9,11 @@ import FlexBlock from "../../atoms/FlexBlock";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
 import FilterData from "../../atoms/FilterInput/FilterData";
 import DataInput from "../../atoms/DataInput";
-import { formatDateForPost, formatDate } from "../../molecules/data";
+import {
+  formatDateForPost,
+  formatDate,
+  formatDateForView,
+} from "../../molecules/data";
 import MessageToast from "./MessageToast";
 
 const get_recomendations = (callback, id, router, SESSIONID) => {
@@ -260,13 +264,9 @@ const Recomendation = (props) => {
                             />
                           )
                         ) : (
-                          <FlexBlock
-                            style={{
-                              paddingLeft: 10,
-                            }}
-                          >
+                          <FlexBlock style={{}}>
                             {struct.type == "date"
-                              ? formatDate(recomendation[struct.slug])
+                              ? formatDateForView(recomendation[struct.slug])
                               : recomendation[struct.slug]}
                           </FlexBlock>
                         )}

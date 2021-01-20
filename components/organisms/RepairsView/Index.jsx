@@ -51,7 +51,7 @@ const set_order_info = (
       const { WorkorderHeader } = Response;
 
       if (flag_action == "done") {
-        console.log(WorkorderHeader);
+        // console.log(WorkorderHeader);
         router.push("/");
       } else {
         setMessage({ type: "success", text: "success", show: true });

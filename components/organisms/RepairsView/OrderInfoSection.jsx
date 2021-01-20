@@ -136,6 +136,11 @@ const OrderInfoSection = (props) => {
                             key={k}
                             onClick={(e) => {
                               console.log(e.target.innerText);
+                              SetOrderInfo({
+                                ...order_info,
+                                ORDER_TYPE_ID: t.ORDER_TYPE_ID,
+                                ORDER_TYPE_NAME: e.target.innerText,
+                              });
                             }}
                             active={
                               t.ORDER_TYPE_ID ==
