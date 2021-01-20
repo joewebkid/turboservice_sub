@@ -32,7 +32,11 @@ export default function Home() {
         SESSIONID={SESSIONID}
         loading={loading}
       />
-      <RepairsOrders SESSIONID={SESSIONID} setLoading={setLoading} />
+      <RepairsOrders
+        SESSIONID={SESSIONID}
+        setLoading={setLoading}
+        loading={loading}
+      />
     </Container>
   );
 }

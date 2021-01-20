@@ -209,3 +209,10 @@
   align-items: center;
   background: white;
 }
+
+.order-container {
+  & .table td,
+  & .table th {
+    padding: 0.65rem.36rem;
+  }
+}

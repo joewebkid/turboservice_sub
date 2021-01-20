@@ -1,7 +1,7 @@
 export const jobs_struct = [
   {
     title: "Jobs name",
-    width: "60%",
+    width: "100%",
     slug: "JOB_NAME",
     type: "string",
     xmlName: "name",
@@ -11,18 +11,21 @@ export const jobs_struct = [
     title: "Norm hours",
     slug: "JOB_NORM_HOUR",
     type: "number",
+    style: { width: 90 },
     xmlName: "norm_hour",
   },
   {
     title: "Amount",
     slug: "JOB_AMOUNT",
     type: "number",
+    style: { width: 80 },
     xmlName: "amount",
   },
   {
     title: "Price",
     slug: "JOB_PRICE",
     type: "number",
+    style: { width: 80 },
     xmlName: "price",
   },
   {
@@ -65,15 +68,15 @@ export const materials = [
     type: "string",
   },
   {
-    title: "Price",
-    style: { width: 80 },
-    slug: "PART_PRICE",
-    type: "number",
-  },
-  {
     title: "Amount",
     style: { width: 80 },
     slug: "PART_AMOUNT",
+    type: "number",
+  },
+  {
+    title: "Price",
+    style: { width: 80 },
+    slug: "PART_PRICE",
     type: "number",
   },
   {

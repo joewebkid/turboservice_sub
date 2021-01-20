@@ -61,7 +61,7 @@ const get_statuses = (callback, router, SESSIONID, setLoading) => {
 // };
 
 const RepairsOrders = (props) => {
-  const { SESSIONID, setLoading } = props;
+  const { SESSIONID, setLoading, loading } = props;
   const router = useRouter();
 
   const [orders, setOrders] = useState([]);
@@ -75,7 +75,7 @@ const RepairsOrders = (props) => {
   useEffect(() => {
     if (SESSIONID && router) {
       // get_orders(setOrders, SESSIONID);
-      get_statuses(setStatuses, router, SESSIONID);
+      get_statuses(setStatuses, router, SESSIONID, setLoading);
       setCurrentPage(0);
     }
   }, [SESSIONID]);
@@ -104,17 +104,13 @@ const RepairsOrders = (props) => {
   }, [current_page]);
   if (current_page == -1) return <></>;
 
-  if (orders.length == 0)
-    return (
-      <Section className="loadscreen">
-        <Spinner animation="grow" />
-      </Section>
-    );  if (orders.length == 0)
+  if (!loading)
     return (
       <Section className="loadscreen">
         <Spinner animation="grow" />
       </Section>
     );
+
   return (
     <Fade>
       <Section className="border p-4 text-center mb-4">

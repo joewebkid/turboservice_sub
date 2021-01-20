@@ -1,0 +1,138 @@
+const xmlLoad = async (
+  e,
+  setErrorText,
+  setMessage,
+  id,
+  SESSIONID,
+  errorText,
+  refreshPage
+) => {
+  console.log(e);
+  const file = e.target.files[0];
+
+  const xml_text = await file.text();
+  const xml = parseXml(xml_text);
+
+  let Jobs = [];
+  let Parts = [];
+  let Recomendations = [];
+
+  let JobsObj = [];
+  let PartsObj = [];
+  let RecomendationsObj = [];
+
+  if (xml.getElementsByTagName("parsererror")[0]) {
+    setErrorText(
+      xml.getElementsByTagName("parsererror")[0].getElementsByTagName("div")[0]
+        .innerHTML
+    );
+
+    setMessage({ type: "error", text: "error", show: true });
+    setTimeout(() => {
+      setMessage({});
+    }, 2500);
+  } else {
+    setErrorText("");
+    // console.log(xml.getElementsByTagName("jobs")[0]);
+    Jobs = Object.values(xml.getElementsByTagName("job"));
+    Parts = Object.values(xml.getElementsByTagName("part"));
+    Recomendations = Object.values(xml.getElementsByTagName("recommendation"));
+    // console.log(xml.getElementsByTagName("job")[0].getAttribute("name"));
+    if (Jobs) {
+      Jobs.map((e, key) => {
+        JobsObj[key] = {};
+        Object.values(e.attributes).map((e) => {
+          JobsObj[key][e.name] = e.value;
+        });
+        axios
+          .post(
+            [
+              process.env.NEXT_PUBLIC_URL,
+              "/api-v2/Contractors/WorkorderContractJob/",
+              id,
+              "?SESSIONID=",
+              SESSIONID,
+            ].join(""),
+            {
+              JOB_ID: "",
+              JOB_NORM_HOUR: JobsObj[key]["sum"],
+              JOB_NAME: JobsObj[key]["name"],
+              JOB_AMOUNT: JobsObj[key]["amount"],
+              JOB_PRICE: JobsObj[key]["price"],
+            },
+            {
+              headers: {
+                "Content-type": "application/json",
+              },
+            }
+          )
+          .then(() => refreshPage());
+      });
+    }
+    if (Parts) {
+      console.log(Parts);
+      Parts.map((e, key) => {
+        PartsObj[key] = {};
+        Object.values(e.attributes).map((e) => {
+          PartsObj[key][e.name] = e.value;
+        });
+        axios
+          .post(
+            [
+              process.env.NEXT_PUBLIC_URL,
+              "/api-v2/Contractors/WorkorderContractPart/",
+              id,
+              "?SESSIONID=",
+              SESSIONID,
+            ].join(""),
+            {
+              PART_ID: "",
+              PART_CODE: PartsObj[key]["code"],
+              PART_BRAND: PartsObj[key]["brand"],
+              PART_NAME: PartsObj[key]["name"],
+              PART_AMOUNT: PartsObj[key]["amount"],
+              PART_PRICE: PartsObj[key]["price"],
+            },
+            {
+              headers: {
+                "Content-type": "application/json",
+              },
+            }
+          )
+          .then(() => refreshPage());
+      });
+    }
+
+    if (Recomendations) {
+      Recomendations.map((e, key) => {
+        RecomendationsObj[key] = {};
+        Object.values(e.attributes).map((e) => {
+          RecomendationsObj[key][e.name] = e.value;
+        });
+        axios
+          .post(
+            [
+              process.env.NEXT_PUBLIC_URL,
+              "/api-v2/Contractors/WorkorderAdvice/",
+              id,
+              "?SESSIONID=",
+              SESSIONID,
+            ].join(""),
+            {
+              ADVICE_ID: "",
+              ADVICE_TEXT: RecomendationsObj[key]["content"],
+              ADVICE_FIX_BEFORE: formatDateForPost(
+                RecomendationsObj[key]["fixBefore"]
+              ),
+            },
+            {
+              headers: {
+                "Content-type": "application/json",
+              },
+            }
+          )
+          .then(() => refreshPage());
+      });
+    }
+  }
+};

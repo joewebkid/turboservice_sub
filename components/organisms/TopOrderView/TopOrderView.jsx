@@ -6,14 +6,8 @@ import LogoName from "../../molecules/LogoName";
 import Statistics from "./Statistics";
 
 const TopOrderView = (props) => {
-  const {
-    statistics,
-    repair_order_list,
-    user_info,
-    SESSIONID,
-    loading,
-  } = props;
-
+  const { repair_order_list, user_info, SESSIONID, loading } = props;
+  console.log(loading);
   return (
     <Section className="text-center mb-4 sb">
       <Block className="leftStatBlock">

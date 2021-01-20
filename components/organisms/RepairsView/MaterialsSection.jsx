@@ -248,89 +248,107 @@ const MaterialsSection = (props) => {
               {materials_struct.map((e) =>
                 e.type != "hidden" ? <th scope="col">{e.title}</th> : <></>
               )}
+              <th scope="col">Sum</th>
             </tr>
           </thead>
           <tbody>
-            {materials.map((material, key) => (
-              <>
-                <tr>
-                  {materials_struct.map((struct) => {
-                    const value =
-                      struct.type == "number"
-                        ? Number(material[struct.slug]).toFixed(2)
-                        : material[struct.slug];
-                    if (!material_sum[struct.slug])
-                      material_sum[struct.slug] = 0;
-                    material_sum[struct.slug] =
-                      material_sum[struct.slug] + Number(material[struct.slug]);
-                    if (
-                      material_sum != undefined &&
-                      struct.slug == "PART_AMOUNT"
-                    )
-                      setTotal(material_sum[struct.slug]);
-
-                    return struct.type != "hidden" ? (
-                      <td scope="col">
-                        {status != 2 ? (
-                          <input
-                            value={value}
-                            className="form-control"
-                            placehorder="repair order"
-                            style={struct.style}
-                            onChange={(e) => {
-                              tempArr[key][struct.slug] = e.target.value;
-
-                              // set_job(console.log, router.query.id, SESSIONID);
-                              setTempMaterials([...tempArr]);
-                              setChangedStringId(key);
-                            }}
-                          />
-                        ) : (
-                          <FlexBlock
-                            style={{
-                              ...struct.style,
-                              paddingLeft: 10,
-                            }}
-                          >
-                            {material[struct.slug]}
-                          </FlexBlock>
-                        )}
-                      </td>
-                    ) : (
-                      <></>
-                    );
-                  })}
-                </tr>
-                {status != 2 ? (
+            {materials.map((material, key) => {
+              if (!material_sum["sum"]) material_sum["sum"] = 0;
+              material_sum["sum"] =
+                material_sum["sum"] +
+                Number(material["PART_AMOUNT"]) *
+                  Number(material["PART_PRICE"]);
+              setTotal(material_sum["sum"]);
+              return (
+                <>
                   <tr>
-                    <td className="strTr">
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        title={"Delete " + material["PART_NAME"]}
-                        className="deleteNewString"
-                        onClick={() => {
-                          // console.log("er");
-                          delete_material(
-                            setMaterials,
-                            router.query.id,
-                            SESSIONID,
-                            material["PART_ID"],
-                            materials
-                          );
-                          // setAddNewStringFlag(1);
-                          // addNew(jobs, setJobs, jobs_struct);
+                    {materials_struct.map((struct) => {
+                      const value =
+                        struct.type == "number"
+                          ? Number(material[struct.slug]).toFixed(2)
+                          : material[struct.slug];
+                      if (!material_sum[struct.slug])
+                        material_sum[struct.slug] = 0;
+                      material_sum[struct.slug] =
+                        material_sum[struct.slug] +
+                        Number(material[struct.slug]);
+                      // if (
+                      //   material_sum != undefined &&
+                      //   struct.slug == "PART_AMOUNT"
+                      // )
+                      return struct.type != "hidden" ? (
+                        <td scope="col">
+                          {status != 2 ? (
+                            <input
+                              value={value}
+                              className="form-control"
+                              placehorder="repair order"
+                              style={struct.style}
+                              onChange={(e) => {
+                                tempArr[key][struct.slug] = e.target.value;
+
+                                // set_job(console.log, router.query.id, SESSIONID);
+                                setTempMaterials([...tempArr]);
+                                setChangedStringId(key);
+                              }}
+                            />
+                          ) : (
+                            <FlexBlock
+                              style={{
+                                ...struct.style,
+                                paddingLeft: 10,
+                              }}
+                            >
+                              {material[struct.slug]}
+                            </FlexBlock>
+                          )}
+                        </td>
+                      ) : (
+                        <></>
+                      );
+                    })}
+                    <td scope="col">
+                      <FlexBlock
+                        style={{
+                          paddingLeft: 10,
                         }}
                       >
-                        ✕
-                      </Button>
+                        {Number(material["PART_AMOUNT"]) *
+                          Number(material["PART_PRICE"])}
+                      </FlexBlock>
                     </td>
                   </tr>
-                ) : (
-                  <></>
-                )}
-              </>
-            ))}
+                  {status != 2 ? (
+                    <tr>
+                      <td className="strTr">
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          title={"Delete " + material["PART_NAME"]}
+                          className="deleteNewString"
+                          onClick={() => {
+                            // console.log("er");
+                            delete_material(
+                              setMaterials,
+                              router.query.id,
+                              SESSIONID,
+                              material["PART_ID"],
+                              materials
+                            );
+                            // setAddNewStringFlag(1);
+                            // addNew(jobs, setJobs, jobs_struct);
+                          }}
+                        >
+                          ✕
+                        </Button>
+                      </td>
+                    </tr>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              );
+            })}
             <tr>
               {materials_struct.map((struct) =>
                 struct.type != "hidden" ? (
@@ -343,6 +361,7 @@ const MaterialsSection = (props) => {
                   <></>
                 )
               )}
+              <td>{material_sum["sum"]}</td>
             </tr>
           </tbody>
           {status != 2 ? (

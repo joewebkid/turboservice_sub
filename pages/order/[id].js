@@ -24,7 +24,7 @@ const OrderView = () => {
   const [SESSIONID, setSESSIONID] = useState(false);
 
   return (
-    <Container className="login-container">
+    <Container className="login-container order-container">
       <TopOrderView
         repair_order_list
         user_info={user_info}

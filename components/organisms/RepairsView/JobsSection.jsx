@@ -162,134 +162,45 @@ const xmlLoad = async (
   errorText,
   refreshPage
 ) => {
-  console.log(e);
+  // console.log(e);
+  // setMessage({ type: "error", text: "error", show: true });
+  // setTimeout(() => {
+  //   setMessage({});
+  // }, 2500);
+  // const xml_text = await file.text();
+
   const file = e.target.files[0];
+  var data = new FormData();
+  data.append("data", file, file.name);
 
-  const xml_text = await file.text();
-  const xml = parseXml(xml_text);
-
-  let Jobs = [];
-  let Parts = [];
-  let Recomendations = [];
-
-  let JobsObj = [];
-  let PartsObj = [];
-  let RecomendationsObj = [];
-
-  if (xml.getElementsByTagName("parsererror")[0]) {
-    setErrorText(
-      xml.getElementsByTagName("parsererror")[0].getElementsByTagName("div")[0]
-        .innerHTML
-    );
-
-    setMessage({ type: "error", text: "error", show: true });
-    setTimeout(() => {
-      setMessage({});
-    }, 2500);
-  } else {
-    setErrorText("");
-    // console.log(xml.getElementsByTagName("jobs")[0]);
-    Jobs = Object.values(xml.getElementsByTagName("job"));
-    Parts = Object.values(xml.getElementsByTagName("part"));
-    Recomendations = Object.values(xml.getElementsByTagName("recommendation"));
-    // console.log(xml.getElementsByTagName("job")[0].getAttribute("name"));
-    if (Jobs) {
-      Jobs.map((e, key) => {
-        JobsObj[key] = {};
-        Object.values(e.attributes).map((e) => {
-          JobsObj[key][e.name] = e.value;
-        });
-        axios
-          .post(
-            [
-              process.env.NEXT_PUBLIC_URL,
-              "/api-v2/Contractors/WorkorderContractJob/",
-              id,
-              "?SESSIONID=",
-              SESSIONID,
-            ].join(""),
-            {
-              JOB_ID: "",
-              JOB_NORM_HOUR: JobsObj[key]["sum"],
-              JOB_NAME: JobsObj[key]["name"],
-              JOB_AMOUNT: JobsObj[key]["amount"],
-              JOB_PRICE: JobsObj[key]["price"],
-            },
-            {
-              headers: {
-                "Content-type": "application/json",
-              },
-            }
-          )
-          .then(() => refreshPage());
-      });
-    }
-    if (Parts) {
-      console.log(Parts);
-      Parts.map((e, key) => {
-        PartsObj[key] = {};
-        Object.values(e.attributes).map((e) => {
-          PartsObj[key][e.name] = e.value;
-        });
-        axios
-          .post(
-            [
-              process.env.NEXT_PUBLIC_URL,
-              "/api-v2/Contractors/WorkorderContractPart/",
-              id,
-              "?SESSIONID=",
-              SESSIONID,
-            ].join(""),
-            {
-              PART_ID: "",
-              PART_CODE: PartsObj[key]["code"],
-              PART_BRAND: PartsObj[key]["brand"],
-              PART_NAME: PartsObj[key]["name"],
-              PART_AMOUNT: PartsObj[key]["amount"],
-              PART_PRICE: PartsObj[key]["price"],
-            },
-            {
-              headers: {
-                "Content-type": "application/json",
-              },
-            }
-          )
-          .then(() => refreshPage());
-      });
-    }
-
-    if (Recomendations) {
-      Recomendations.map((e, key) => {
-        RecomendationsObj[key] = {};
-        Object.values(e.attributes).map((e) => {
-          RecomendationsObj[key][e.name] = e.value;
-        });
-        axios
-          .post(
-            [
-              process.env.NEXT_PUBLIC_URL,
-              "/api-v2/Contractors/WorkorderAdvice/",
-              id,
-              "?SESSIONID=",
-              SESSIONID,
-            ].join(""),
-            {
-              ADVICE_ID: "",
-              ADVICE_TEXT: RecomendationsObj[key]["content"],
-              ADVICE_FIX_BEFORE: formatDateForPost(
-                RecomendationsObj[key]["fixBefore"]
-              ),
-            },
-            {
-              headers: {
-                "Content-type": "application/json",
-              },
-            }
-          )
-          .then(() => refreshPage());
-      });
-    }
-  }
+  axios
+    .post(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderDetails/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID,
+      data,
+      {
+        content: data,
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { WorkorderDetails } = Response;
+      console.log(WorkorderDetails);
+      // callback(WorkorderFile.data);
+      // return response;
+    })
+    .catch(function (error) {
+      console.log(error);
+      return error;
+    });
 };
 
 const addNew = (jobs, setJobs, jobs_struct) => {
@@ -461,82 +372,99 @@ const JobsSection = (props) => {
                   <></>
                 )
               )}
+              <th scope="col">Sum</th>
             </tr>
           </thead>
           <tbody>
-            {jobs.map((job, key) => (
-              <>
-                <tr key={key}>
-                  {jobs_struct.map((struct) => {
-                    const value =
-                      struct.type == "number"
-                        ? Number(job[struct.slug]).toFixed(2)
-                        : job[struct.slug];
-                    if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
-                    jobsSum[struct.slug] =
-                      jobsSum[struct.slug] + Number(job[struct.slug]);
+            {jobs.map((job, key) => {
+              if (!jobsSum["sum"]) jobsSum["sum"] = 0;
+              jobsSum["sum"] =
+                jobsSum["sum"] +
+                Number(job["JOB_AMOUNT"]) * Number(job["JOB_PRICE"]);
+              setTotal(jobsSum["sum"]);
+              return (
+                <>
+                  <tr key={key}>
+                    {jobs_struct.map((struct) => {
+                      const value =
+                        struct.type == "number"
+                          ? Number(job[struct.slug]).toFixed(2)
+                          : job[struct.slug];
+                      if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
+                      jobsSum[struct.slug] =
+                        jobsSum[struct.slug] + Number(job[struct.slug]);
 
-                    if (jobsSum && struct.slug == "JOB_AMOUNT")
-                      setTotal(jobsSum[struct.slug]);
+                      // if (jobsSum && struct.slug == "JOB_AMOUNT")
 
-                    if (struct.type != "hidden")
-                      return (
-                        <td scope="col">
-                          {status != 2 ? (
-                            <input
-                              value={value}
-                              className="form-control"
-                              placehorder="repair order"
-                              // type={struct.slug}
-                              onChange={(e) => {
-                                tempArr[key][struct.slug] = e.target.value;
+                      if (struct.type != "hidden")
+                        return (
+                          <td scope="col">
+                            {status != 2 ? (
+                              <input
+                                value={value}
+                                className="form-control"
+                                placehorder="repair order"
+                                // type={struct.slug}
+                                style={struct.style}
+                                onChange={(e) => {
+                                  tempArr[key][struct.slug] = e.target.value;
 
-                                setTempJobs([...tempArr]);
-                                setChangedStringId(key);
-                              }}
-                            />
-                          ) : (
-                            <FlexBlock
-                              style={{
-                                ...struct.style,
-                                paddingLeft: 10,
-                              }}
-                            >
-                              {job[struct.slug]}
-                            </FlexBlock>
-                          )}
-                        </td>
-                      );
-                  })}
-                </tr>
-                {status != 2 ? (
-                  <tr>
-                    <td className="strTr">
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        title={"Delete " + job["JOB_NAME"]}
-                        className="deleteNewString"
-                        onClick={() => {
-                          console.log("er");
-                          delete_job(
-                            setJobs,
-                            router.query.id,
-                            SESSIONID,
-                            job["JOB_ID"],
-                            jobs
-                          );
+                                  setTempJobs([...tempArr]);
+                                  setChangedStringId(key);
+                                }}
+                              />
+                            ) : (
+                              <FlexBlock
+                                style={{
+                                  ...struct.style,
+                                  paddingLeft: 10,
+                                }}
+                              >
+                                {job[struct.slug]}
+                              </FlexBlock>
+                            )}
+                          </td>
+                        );
+                    })}
+                    <td scope="col">
+                      <FlexBlock
+                        style={{
+                          paddingLeft: 10,
                         }}
                       >
-                        ✕
-                      </Button>
+                        {job["JOB_AMOUNT"] * job["JOB_PRICE"]}
+                      </FlexBlock>
                     </td>
                   </tr>
-                ) : (
-                  <></>
-                )}
-              </>
-            ))}
+                  {status != 2 ? (
+                    <tr>
+                      <td className="strTr">
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          title={"Delete " + job["JOB_NAME"]}
+                          className="deleteNewString"
+                          onClick={() => {
+                            console.log("er");
+                            delete_job(
+                              setJobs,
+                              router.query.id,
+                              SESSIONID,
+                              job["JOB_ID"],
+                              jobs
+                            );
+                          }}
+                        >
+                          ✕
+                        </Button>
+                      </td>
+                    </tr>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              );
+            })}
             <tr>
               {jobs_struct.map((struct) => {
                 const num = Number(Number(jobsSum[struct.slug]).toFixed(2));
@@ -549,6 +477,7 @@ const JobsSection = (props) => {
                     </td>
                   );
               })}
+              <td>{jobsSum["sum"]}</td>
             </tr>
           </tbody>
         </Table>
