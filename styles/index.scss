@@ -21,6 +21,9 @@ a {
   display: block;
   text-align: left;
 }
+.table-responsive {
+  position: relative;
+}
 
 .table.repairs-orders tbody tr {
   &:nth-of-type(odd) {

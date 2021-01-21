@@ -9,22 +9,25 @@ import {
 } from "../molecules/data";
 
 const DataInput = (props) => {
-  const { defaultDate } = props;
-  const [date, setDate] = useState(defaultDate || new Date());
-
-  //   useEffect(() => {
-  //     if (date) props.callback(date);
-  //   }, [date]);
+  const { defaultDate, value } = props;
+  const [date, setDate] = useState(value || defaultDate || new Date());
 
   useEffect(() => {
-    if (props.value) setDate(props.value);
+    if (date) props.callback(date);
+  }, [date]);
+
+  useEffect(() => {
+    // if (props.value) setDate(props.value);
   }, []);
   // console.log(date, 1);
 
   return (
     <DatePicker
       date={new Date(date)}
-      onDateChange={(date) => setDate(formatDateForPost(date))}
+      onDateChange={(date) => {
+        // console.log(date);
+        setDate(formatDateForPost(date));
+      }}
       locale={enUS}
     >
       {({ inputProps, focused }) => (

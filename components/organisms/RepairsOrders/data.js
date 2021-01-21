@@ -17,13 +17,13 @@ export const headers = [
   //   slug: "WORKORDER_NUMBER",
   //   filter: "RepairOrderNumber",
   // },
-  {
-    title: "Request date",
-    type: "date",
-    slug: "REQUEST_DATE",
-    filterTo: "RequestDateTo",
-    filterFrom: "RequestDateFrom",
-  },
+  // {
+  //   title: "Request date",
+  //   type: "date",
+  //   slug: "REQUEST_DATE",
+  //   filterTo: "RequestDateTo",
+  //   filterFrom: "RequestDateFrom",
+  // },
   {
     title: "Jobs started",
     type: "date",

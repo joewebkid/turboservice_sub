@@ -442,7 +442,9 @@ const JobsSection = (props) => {
                                 value={value}
                                 className="form-control"
                                 placehorder="repair order"
-                                // type={struct.slug}
+                                type={
+                                  struct.type == "number" ? "number" : "text"
+                                }
                                 style={struct.style}
                                 onChange={(e) => {
                                   tempArr[key][struct.slug] = e.target.value;
