@@ -267,11 +267,16 @@ const MaterialsSection = (props) => {
                         struct.type == "number"
                           ? Number(material[struct.slug]).toFixed(2)
                           : material[struct.slug];
-                      if (!material_sum[struct.slug])
-                        material_sum[struct.slug] = 0;
-                      material_sum[struct.slug] =
-                        material_sum[struct.slug] +
-                        Number(material[struct.slug]);
+
+                      if (struct.type == "number") {
+                        if (!material_sum[struct.slug])
+                          material_sum[struct.slug] = 0;
+
+                        material_sum[struct.slug] =
+                          Number(material_sum[struct.slug]) +
+                          Number(material[struct.slug]);
+                      }
+
                       // if (
                       //   material_sum != undefined &&
                       //   struct.slug == "PART_AMOUNT"
@@ -308,9 +313,11 @@ const MaterialsSection = (props) => {
                     })}
                     <td scope="col">
                       <FlexBlock style={{ padding: "7px 0" }}>
-                        {Number(
-                          material["PART_AMOUNT"] * material["PART_PRICE"]
-                        ).toFixed(2)}
+                        {material["PART_AMOUNT"] * material["PART_PRICE"]
+                          ? Number(
+                              material["PART_AMOUNT"] * material["PART_PRICE"]
+                            ).toFixed(2)
+                          : "0.00"}
                       </FlexBlock>
                     </td>
                   </tr>
@@ -353,7 +360,9 @@ const MaterialsSection = (props) => {
                       className={struct.hide ? "d-none" : "show"}
                       style={{}}
                     >
-                      {Number(material_sum[struct.slug]).toFixed(2)}
+                      {material_sum[struct.slug]
+                        ? Number(material_sum[struct.slug]).toFixed(2)
+                        : "0.00"}
                     </Block>
                   </td>
                 ) : (
@@ -362,7 +371,9 @@ const MaterialsSection = (props) => {
               )}
               <td>
                 <Block style={{}}>
-                  {Number(material_sum["sum"]).toFixed(2)}
+                  {material_sum["sum"]
+                    ? Number(material_sum["sum"]).toFixed(2)
+                    : "0.00"}
                 </Block>
               </td>
             </tr>
@@ -392,7 +403,7 @@ const MaterialsSection = (props) => {
                   Total
                 </th>
                 <th scope="col" style={{ width: "40%" }}>
-                  {total}
+                  {Number(total).toFixed(2)}
                 </th>
               </tr>
             </thead>

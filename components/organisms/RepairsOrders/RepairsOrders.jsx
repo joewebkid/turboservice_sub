@@ -147,6 +147,9 @@ const RepairsOrders = (props) => {
                       : "second"
                   }
                   key={key}
+                  onDoubleClick={() => {
+                    router.push("/order/" + order["WORKORDER_ID"]);
+                  }}
                 >
                   {headers.map((e, k) => {
                     let val = order[e.slug];
@@ -174,6 +177,9 @@ const RepairsOrders = (props) => {
                       ? "warning"
                       : "second"
                   }
+                  onDoubleClick={() => {
+                    router.push("/order/" + order["WORKORDER_ID"]);
+                  }}
                 >
                   <td scope="col" colSpan="10">
                     <FlexBlock justify="space-between">

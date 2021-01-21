@@ -222,3 +222,16 @@ a {
     text-align: left;
   }
 }
+
+.fadeForClose {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  // background: #007bff;
+}
+.loading {
+  opacity: 0.5;
+}

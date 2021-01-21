@@ -95,7 +95,7 @@ const get_order_info = (callback, id, router, SESSIONID) => {
 };
 
 const Index = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, OrdersLogout } = props;
   const router = useRouter();
 
   const [order_info, setOrderInfo] = useState(false);
@@ -247,6 +247,7 @@ const Index = (props) => {
             refresh={refresh}
             status={order_info["ORDER_STATUS_ID"]}
           />
+          <OrdersLogout />
         </>
       ) : (
         <></>

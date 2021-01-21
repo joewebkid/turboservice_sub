@@ -121,7 +121,7 @@ const Attached = (props) => {
 
   return (
     <>
-      <Section className="text-center mb-1">
+      <Section className="text-left mb-1">
         <Block className="text-left w500  mb-1">Attached files</Block>
         {files.map((f, key) => (
           <Block className="text-left" key={key}>
@@ -149,10 +149,7 @@ const Attached = (props) => {
           </Block>
         ))}
         {status != 2 ? (
-          <label
-            className="btn btn-secondary mr-1 mt-2"
-            style={{ float: "left" }}
-          >
+          <label className="btn btn-secondary mr-1 mt-2">
             Upload file
             <input
               id="attachedFile"

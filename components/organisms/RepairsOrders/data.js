@@ -33,7 +33,7 @@ export const headers = [
   },
   {
     title: "Expected issue",
-    // type: "date",
+    type: "date",
     slug: "EXPECTED_ISSUE_DATE",
     // filterTo: "JobStartedTo1",
     // filterFrom: "JobStartedFrom1",

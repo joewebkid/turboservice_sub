@@ -47,7 +47,7 @@ const OrderInfoSection = (props) => {
 
   return (
     <>
-      <Table style={{ maxWidth: 500 }}>
+      <Table style={{ maxWidth: 500 }} className="text-left">
         <tbody>
           <tr>
             <th scope="row">Contractor repair order #</th>
@@ -70,7 +70,7 @@ const OrderInfoSection = (props) => {
                   <FlexBlock
                     style={{
                       width: 198,
-                      float: "right",
+                      float: "left",
                       paddingLeft: 10,
                     }}
                   >
@@ -101,7 +101,7 @@ const OrderInfoSection = (props) => {
                   <FlexBlock
                     style={{
                       width: 198,
-                      float: "right",
+                      float: "left",
                       paddingLeft: 10,
                     }}
                   >
@@ -157,7 +157,17 @@ const OrderInfoSection = (props) => {
                   <></>
                 )
               ) : (
-                <FlexBlock>{order_info_section["ORDER_TYPE_NAME"]}</FlexBlock>
+                <FlexBlock justify="flex-end" style={{ position: "relative" }}>
+                  <FlexBlock
+                    style={{
+                      width: 198,
+                      float: "left",
+                      paddingLeft: 10,
+                    }}
+                  >
+                    {order_info_section["ORDER_TYPE_NAME"]}
+                  </FlexBlock>
+                </FlexBlock>
               )}
             </td>
           </tr>

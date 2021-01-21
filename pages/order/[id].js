@@ -1,7 +1,9 @@
+import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
+import FlexBlock from "../../components/atoms/FlexBlock";
 import RepairView from "../../components/organisms/RepairsView/Index";
 import TopOrderView from "../../components/organisms/TopOrderView/TopOrderView";
 
@@ -15,6 +17,27 @@ const get_user_data = (callback, router) => {
   return SESSIONID;
 };
 
+const logout = (SESSIONID, router) => {
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/auth/logout/" +
+        "?SESSIONID=" +
+        SESSIONID
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Message, Status } = result;
+      router.push("/login");
+      // console.log(result);
+    })
+    .catch(function (error) {
+      console.log(error);
+      // router.push("/login");
+    });
+};
+
 const OrderView = () => {
   const router = useRouter();
   useEffect(() => {
@@ -22,6 +45,7 @@ const OrderView = () => {
   }, []);
   const [user_info, setUserInfo] = useState(false);
   const [SESSIONID, setSESSIONID] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   return (
     <Container className="login-container order-container">
@@ -30,7 +54,27 @@ const OrderView = () => {
         user_info={user_info}
         SESSIONID={SESSIONID}
       />
-      <RepairView SESSIONID={SESSIONID} />
+      <RepairView
+        SESSIONID={SESSIONID}
+        OrdersLogout={() => {
+          return SESSIONID ? (
+            <FlexBlock
+              className={"btn btn-link" + (loading ? " loading" : "")}
+              justify="center"
+              onClick={() => {
+                if (!loading) {
+                  setLoading(true);
+                  logout(SESSIONID, router);
+                }
+              }}
+            >
+              Logout {loading ? <Spinner animation="grow" /> : <></>}
+            </FlexBlock>
+          ) : (
+            <></>
+          );
+        }}
+      />
     </Container>
   );
 };

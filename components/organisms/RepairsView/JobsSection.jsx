@@ -173,36 +173,64 @@ const xmlLoad = async (
   const xml_text = await file.text();
   // var data = new FormData();
   // data.append("data", file, file.name);
+  const xml = parseXml(xml_text);
+  if (xml.getElementsByTagName("parsererror")[0]) {
+    setErrorText(
+      xml.getElementsByTagName("parsererror")[0].getElementsByTagName("div")[0]
+        .innerHTML
+    );
 
-  axios
-    .post(
-      process.env.NEXT_PUBLIC_URL +
-        "/api-v2/Contractors/WorkorderDetails/" +
-        id +
-        "?SESSIONID=" +
-        SESSIONID,
-      { data: xml_text },
-      {
-        // content: data,
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    )
-    .then(function (response) {
-      const { data } = response;
-      const { result } = data;
-      const { Response } = result;
-      const { WorkorderDetails } = Response;
-      console.log(WorkorderDetails);
-      // callback(WorkorderFile.data);
-      // return response;
-      refreshPage();
-    })
-    .catch(function (error) {
-      console.log(error);
-      return error;
-    });
+    setMessage({ type: "error", text: "error", show: true });
+    setTimeout(() => {
+      setMessage({});
+    }, 2500);
+  } else {
+    axios
+      .post(
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/Contractors/WorkorderDetails/" +
+          id +
+          "?SESSIONID=" +
+          SESSIONID,
+        { data: xml_text },
+        {
+          // content: data,
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        const { data } = response;
+        const { result } = data;
+        const { Response, Status, Error } = result;
+        if (Status == -1) {
+          setErrorText(Error && Error.errorInfo && Error.errorInfo[2]);
+
+          setMessage({ type: "error", text: "error", show: true });
+          setTimeout(() => {
+            setMessage({});
+          }, 2500);
+        } else {
+          setErrorText("");
+          refreshPage();
+          const { Message } = result;
+
+          if (Message == "Ok") {
+            setMessage({ type: "success", text: "success", show: true });
+            setTimeout(() => {
+              setMessage({});
+            }, 2500);
+          }
+        }
+        // callback(WorkorderFile.data);
+        // return response;
+      })
+      .catch(function (error) {
+        console.log(error);
+        return error;
+      });
+  }
 };
 
 const addNew = (jobs, setJobs, jobs_struct) => {
@@ -296,7 +324,10 @@ const JobsSection = (props) => {
 
             {status != 2 ? (
               <>
-                <label className="btn btn-secondary mr-1">
+                <label
+                  className="btn btn-secondary mr-1"
+                  style={{ width: 215, height: 38 }}
+                >
                   Load from file
                   <input
                     id="xmlFile"
@@ -392,10 +423,14 @@ const JobsSection = (props) => {
                         struct.type == "number"
                           ? Number(job[struct.slug]).toFixed(2)
                           : job[struct.slug];
-                      if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
-                      jobsSum[struct.slug] =
-                        jobsSum[struct.slug] +
-                        Number(job[struct.slug]).toFixed(2);
+                      console.log(jobsSum);
+                      if (struct.type == "number") {
+                        if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
+                        console.log(jobsSum);
+                        jobsSum[struct.slug] =
+                          Number(jobsSum[struct.slug]) +
+                          Number(job[struct.slug]);
+                      }
 
                       // if (jobsSum && struct.slug == "JOB_AMOUNT")
 
@@ -483,7 +518,9 @@ const JobsSection = (props) => {
                   );
               })}
               <td>
-                <Block style={{}}>{Number(jobsSum["sum"]).toFixed(2)}</Block>
+                <Block style={{}}>
+                  {jobsSum["sum"] ? Number(jobsSum["sum"]).toFixed(2) : "0.00"}
+                </Block>
               </td>
             </tr>
           </tbody>

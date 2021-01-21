@@ -19,11 +19,11 @@ const DataInput = (props) => {
   useEffect(() => {
     if (props.value) setDate(props.value);
   }, []);
-  console.log(date, 1);
+  // console.log(date, 1);
 
   return (
     <DatePicker
-      //   date={formatDateForPost(date)}
+      date={new Date(date)}
       onDateChange={(date) => setDate(formatDateForPost(date))}
       locale={enUS}
     >
