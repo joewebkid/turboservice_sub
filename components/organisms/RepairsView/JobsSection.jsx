@@ -423,10 +423,10 @@ const JobsSection = (props) => {
                         struct.type == "number"
                           ? Number(job[struct.slug]).toFixed(2)
                           : job[struct.slug];
-                      console.log(jobsSum);
+                      // console.log(jobsSum);
                       if (struct.type == "number") {
                         if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
-                        console.log(jobsSum);
+                        // console.log(jobsSum);
                         jobsSum[struct.slug] =
                           Number(jobsSum[struct.slug]) +
                           Number(job[struct.slug]);
