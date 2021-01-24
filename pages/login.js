@@ -73,6 +73,11 @@ export const LoginPage = () => {
             ) : (
               <></>
             )}
+            {router.query.message != undefined ? (
+              <Alert variant="warning">{router.query.message}</Alert>
+            ) : (
+              <></>
+            )}
             <Form.Group controlId="formBasicEmail">
               <Form.Control
                 type="text"

@@ -49,9 +49,12 @@ const set_recomendations = (
   changedRecomendations,
   setMessage,
   recomendations,
-  currentKey
+  currentKey,
+  setLoadDebounce
 ) => {
   const ADVICE_ID = changedRecomendations.ADVICE_ID;
+
+  setLoadDebounce(false);
 
   axios
     .post(
@@ -98,6 +101,8 @@ const set_recomendations = (
           setMessage({});
         }, 2500);
       }
+
+      setLoadDebounce(true);
     })
     .catch(function (error) {
       console.log(error);
@@ -105,6 +110,7 @@ const set_recomendations = (
       setTimeout(() => {
         setMessage({});
       }, 2500);
+      setLoadDebounce(true);
     });
 };
 
@@ -170,6 +176,8 @@ const Recomendation = (props) => {
 
   const [message, setMessage] = useState({});
   const [temp_recomendations, setTempRecomendations] = useState([]);
+
+  const [loadDebounce, setLoadDebounce] = useState(true);
   let tempArr = recomendations;
 
   const debouncedSearchTerm = useDebounce(temp_recomendations, 500);
@@ -196,7 +204,8 @@ const Recomendation = (props) => {
             changedRecomendations,
             setMessage,
             recomendations,
-            changedStringId
+            changedStringId,
+            setLoadDebounce
           );
       }
     }
@@ -255,11 +264,14 @@ const Recomendation = (props) => {
                               value={recomendation[struct.slug]}
                               className="form-control"
                               placehorder="repair order"
+                              readOnly={!loadDebounce ? true : false}
                               onChange={(e) => {
-                                tempArr[key][struct.slug] = e.target.value;
+                                if (loadDebounce) {
+                                  tempArr[key][struct.slug] = e.target.value;
 
-                                setTempRecomendations([...tempArr]);
-                                setChangedStringId(key);
+                                  setTempRecomendations([...tempArr]);
+                                  setChangedStringId(key);
+                                }
                               }}
                             />
                           )
@@ -283,16 +295,24 @@ const Recomendation = (props) => {
                         size="sm"
                         variant="danger"
                         title={"Delete "}
-                        className="deleteNewString"
+                        className={
+                          "deleteNewString " +
+                          (!loadDebounce ? "loadDebounce" : "")
+                        }
                         onClick={() => {
-                          console.log("er");
-                          delete_recomendation(
-                            setRecomendations,
-                            router.query.id,
-                            SESSIONID,
-                            recomendation["ADVICE_ID"],
-                            recomendations
-                          );
+                          if (recomendation["ADVICE_ID"])
+                            delete_recomendation(
+                              setRecomendations,
+                              router.query.id,
+                              SESSIONID,
+                              recomendation["ADVICE_ID"],
+                              recomendations
+                            );
+                          else {
+                            setRecomendations(
+                              recomendations.filter((f, k) => k != key)
+                            );
+                          }
                           // setAddNewStringFlag(1);
                           // addNew(jobs, setJobs, jobs_struct);
                         }}
@@ -323,14 +343,18 @@ const Recomendation = (props) => {
               size="sm"
               variant="success"
               title="Add new"
-              className="addNewString"
+              className={
+                "addNewString " + (!loadDebounce ? "loadDebounce" : "")
+              }
               onClick={() => {
-                setAddNewStringFlag(1);
-                addNew(
-                  recomendations,
-                  setRecomendations,
-                  recomendations_struct
-                );
+                if (loadDebounce) {
+                  setAddNewStringFlag(1);
+                  addNew(
+                    recomendations,
+                    setRecomendations,
+                    recomendations_struct
+                  );
+                }
               }}
             >
               +

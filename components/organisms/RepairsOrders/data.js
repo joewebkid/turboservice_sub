@@ -5,18 +5,25 @@ export const headers = [
   //   slug: "REQUEST_NUMBER",
   //   filter: "RequestNumber",
   // },2. Появилось поле CONTRACTOR_WORKORDER в журнале заказ-нарядов (номер или название в учетной системе подрядчика), ставить в таблице вторым, назвать "Our order #", параметр для поиска ContractorWorkorder.
+  // {
+  //   title: "TLT REQUEST #",
+  //   type: "text",
+  //   slug: "REQUEST_NUMBER",
+  //   filter: "RequestNumber",
+  // },
   {
-    title: "Our order #",
+    title: "Contractor order #",
+    // title: "Our order #",
     type: "text",
     slug: "CONTRACTOR_WORKORDER",
     filter: "ContractorWorkorder",
   },
-  // {
-  //   title: "Repair order #",
-  //   type: "text",
-  //   slug: "WORKORDER_NUMBER",
-  //   filter: "RepairOrderNumber",
-  // },
+  {
+    title: "Repair order #",
+    type: "text",
+    slug: "WORKORDER_NUMBER",
+    filter: "RepairOrderNumber",
+  },
   // {
   //   title: "Request date",
   //   type: "date",
@@ -32,12 +39,19 @@ export const headers = [
     filterFrom: "JobStartedFrom",
   },
   {
-    title: "Expected issue",
+    title: "Jobs done",
     type: "date",
-    slug: "EXPECTED_ISSUE_DATE",
-    // filterTo: "JobStartedTo1",
-    // filterFrom: "JobStartedFrom1",
+    slug: "JOBS_DONE_DATE",
+    filterTo: "JobDoneTo",
+    filterFrom: "JobDoneFrom",
   },
+  // {
+  //   title: "Expected issue",
+  //   type: "date",
+  //   slug: "EXPECTED_ISSUE_DATE",
+  //   // filterTo: "JobStartedTo1",
+  //   // filterFrom: "JobStartedFrom1",
+  // },
   {
     title: "Vehicle",
     type: "text",

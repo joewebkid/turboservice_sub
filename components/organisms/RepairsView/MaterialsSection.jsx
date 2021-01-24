@@ -74,9 +74,12 @@ const set_materials = (
   SESSIONID,
   changedMaterials,
   setMessage,
-  materials
+  materials,
+  setLoadDebounce
 ) => {
   const PART_ID = changedMaterials.PART_ID;
+
+  setLoadDebounce(false);
 
   axios
     .post(
@@ -117,6 +120,7 @@ const set_materials = (
           setMessage({});
         }, 2500);
       }
+      setLoadDebounce(true);
     })
     .catch(function (error) {
       console.log(error);
@@ -125,6 +129,7 @@ const set_materials = (
         setMessage({});
       }, 2500);
       console.log(error);
+      setLoadDebounce(true);
     });
 };
 
@@ -173,7 +178,7 @@ const addNew = (materials, setMaterials, materials_struct) => {
 };
 
 const MaterialsSection = (props) => {
-  const { SESSIONID, refresh, status, setTotal, total } = props;
+  const { SESSIONID, refresh, status, setTotal, total, jobsTotal } = props;
   const router = useRouter();
   let material_sum = {};
 
@@ -182,6 +187,7 @@ const MaterialsSection = (props) => {
   const [message, setMessage] = useState({});
   const [materials, setMaterials] = useState([]);
   const [temp_materials, setTempMaterials] = useState([]);
+  const [loadDebounce, setLoadDebounce] = useState(true);
   let tempArr = materials;
 
   const debouncedSearchTerm = useDebounce(temp_materials, 500);
@@ -206,7 +212,8 @@ const MaterialsSection = (props) => {
             SESSIONID,
             changedMaterials,
             setMessage,
-            materials
+            materials,
+            setLoadDebounce
           );
       }
     }
@@ -258,7 +265,7 @@ const MaterialsSection = (props) => {
                 material_sum["sum"] +
                 Number(material["PART_AMOUNT"]) *
                   Number(material["PART_PRICE"]);
-              setTotal(material_sum["sum"]);
+              setTotal(jobsTotal + material_sum["sum"]);
               return (
                 <>
                   <tr>
@@ -289,6 +296,7 @@ const MaterialsSection = (props) => {
                               className="form-control"
                               placehorder="repair order"
                               style={struct.style}
+                              readOnly={!loadDebounce ? true : false}
                               onChange={(e) => {
                                 tempArr[key][struct.slug] = e.target.value;
 
@@ -331,13 +339,21 @@ const MaterialsSection = (props) => {
                           className="deleteNewString"
                           onClick={() => {
                             // console.log("er");
-                            delete_material(
-                              setMaterials,
-                              router.query.id,
-                              SESSIONID,
-                              material["PART_ID"],
-                              materials
-                            );
+                            if (loadDebounce) {
+                              if (material["PART_ID"])
+                                delete_material(
+                                  setMaterials,
+                                  router.query.id,
+                                  SESSIONID,
+                                  material["PART_ID"],
+                                  materials
+                                );
+                              else {
+                                setMaterials(
+                                  materials.filter((f, k) => k != key)
+                                );
+                              }
+                            }
                             // setAddNewStringFlag(1);
                             // addNew(jobs, setJobs, jobs_struct);
                           }}
@@ -383,10 +399,14 @@ const MaterialsSection = (props) => {
               size="sm"
               variant="success"
               title="Add new"
-              className="addNewString"
+              className={
+                "addNewString " + (!loadDebounce ? "loadDebounce" : "")
+              }
               onClick={() => {
-                setAddNewStringFlag(1);
-                addNew(materials, setMaterials, materials_struct);
+                if (loadDebounce) {
+                  setAddNewStringFlag(1);
+                  addNew(materials, setMaterials, materials_struct);
+                }
               }}
             >
               +

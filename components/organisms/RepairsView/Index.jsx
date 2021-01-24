@@ -99,9 +99,11 @@ const Index = (props) => {
   const router = useRouter();
 
   const [order_info, setOrderInfo] = useState(false);
+  const [jobsTotal, setJobsTotal] = useState(0);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(0);
   const [message, setMessage] = useState({});
+  console.log(jobsTotal);
   // const [order_info, setOrderInfo] = useState([]);
 
   useEffect(() => {
@@ -225,7 +227,7 @@ const Index = (props) => {
             refreshPage={() => setRefresh(refresh + 1)}
             refresh={refresh}
             status={order_info["ORDER_STATUS_ID"]}
-            setTotal={setTotal}
+            setTotal={setJobsTotal}
           />
           {/* Spare parts and materials */}
           <MaterialsSection
@@ -233,6 +235,7 @@ const Index = (props) => {
             refresh={refresh}
             status={order_info["ORDER_STATUS_ID"]}
             total={total}
+            jobsTotal={jobsTotal}
             setTotal={setTotal}
           />
           {/* Recomendation lists */}

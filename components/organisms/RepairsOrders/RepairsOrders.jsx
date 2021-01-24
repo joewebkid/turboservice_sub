@@ -22,11 +22,17 @@ const get_statuses = (callback, router, SESSIONID, setLoading) => {
       .then(function (response) {
         const { data } = response;
         const { result } = data;
-        const { Response } = result;
-        const { OrderStatusesList } = Response;
+        const { Response, Message, Status } = result;
         // console.log(response);
-        callback(OrderStatusesList.data);
-        setLoading(true);
+        if (Status == 0) {
+          const { OrderStatusesList } = Response;
+          callback(OrderStatusesList.data);
+          setLoading(true);
+        } else {
+          if (Message) {
+            router.push("/login?message=" + Message);
+          }
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -35,6 +41,10 @@ const get_statuses = (callback, router, SESSIONID, setLoading) => {
           (error.response.status == 401 || error.response.status == 404)
         ) {
           router.push("/login?session");
+        } else {
+          // const { data } = response;
+          // const { result } = data;
+          // const { Message } = result;
         }
       });
 };

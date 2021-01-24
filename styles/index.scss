@@ -31,14 +31,17 @@ a {
     border-top: 2px solid #dee2e6;
   }
   &.success {
-    background-color: rgb(83 195 88 / 22%);
+    // background-color: rgb(83 195 88 / 22%);
+    background-color: #e7f5f2;
 
     &:nth-of-type(odd) {
-      border-top: 2px #4caf50 solid;
+      // border-top: 2px #4caf50 solid;
+      border-top: 2px #2aa98e solid;
     }
   }
   &.second {
-    background-color: rgba(0, 0, 0, 0.05);
+    // background-color: rgba(0, 0, 0, 0.05);
+    background-color: #f1f1f1;
 
     &:nth-of-type(odd) {
       border-top: 2px #afafaf solid;
@@ -108,7 +111,8 @@ a {
 .addNewString {
   position: absolute;
   left: 53px;
-  bottom: 34px;
+  // bottom: 34px;
+  bottom: 24px;
 }
 .relative {
   position: relative;
@@ -235,6 +239,10 @@ a {
   height: 100%;
   // background: #007bff;
 }
-.loading {
+.loading,
+.loadDebounce {
   opacity: 0.5;
 }
+
+// background-color: #189e82;
+// border-color: #10846b;

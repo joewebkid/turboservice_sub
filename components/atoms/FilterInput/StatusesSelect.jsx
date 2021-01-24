@@ -67,7 +67,7 @@ const StatusesSelect = (props) => {
               setOpen(!open);
             }}
           >
-            Закрыть<span style={{ float: "right" }}>✕</span>
+            CLOSE <span style={{ float: "right" }}>✕</span>
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

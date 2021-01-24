@@ -12,6 +12,9 @@ import MessageToast from "./MessageToast";
 // import XMLParser from "react-xml-parser";
 import { parseXml } from "./DomXml";
 import { formatDateForPost } from "../../molecules/data";
+import MaskedInput from "react-text-mask";
+import createNumberMask from "text-mask-addons/dist/createNumberMask";
+import Fade from "react-reveal/Fade";
 
 const get_jobs = (callback, id, SESSIONID) => {
   axios
@@ -70,9 +73,18 @@ const delete_jobs = (callback, id, SESSIONID, setMessage) => {
     });
 };
 
-const set_job = (callback, id, SESSIONID, changedJobs, setMessage, jobs) => {
+const set_job = (
+  callback,
+  id,
+  SESSIONID,
+  changedJobs,
+  setMessage,
+  jobs,
+  setLoadDebounce
+) => {
   const JOB_ID = changedJobs.JOB_ID;
   // delete changedJobs["JOB_ID"];
+  setLoadDebounce(false);
 
   axios
     .post(
@@ -113,13 +125,15 @@ const set_job = (callback, id, SESSIONID, changedJobs, setMessage, jobs) => {
           setMessage({});
         }, 2500);
       }
+      setLoadDebounce(true);
     })
     .catch(function (error) {
       setMessage({ type: "error", text: "error", show: true });
       setTimeout(() => {
         setMessage({});
       }, 2500);
-      console.log(error);
+      // console.log(error);
+      setLoadDebounce(true);
     });
 };
 
@@ -136,7 +150,6 @@ const delete_job = (callback, id, SESSIONID, JOB_ID, jobs) => {
       {
         headers: {
           "Content-type": "application/json",
-          // "Content-type": "application/x-www-form-urlencoded",
         },
       }
     )
@@ -194,7 +207,6 @@ const xmlLoad = async (
           SESSIONID,
         { data: xml_text },
         {
-          // content: data,
           headers: {
             "Content-type": "application/json",
           },
@@ -223,8 +235,6 @@ const xmlLoad = async (
             }, 2500);
           }
         }
-        // callback(WorkorderFile.data);
-        // return response;
       })
       .catch(function (error) {
         console.log(error);
@@ -271,11 +281,23 @@ const JobsSection = (props) => {
   const [errorText, setErrorText] = useState("");
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [changedStringId, setChangedStringId] = useState(0);
+
   const [message, setMessage] = useState({});
+  const [loadDebounce, setLoadDebounce] = useState(true);
+
   let tempArr = jobs;
   let jobsSum = {};
 
-  const debouncedSearchTerm = useDebounce(temp_jobs, 500);
+  const debouncedSearchTerm = useDebounce(temp_jobs, 2000);
+
+  const numberMask = createNumberMask({
+    prefix: "",
+    suffix: "",
+    thousandsSeparatorSymbol: "",
+    allowDecimal: true,
+    decimalSymbol: ".",
+    decimalLimit: 2,
+  });
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
@@ -297,10 +319,21 @@ const JobsSection = (props) => {
             SESSIONID,
             changedJobs,
             setMessage,
-            jobs
+            jobs,
+            setLoadDebounce
           );
       }
     }
+
+    // let jobsTotalSum = 0;
+    // {
+    //   temp_jobs.map((job, key) => {
+    //     if (!jobsTotalSum) jobsTotalSum = 0;
+    //     jobsTotalSum =
+    //       jobsTotalSum + Number(job["JOB_AMOUNT"]) * Number(job["JOB_PRICE"]);
+    //   });
+    // }
+    // setTotal(jobsTotalSum);
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
@@ -414,19 +447,21 @@ const JobsSection = (props) => {
               jobsSum["sum"] =
                 jobsSum["sum"] +
                 Number(job["JOB_AMOUNT"]) * Number(job["JOB_PRICE"]);
+
               setTotal(jobsSum["sum"]);
               return (
                 <>
                   <tr key={key}>
                     {jobs_struct.map((struct) => {
-                      const value =
-                        struct.type == "number"
-                          ? Number(job[struct.slug]).toFixed(2)
-                          : job[struct.slug];
-                      // console.log(jobsSum);
+                      // const value =
+                      //   struct.type == "number"
+                      //     ? Number(job[struct.slug]).toFixed(2)
+                      //     : job[struct.slug];
+                      const value = job[struct.slug];
+
                       if (struct.type == "number") {
                         if (!jobsSum[struct.slug]) jobsSum[struct.slug] = 0;
-                        // console.log(jobsSum);
+
                         jobsSum[struct.slug] =
                           Number(jobsSum[struct.slug]) +
                           Number(job[struct.slug]);
@@ -438,21 +473,46 @@ const JobsSection = (props) => {
                         return (
                           <td scope="col">
                             {status != 2 ? (
-                              <input
-                                value={value}
-                                className="form-control"
-                                placehorder="repair order"
-                                type={
-                                  struct.type == "number" ? "number" : "text"
-                                }
-                                style={struct.style}
-                                onChange={(e) => {
-                                  tempArr[key][struct.slug] = e.target.value;
-
-                                  setTempJobs([...tempArr]);
-                                  setChangedStringId(key);
-                                }}
-                              />
+                              struct.type == "number" ? (
+                                <MaskedInput
+                                  mask={numberMask}
+                                  value={value}
+                                  className={"form-control"}
+                                  placehorder="repair order"
+                                  style={struct.style}
+                                  readOnly={!loadDebounce ? true : false}
+                                  // type={struct.type}
+                                  onChange={(e) => {
+                                    if (loadDebounce) {
+                                      tempArr[key][struct.slug] =
+                                        e.target.value;
+                                      console.log(tempArr);
+                                      setJobs([...tempArr]);
+                                      setTempJobs([...tempArr]);
+                                      setChangedStringId(key);
+                                    }
+                                  }}
+                                />
+                              ) : (
+                                <input
+                                  value={value}
+                                  className={"form-control"}
+                                  placehorder="repair order"
+                                  style={struct.style}
+                                  readOnly={!loadDebounce ? true : false}
+                                  // type={struct.type}
+                                  onChange={(e) => {
+                                    if (loadDebounce) {
+                                      tempArr[key][struct.slug] =
+                                        e.target.value;
+                                      console.log(tempArr);
+                                      setJobs([...tempArr]);
+                                      setTempJobs([...tempArr]);
+                                      setChangedStringId(key);
+                                    }
+                                  }}
+                                />
+                              )
                             ) : (
                               <FlexBlock
                                 style={{
@@ -482,16 +542,24 @@ const JobsSection = (props) => {
                           size="sm"
                           variant="danger"
                           title={"Delete " + job["JOB_NAME"]}
-                          className="deleteNewString"
+                          className={
+                            "deleteNewString " +
+                            (!loadDebounce ? "loadDebounce" : "")
+                          }
                           onClick={() => {
-                            console.log("er");
-                            delete_job(
-                              setJobs,
-                              router.query.id,
-                              SESSIONID,
-                              job["JOB_ID"],
-                              jobs
-                            );
+                            if (loadDebounce) {
+                              if (job["JOB_ID"])
+                                delete_job(
+                                  setJobs,
+                                  router.query.id,
+                                  SESSIONID,
+                                  job["JOB_ID"],
+                                  jobs
+                                );
+                              else {
+                                setJobs(jobs.filter((f, k) => k != key));
+                              }
+                            }
                           }}
                         >
                           ✕
@@ -533,10 +601,12 @@ const JobsSection = (props) => {
             size="sm"
             variant="success"
             title="Add new"
-            className="addNewString"
+            className={"addNewString " + (!loadDebounce ? "loadDebounce" : "")}
             onClick={() => {
-              setAddNewStringFlag(1);
-              addNew(jobs, setJobs, jobs_struct);
+              if (loadDebounce) {
+                setAddNewStringFlag(1);
+                addNew(jobs, setJobs, jobs_struct);
+              }
             }}
           >
             +

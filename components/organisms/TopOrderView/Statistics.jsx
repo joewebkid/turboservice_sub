@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "react-bootstrap";
+import { Modal, Table, Button } from "react-bootstrap";
 import { statistic } from "./data";
 import axios from "axios";
 
@@ -28,7 +28,7 @@ const get_stat = (callback, SESSIONID) => {
       });
 };
 
-const get_messages = (callback, SESSIONID) => {
+const get_messages = (callback, SESSIONID, handleShow) => {
   if (SESSIONID)
     axios
       .get(
@@ -44,8 +44,14 @@ const get_messages = (callback, SESSIONID) => {
         const { result } = data;
         const { Response } = result;
         const { Messages } = Response;
-
-        callback(Messages.data[0]);
+        if (
+          Messages &&
+          Messages.data &&
+          Messages.data[0] &&
+          Messages.data[0].MESSAGE
+        )
+          callback(Messages.data[0].MESSAGE);
+        handleShow();
       })
       .catch(function (error) {
         console.log(error);
@@ -54,15 +60,22 @@ const get_messages = (callback, SESSIONID) => {
 
 const Statistics = (props) => {
   const { SESSIONID } = props;
-  useEffect(() => {
-    if (SESSIONID) {
-      get_stat(setStats, SESSIONID);
-      get_messages(setMessages, SESSIONID);
-    }
-  }, [SESSIONID]);
 
   const [stats, setStats] = useState([]);
   const [messages, setMessages] = useState([]);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    if (SESSIONID) {
+      get_stat(setStats, SESSIONID);
+      get_messages(setMessages, SESSIONID, handleShow);
+    }
+  }, [SESSIONID]);
+
   // AVERAGE_NORM_HOURS: "1.0000"
   // AVERAGE_VEHICLE_REPAIR_TIME: null
   // ID: 1
@@ -71,6 +84,17 @@ const Statistics = (props) => {
 
   return (
     <>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Предупреждение</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{messages}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+            Ок
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <p className="text-left b500">Statistics for 30 days</p>
       <Table bordered striped className="text-center" style={{ maxWidth: 500 }}>
         <thead>
