@@ -42,7 +42,7 @@ const RequestSection = (props) => {
                   Cancel start
                 </Button>
                 <Button variant="success" onClick={callback_done}>
-                  Finish repair order
+                  Repair order done
                 </Button>
               </Fade>
             ) : (
