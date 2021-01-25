@@ -48,22 +48,25 @@ const get_statuses = (callback, router, SESSIONID, setLoading) => {
         }
       });
 };
+
 // const get_orders = (callback, SESSIONID) => {
-//   console.log("Я иду на запрос", SESSIONID);
 //   if (SESSIONID)
 //     axios
 //       .get(
 //         process.env.NEXT_PUBLIC_URL +
 //           "/api-v2/Contractors/WorkorderList?SESSIONID=" +
-//           SESSIONID
+//           SESSIONID +
+//           // ""
+//           "&Total=1"
 //       )
 //       .then(function (response) {
 //         const { data } = response;
 //         const { result } = data;
 //         const { Response } = result;
 //         const { WorkorderList } = Response;
-//         // console.log(response);
-//         callback(WorkorderList.data);
+
+//         console.log(WorkorderList.data);
+//         // callback(WorkorderList.data);
 //       })
 //       .catch(function (error) {
 //         console.log(error);
@@ -81,6 +84,7 @@ const RepairsOrders = (props) => {
   const [pages, setPages] = useState(false);
   const [current_page, setCurrentPage] = useState(-1);
   const [elems_count, setElemCountOnPage] = useState(10);
+  console.log(orders);
 
   useEffect(() => {
     if (SESSIONID && router) {

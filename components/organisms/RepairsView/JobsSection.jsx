@@ -284,7 +284,7 @@ const JobsSection = (props) => {
   let tempArr = jobs;
   let jobsSum = {};
 
-  const debouncedSearchTerm = useDebounce(temp_jobs, 2000);
+  const debouncedSearchTerm = useDebounce(temp_jobs, 500);
 
   const numberMask = createNumberMask({
     prefix: "",
@@ -479,10 +479,12 @@ const JobsSection = (props) => {
                                   readOnly={!loadDebounce ? true : false}
                                   // type={struct.type}
                                   onChange={(e) => {
+                                    // console.log(e);
+
                                     if (loadDebounce) {
                                       tempArr[key][struct.slug] =
                                         e.target.value;
-                                      console.log(tempArr);
+                                      // console.log(tempArr);
                                       setJobs([...tempArr]);
                                       setTempJobs([...tempArr]);
                                       setChangedStringId(key);
@@ -501,7 +503,7 @@ const JobsSection = (props) => {
                                     if (loadDebounce) {
                                       tempArr[key][struct.slug] =
                                         e.target.value;
-                                      console.log(tempArr);
+                                      // console.log(tempArr);
                                       setJobs([...tempArr]);
                                       setTempJobs([...tempArr]);
                                       setChangedStringId(key);
