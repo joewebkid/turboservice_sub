@@ -1,0 +1,14 @@
+<root>
+	<jobs>
+		<job name="Name 1231234" price="1.23" amount="2" sum="2.46" />
+		<job name="Name 2123123" price="4.1" amount="3" sum="12.3" />
+	</jobs>
+	<parts>
+		<part code="code 1" brand="brand 1" name="Name 11231234" price="1.23" amount="2" sum="2.46" />
+		<part code="code 2" brand="brand 2" name="Name 21231234" price="68" amount="1" sum="68" />
+	</parts>
+	<recommendations>
+		<recommendation content="recommendation 123" fixBefore="2020-12-10" />
+		<recommendation content="recommendation 112321" fixBefore="2020-12-10" />
+	</recommendations>
+</root>

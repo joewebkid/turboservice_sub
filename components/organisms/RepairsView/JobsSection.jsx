@@ -261,11 +261,7 @@ const popover = (
     <Popover.Title as="h3">Load from file</Popover.Title>
     <Popover.Content>
       You can load{" "}
-      <CustomLink
-        href="https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderFile/167380/data.xml?SESSIONID=mW51KTrnMCQdyfeNWO3WTztjL00zJxrDQfDK7laTOZ8kxGpeu2jhGC8hekNzRWVh"
-        target="_blank"
-        download="template.xml"
-      >
+      <CustomLink href="/data.xml" target="_blank" download="template.xml">
         template
       </CustomLink>
     </Popover.Content>
