@@ -125,7 +125,9 @@ const Attached = (props) => {
         <Block className="text-left w500  mb-1">Attached files</Block>
         {files.map((f, key) => (
           <Block className="text-left" key={key}>
-            <CustomLink href={f.FILE_URL}>{f.FILE_NAME}</CustomLink>
+            <CustomLink target="_blank" href={f.FILE_URL}>
+              {f.FILE_NAME}
+            </CustomLink>
 
             {status != 2 ? (
               <span
