@@ -202,7 +202,11 @@ const MaterialsSection = (props) => {
       if (materials[changedStringId]) {
         const changedMaterials = materials[changedStringId];
         const isFull = !Object.keys(changedMaterials).find(
-          (e) => e != "PART_ID" && !changedMaterials[e]
+          (e) =>
+            e != "PART_ID" &&
+            !changedMaterials[e] &&
+            e != "PART_AMOUNT" &&
+            e != "PART_PRICE"
         );
 
         if (isFull)

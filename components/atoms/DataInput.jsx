@@ -8,10 +8,13 @@ import {
   formatDateForPost,
   formatDateForView,
 } from "../molecules/data";
+import FlexBlock from "./FlexBlock";
 
 const DataInput = (props) => {
-  const { defaultDate, value, short } = props;
-  const [date, setDate] = useState(value || defaultDate || new Date());
+  const { defaultDate, value, short, clear, placeholder } = props;
+  const [date, setDate] = useState(
+    clear ? "" : value || defaultDate || new Date()
+  );
 
   useEffect(() => {
     if (date) props.callback(date);
@@ -24,7 +27,7 @@ const DataInput = (props) => {
 
   return (
     <DatePicker
-      date={new Date(date)}
+      date={date ? new Date(date) : new Date()}
       onDateChange={(date) => {
         // console.log(date);
         setDate(formatDateForPost(date));
@@ -32,11 +35,35 @@ const DataInput = (props) => {
       locale={enUS}
     >
       {({ inputProps, focused }) => (
-        <input
-          className={"form-control input" + (focused ? " -focused" : "")}
-          {...inputProps}
-          value={short ? formatShortDate(date) : formatDateForView(date)}
-        />
+        <FlexBlock>
+          <input
+            className={"form-control input" + (focused ? " -focused" : "")}
+            {...inputProps}
+            value={
+              date
+                ? short
+                  ? formatShortDate(date)
+                  : formatDateForView(date)
+                : ""
+            }
+            placeholder={placeholder}
+          />
+          {date && clear ? (
+            <FlexBlock className="deleteBlockRight">
+              <FlexBlock
+                className="deleteLink delFilter"
+                onClick={() => {
+                  setDate("");
+                  props.callback("");
+                }}
+              >
+                ✕
+              </FlexBlock>
+            </FlexBlock>
+          ) : (
+            <></>
+          )}
+        </FlexBlock>
       )}
     </DatePicker>
   );

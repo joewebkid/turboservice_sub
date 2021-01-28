@@ -23,6 +23,7 @@ const filter_callback = (
       .get(
         "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderList?SESSIONID=" +
           SESSIONID +
+          "&Total=1" +
           (search_string ? "&" + search_string : "")
       )
       .then(function (response) {
@@ -55,7 +56,7 @@ const Filter = (props) => {
 
   const debouncedSearchTerm = useDebounce(search_string, 500);
 
-  // console.log(debouncedSearchTerm);
+  console.log(filter_values, selected_statuses);
   useEffect(() => {
     setIsSearching(true);
     let stringInput = Object.keys(filter_values)
@@ -115,7 +116,9 @@ const Filter = (props) => {
             <FlexBlock className="dateRangeFilter">
               <DataInput
                 short
+                clear
                 placeholder="FROM"
+                className="dateFrom"
                 callback={(e) => {
                   // console.log(e);
                   const formDate = formatDate(e);
@@ -127,7 +130,9 @@ const Filter = (props) => {
               />
               <DataInput
                 short
+                clear
                 placeholder="TO"
+                className="dateTo"
                 callback={(e) => {
                   // console.log(e);
                   const formDate = formatDate(e);

@@ -208,7 +208,7 @@ a {
 }
 .delFilter {
   position: absolute;
-  left: -4px;
+  left: -15px;
   top: 10px;
 }
 
@@ -255,17 +255,18 @@ a {
   width: 10px;
 }
 .dateRangeFilter {
-  &:first-child input {
+  & div:first-child input {
     padding: 0px;
     text-align: center;
     width: 55px;
-    border-right: 0px;
+    // border-right: 0px;
     border-radius: 0.25rem 0px 0px 0.25rem;
   }
-  &:nth-child(2) input {
+  & div:nth-child(2) input {
     padding: 0px;
     text-align: center;
     width: 55px;
     border-radius: 0px 0.25rem 0.25rem 0px;
+    margin-left: -1px;
   }
 }

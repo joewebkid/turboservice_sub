@@ -304,20 +304,20 @@ const JobsSection = (props) => {
 
       if (jobs[changedStringId]) {
         const changedJobs = jobs[changedStringId];
-        const isFull = !Object.keys(changedJobs).find(
-          (e) => e != "JOB_ID" && !changedJobs[e]
-        );
+        // const isFull = !Object.keys(changedJobs).find(
+        //   (e) => e != "JOB_ID" && !changedJobs[e]
+        // );
 
-        if (isFull)
-          set_job(
-            setJobs,
-            router.query.id,
-            SESSIONID,
-            changedJobs,
-            setMessage,
-            jobs,
-            setLoadDebounce
-          );
+        // if (isFull)
+        set_job(
+          setJobs,
+          router.query.id,
+          SESSIONID,
+          changedJobs,
+          setMessage,
+          jobs,
+          setLoadDebounce
+        );
       }
     }
 
