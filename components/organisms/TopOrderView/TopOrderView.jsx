@@ -10,6 +10,11 @@ const TopOrderView = (props) => {
   return (
     <Section className="text-center mb-4 sb">
       <Block className="leftStatBlock">
+        <img
+          src="https://www.tlt.ee/wp-content/themes/tlt/dist/images/TLT-Logo.png"
+          alt="Aktsiaselts Tallinna Linnatransport (TLT)"
+          height="64"
+        ></img>
         {loading ? <Statistics SESSIONID={SESSIONID} /> : <></>}
         {repair_order_list ? (
           <CustomLink>
