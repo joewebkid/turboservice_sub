@@ -114,7 +114,7 @@ const set_job = (
         }, 2500);
         callback(
           jobs.map((e) => {
-            console.log(changedJobs.JOB_NAME == e.JOB_NAME, e, changedJobs);
+            // console.log(changedJobs.JOB_NAME == e.JOB_NAME, e, changedJobs);
             return changedJobs.JOB_NAME == e.JOB_NAME
               ? { ...e, JOB_ID: WorkorderContractJob.data.JOB_ID }
               : e;
