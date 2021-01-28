@@ -48,6 +48,46 @@ const get_statuses = (callback, router, SESSIONID, setLoading) => {
         }
       });
 };
+const get_orders = (
+  callback,
+  SESSIONID,
+  search_string,
+  setIsSearching,
+  setTotal,
+  offset,
+  limit
+) => {
+  // console.log("Я иду на запрос", SESSIONID);
+  if (SESSIONID)
+    return axios
+      .get(
+        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderList?SESSIONID=" +
+          SESSIONID +
+          "&Total=1" +
+          (offset ? "&Offset=" + offset : "") +
+          (limit ? "&Limit=" + limit : "") +
+          (search_string ? "&" + search_string : "")
+      )
+      .then(function (response) {
+        const { data } = response;
+        const { result } = data;
+        const { Response } = result;
+        const { WorkorderList } = Response;
+
+        callback(WorkorderList.data);
+        setIsSearching(false);
+        setTotal(WorkorderList.totalRecords);
+
+        return response;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  else
+    return new Promise((resolve, reject) => {
+      return [];
+    });
+};
 
 // const get_orders = (callback, SESSIONID) => {
 //   if (SESSIONID)
@@ -77,14 +117,17 @@ const RepairsOrders = (props) => {
   const { SESSIONID, setLoading, loading } = props;
   const router = useRouter();
 
-  const [orders, setOrders] = useState([]);
-  const [ordersByPage, setOrdersByPage] = useState([]);
+  const [ordersByPage, setOrders] = useState([]);
+  // const [ordersByPage, setOrdersByPage] = useState([]);
   const [statuses, setStatuses] = useState([]);
 
   const [pages, setPages] = useState(false);
   const [current_page, setCurrentPage] = useState(-1);
-  const [elems_count, setElemCountOnPage] = useState(10);
-  console.log(orders);
+  const [elems_count, setElemCountOnPage] = useState(3);
+
+  const [total, setTotal] = useState(false);
+  const [limit, setLimit] = useState(false);
+  const [offset, setOffset] = useState(false);
 
   useEffect(() => {
     if (SESSIONID && router) {
@@ -95,27 +138,35 @@ const RepairsOrders = (props) => {
   }, [SESSIONID]);
 
   useEffect(() => {
-    const orders_length = orders.length;
+    const orders_length = total;
     if (orders_length > elems_count)
       setPages(Math.ceil(orders_length / elems_count));
     else setPages(false);
+    setLimit(elems_count);
 
-    setOrdersByPage(
-      orders.slice(
-        current_page * elems_count,
-        current_page * elems_count + elems_count
-      )
-    );
-  }, [orders, elems_count]);
+    // setOrdersByPage(
+    //   orders.slice(
+    //     current_page * elems_count,
+    //     Number(current_page * elems_count) + Number(elems_count)
+    //   )
+    // );
+  }, [total, elems_count]);
 
   useEffect(() => {
-    setOrdersByPage(
-      orders.slice(
-        current_page * elems_count,
-        current_page * elems_count + elems_count
-      )
-    );
+    // console.log(
+    //   current_page * elems_count,
+    //   Number(current_page * elems_count) + Number(elems_count)
+    // );
+    // setOrdersByPage(
+    //   orders.slice(
+    //     current_page * elems_count,
+    //     Number(current_page * elems_count) + Number(elems_count)
+    //   )
+    // );
+    setOffset(current_page * elems_count);
+    // setLimit(Number(current_page * elems_count) + Number(elems_count));
   }, [current_page]);
+
   if (current_page == -1) return <></>;
 
   if (!loading)
@@ -138,6 +189,10 @@ const RepairsOrders = (props) => {
                 statuses={statuses}
                 saveData={setOrders}
                 SESSIONID={SESSIONID}
+                filter_callback={get_orders}
+                setTotal={setTotal}
+                limit={limit}
+                offset={offset}
               />
             </tr>
             <tr>
@@ -215,7 +270,10 @@ const RepairsOrders = (props) => {
             <select
               className="form-control"
               style={{ padding: ".15rem .15rem" }}
-              onChange={(e) => setElemCountOnPage(e.target.value)}
+              onChange={(e) => {
+                setElemCountOnPage(e.target.value);
+                setCurrentPage(0);
+              }}
             >
               {entity_sizes.map((e) => (
                 <option selected={e == elems_count}>{e}</option>

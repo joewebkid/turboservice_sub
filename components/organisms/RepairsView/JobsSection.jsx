@@ -104,18 +104,19 @@ const set_job = (
     .then(function (response) {
       const { data } = response;
       const { result } = data;
-      const { Response, Message } = result;
+      const { Response, Message, Status } = result;
       const { WorkorderContractJob } = Response;
 
-      if (Message == "Ok") {
+      if (Status == 0) {
         setMessage({ type: "success", text: "success", show: true });
         setTimeout(() => {
           setMessage({});
         }, 2500);
         callback(
           jobs.map((e) => {
+            console.log(changedJobs.JOB_NAME == e.JOB_NAME, e, changedJobs);
             return changedJobs.JOB_NAME == e.JOB_NAME
-              ? WorkorderContractJob.data
+              ? { ...e, JOB_ID: WorkorderContractJob.data.JOB_ID }
               : e;
           })
         );
@@ -132,7 +133,7 @@ const set_job = (
       setTimeout(() => {
         setMessage({});
       }, 2500);
-      // console.log(error);
+      console.log(error);
       setLoadDebounce(true);
     });
 };
@@ -303,7 +304,18 @@ const JobsSection = (props) => {
       }
 
       if (jobs[changedStringId]) {
-        const changedJobs = jobs[changedStringId];
+        let changedJobs = jobs[changedStringId];
+        Object.keys(changedJobs).map((e) => {
+          if (
+            !changedJobs[e] &&
+            (e == "JOB_NORM_HOUR" || e == "JOB_AMOUNT" || e == "JOB_PRICE")
+          ) {
+            changedJobs[e] = "0.00";
+          }
+        });
+        // JOB_NORM_HOUR
+        // JOB_AMOUNT
+        // JOB_PRICE
         // const isFull = !Object.keys(changedJobs).find(
         //   (e) => e != "JOB_ID" && !changedJobs[e]
         // );
@@ -526,7 +538,7 @@ const JobsSection = (props) => {
                         );
                     })}
                     <td scope="col">
-                      <FlexBlock style={{ alignItems: "center" }}>
+                      <FlexBlock style={{ paddingTop: status != 2 ? 7 : 0 }}>
                         {Number(job["JOB_AMOUNT"] * job["JOB_PRICE"]).toFixed(
                           2
                         )}

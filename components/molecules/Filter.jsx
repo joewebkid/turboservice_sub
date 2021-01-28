@@ -10,79 +10,61 @@ import useDebounce from "../atoms/FilterInput/useDebounce";
 import FlexBlock from "../atoms/FlexBlock";
 import { formatDate } from "./data";
 
-const filter_callback = (
-  callback,
-  SESSIONID,
-  search_string,
-  setIsSearching,
-  auth_data
-) => {
-  console.log("Я иду на запрос", SESSIONID);
-  if (SESSIONID)
-    return axios
-      .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/WorkorderList?SESSIONID=" +
-          SESSIONID +
-          "&Total=1" +
-          (search_string ? "&" + search_string : "")
-      )
-      .then(function (response) {
-        const { data } = response;
-        const { result } = data;
-        const { Response } = result;
-        const { WorkorderList } = Response;
-
-        callback(WorkorderList.data);
-        setIsSearching(false);
-
-        return response;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  else
-    return new Promise((resolve, reject) => {
-      return [];
-    });
-};
-
 const Filter = (props) => {
-  const { headers, statuses, saveData, SESSIONID } = props;
+  const {
+    headers,
+    statuses,
+    saveData,
+    SESSIONID,
+    filter_callback,
+    setTotal,
+    limit,
+    offset,
+  } = props;
 
   const [filter_values, saveFilterValues] = useState(false);
   const [selected_statuses, setSelectedStatuses] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [search_string, setSearchString] = useState(false);
+  const [search_string, setSearchString] = useState("");
 
   const debouncedSearchTerm = useDebounce(search_string, 500);
 
-  console.log(filter_values, selected_statuses);
+  // console.log(filter_values, selected_statuses);
   useEffect(() => {
-    setIsSearching(true);
-    let stringInput = Object.keys(filter_values)
-      .map(function (i) {
-        return [i, filter_values[i]].join("=");
-      })
-      .join("&");
-    if (selected_statuses)
-      stringInput =
-        stringInput +
-        "&" +
-        selected_statuses
-          .map(function (s) {
-            return ["OrderStatusID[]", s].join("=");
-          })
-          .join("&");
-    setSearchString(stringInput);
-    setTimeout(() => {
-      setIsSearching(false);
-    }, 500);
+    if (!isSearching) {
+      setIsSearching(true);
+      let stringInput = Object.keys(filter_values)
+        .map(function (i) {
+          return [i, filter_values[i]].join("=");
+        })
+        .join("&");
+      if (selected_statuses)
+        stringInput =
+          stringInput +
+          "&" +
+          selected_statuses
+            .map(function (s) {
+              return ["OrderStatusID[]", s].join("=");
+            })
+            .join("&");
+      setSearchString(stringInput);
+      setTimeout(() => {
+        setIsSearching(false);
+      }, 500);
+    }
   }, [filter_values, selected_statuses]);
 
   useEffect(() => {
-    // console.log(search_string);
-    filter_callback(saveData, SESSIONID, search_string, setIsSearching);
-  }, [debouncedSearchTerm]);
+    filter_callback(
+      saveData,
+      SESSIONID,
+      search_string,
+      setIsSearching,
+      setTotal,
+      offset,
+      limit
+    );
+  }, [debouncedSearchTerm, offset, limit]);
 
   // const handleSubmit = (event) => {
   //   const form = event.currentTarget;

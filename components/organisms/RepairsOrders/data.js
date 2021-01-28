@@ -81,7 +81,7 @@ export const headers = [
   },
 ];
 
-export const entity_sizes = [10, 25, 50, 100];
+export const entity_sizes = [3, 10, 25, 50, 100];
 
 export const status_map = [
   { title: "New" },

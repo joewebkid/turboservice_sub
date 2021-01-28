@@ -224,6 +224,10 @@ const MaterialsSection = (props) => {
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
+    setTotal(jobsTotal);
+  }, [jobsTotal]);
+
+  useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)
       get_parts(setMaterials, router.query.id, SESSIONID);
   }, [router, refresh]);
@@ -390,7 +394,7 @@ const MaterialsSection = (props) => {
                 )
               )}
               <td>
-                <Block style={{}}>
+                <Block style={{ paddingTop: status != 2 ? 7 : 0 }}>
                   {material_sum["sum"]
                     ? Number(material_sum["sum"]).toFixed(2)
                     : "0.00"}

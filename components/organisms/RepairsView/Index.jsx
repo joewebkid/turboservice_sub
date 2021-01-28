@@ -104,7 +104,7 @@ const Index = (props) => {
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(0);
   const [message, setMessage] = useState({});
-  console.log(jobsTotal);
+  // console.log(jobsTotal);
   // const [order_info, setOrderInfo] = useState([]);
 
   useEffect(() => {
