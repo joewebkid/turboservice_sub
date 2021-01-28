@@ -123,7 +123,7 @@ const RepairsOrders = (props) => {
 
   const [pages, setPages] = useState(false);
   const [current_page, setCurrentPage] = useState(-1);
-  const [elems_count, setElemCountOnPage] = useState(3);
+  const [elems_count, setElemCountOnPage] = useState(10);
 
   const [total, setTotal] = useState(false);
   const [limit, setLimit] = useState(false);
