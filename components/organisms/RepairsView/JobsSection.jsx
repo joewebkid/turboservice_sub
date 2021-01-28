@@ -526,7 +526,7 @@ const JobsSection = (props) => {
                         );
                     })}
                     <td scope="col">
-                      <FlexBlock style={{ padding: "7px 0" }}>
+                      <FlexBlock style={{ alignItems: "center" }}>
                         {Number(job["JOB_AMOUNT"] * job["JOB_PRICE"]).toFixed(
                           2
                         )}

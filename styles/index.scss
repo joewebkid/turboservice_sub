@@ -1,3 +1,6 @@
+body {
+  background-color: #d8efe9 !important;
+}
 a {
   color: #007bff;
   text-decoration: none;
@@ -31,12 +34,12 @@ a {
     border-top: 2px solid #dee2e6;
   }
   &.success {
-    // background-color: rgb(83 195 88 / 22%);
-    background-color: #e7f5f2;
+    background-color: rgb(83 195 88 / 22%);
+    // background-color: #e7f5f2;
 
     &:nth-of-type(odd) {
-      // border-top: 2px #4caf50 solid;
-      border-top: 2px #2aa98e solid;
+      border-top: 2px #4caf50 solid;
+      // border-top: 2px #2aa98e solid;
     }
   }
   &.second {
@@ -248,3 +251,21 @@ a {
 }
 // background-color: #189e82;
 // border-color: #10846b;
+.left-symb {
+  width: 10px;
+}
+.dateRangeFilter {
+  &:first-child input {
+    padding: 0px;
+    text-align: center;
+    width: 55px;
+    border-right: 0px;
+    border-radius: 0.25rem 0px 0px 0.25rem;
+  }
+  &:nth-child(2) input {
+    padding: 0px;
+    text-align: center;
+    width: 55px;
+    border-radius: 0px 0.25rem 0.25rem 0px;
+  }
+}

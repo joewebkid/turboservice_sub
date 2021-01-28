@@ -8,7 +8,7 @@ const LogoName = (props) => {
     <FlexBlock className="imageLogo">
       <h4>{user_info.CompanyName}</h4>
       {user_info.CompanyLogoURL ? (
-        <Image src={user_info.CompanyLogoURL} thumbnail className="imageLogo" />
+        <Image src={user_info.CompanyLogoURL} className="imageLogo box" />
       ) : (
         <></>
       )}

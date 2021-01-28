@@ -2,10 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import Block from "../atoms/Block";
+import DataInput from "../atoms/DataInput";
 import FilterData from "../atoms/FilterInput/FilterData";
 import FilterInput from "../atoms/FilterInput/FilterInput";
 import StatusesSelect from "../atoms/FilterInput/StatusesSelect";
 import useDebounce from "../atoms/FilterInput/useDebounce";
+import FlexBlock from "../atoms/FlexBlock";
 import { formatDate } from "./data";
 
 const filter_callback = (
@@ -110,18 +112,32 @@ const Filter = (props) => {
               />
             </Block>
           ) : h.type == "date" ? (
-            <FilterData
-              {...props}
-              setFilterEndDate={(e, eTo) => {
-                const formDate = formatDate(e);
-                const formDateTo = formatDate(eTo);
-                saveFilterValues({
-                  ...filter_values,
-                  [h.filterFrom]: formDate,
-                  [h.filterTo]: formDateTo,
-                });
-              }}
-            />
+            <FlexBlock className="dateRangeFilter">
+              <DataInput
+                short
+                placeholder="FROM"
+                callback={(e) => {
+                  // console.log(e);
+                  const formDate = formatDate(e);
+                  saveFilterValues({
+                    ...filter_values,
+                    [h.filterFrom]: formDate,
+                  });
+                }}
+              />
+              <DataInput
+                short
+                placeholder="TO"
+                callback={(e) => {
+                  // console.log(e);
+                  const formDate = formatDate(e);
+                  saveFilterValues({
+                    ...filter_values,
+                    [h.filterTo]: formDate,
+                  });
+                }}
+              />
+            </FlexBlock>
           ) : h.type == "select" ? (
             <StatusesSelect
               {...props}

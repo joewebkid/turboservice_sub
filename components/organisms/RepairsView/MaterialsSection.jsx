@@ -320,7 +320,7 @@ const MaterialsSection = (props) => {
                       );
                     })}
                     <td scope="col">
-                      <FlexBlock style={{ padding: "7px 0" }}>
+                      <FlexBlock style={{ alignItems: "center" }}>
                         {material["PART_AMOUNT"] * material["PART_PRICE"]
                           ? Number(
                               material["PART_AMOUNT"] * material["PART_PRICE"]

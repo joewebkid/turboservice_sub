@@ -4,12 +4,13 @@ import { DatePicker } from "react-nice-dates";
 import "react-nice-dates/build/style.css";
 import {
   formatDate,
+  formatShortDate,
   formatDateForPost,
   formatDateForView,
 } from "../molecules/data";
 
 const DataInput = (props) => {
-  const { defaultDate, value } = props;
+  const { defaultDate, value, short } = props;
   const [date, setDate] = useState(value || defaultDate || new Date());
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const DataInput = (props) => {
         <input
           className={"form-control input" + (focused ? " -focused" : "")}
           {...inputProps}
-          value={formatDateForView(date)}
+          value={short ? formatShortDate(date) : formatDateForView(date)}
         />
       )}
     </DatePicker>

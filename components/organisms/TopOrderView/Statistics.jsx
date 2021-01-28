@@ -96,7 +96,12 @@ const Statistics = (props) => {
         </Modal.Footer>
       </Modal>
       <p className="text-left b500">Statistics for 30 days</p>
-      <Table bordered striped className="text-center" style={{ maxWidth: 500 }}>
+      <Table
+        bordered
+        striped
+        className="text-center box"
+        style={{ maxWidth: 500 }}
+      >
         <thead>
           <tr>
             {statistic.map((e) => (

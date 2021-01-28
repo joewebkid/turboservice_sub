@@ -9,6 +9,7 @@ body {
   overflow-x: hidden;
   overflow-y: overlay;
   height: 100%;
+  background-color: #d8efe9;
 }
 
 a {
@@ -18,6 +19,11 @@ a {
 
 * {
   box-sizing: border-box;
+}
+.box {
+  background: #ffffff;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
 }
 h3,
 h4,
@@ -35,7 +41,10 @@ h1 {
 }
 .login-form-1 {
   padding: 5%;
-  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+  /* box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19); */
+  background: white;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
 }
 .login-form-1 h3 {
   text-align: center;
@@ -63,7 +72,16 @@ h1 {
 .login-form-1 .btnSubmit {
   font-weight: 600;
   color: #fff;
-  background-color: #0062cc;
+  /* background-color: #0062cc; */
+  border-color: #11a57e;
+  background-color: #10b388;
+}
+.login-form-1 .btnSubmit:not(:disabled):not(.disabled):active,
+.login-form-1 .btnSubmit:focus,
+.login-form-1 .btnSubmit:hover {
+  color: #fff;
+  border-color: #0e8062;
+  background-color: #198e6f;
 }
 .login-form-2 .btnSubmit {
   font-weight: 600;

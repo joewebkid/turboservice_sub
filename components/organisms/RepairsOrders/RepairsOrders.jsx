@@ -127,7 +127,7 @@ const RepairsOrders = (props) => {
 
   return (
     <Fade>
-      <Section className="border p-4 text-center mb-4">
+      <Section className="border p-4 text-center mb-4 box">
         <h3>Repair orders</h3>
 
         <Table responsive className="text-center repairs-orders">

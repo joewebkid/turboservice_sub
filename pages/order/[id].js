@@ -48,7 +48,10 @@ const OrderView = () => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <Container className="login-container order-container">
+    <Container
+      fluid
+      className="login-container orders-list-container order-container"
+    >
       <TopOrderView
         repair_order_list
         user_info={user_info}
