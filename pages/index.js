@@ -8,9 +8,13 @@ import FlexBlock from "../components/atoms/FlexBlock";
 import RepairsOrders from "../components/organisms/RepairsOrders/RepairsOrders";
 import TopOrderView from "../components/organisms/TopOrderView/TopOrderView";
 
-const get_user_data = (callback, router) => {
+const get_user_data = (callback, router, setShownModal) => {
   const user_info = localStorage.getItem("user_info");
   const SESSIONID = localStorage.getItem("SESSIONID");
+  // max_order_in_progess
+  const shown_modal = localStorage.getItem("shown_modal");
+
+  if (shown_modal == 0) setShownModal(false);
   if (SESSIONID) {
     if (user_info) callback(JSON.parse(user_info));
   } else router.push("/login");
@@ -41,8 +45,12 @@ const logout = (SESSIONID, router) => {
 export default function Home() {
   const router = useRouter();
   useEffect(() => {
-    setSESSIONID(get_user_data(setUserInfo, router));
+    setSESSIONID(get_user_data(setUserInfo, router, setShownModal));
   }, []);
+
+  // max_order_in_progess
+  const [shownModal, setShownModal] = useState(true);
+
   const [user_info, setUserInfo] = useState(false);
   const [SESSIONID, setSESSIONID] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -54,6 +62,7 @@ export default function Home() {
         user_info={user_info}
         SESSIONID={SESSIONID}
         loading={loading}
+        shownModal={shownModal}
       />
       <RepairsOrders
         SESSIONID={SESSIONID}

@@ -6,16 +6,26 @@ import LogoName from "../../molecules/LogoName";
 import Statistics from "./Statistics";
 
 const TopOrderView = (props) => {
-  const { repair_order_list, user_info, SESSIONID, loading } = props;
+  const {
+    repair_order_list,
+    user_info,
+    SESSIONID,
+    loading,
+    shownModal,
+  } = props;
   return (
     <Section className="text-center mb-4 sb">
       <Block className="leftStatBlock">
         <img
-          src="https://www.tlt.ee/wp-content/themes/tlt/dist/images/TLT-Logo.png"
+          src="/TLT-Logo.png"
           alt="Aktsiaselts Tallinna Linnatransport (TLT)"
           height="64"
-        ></img>
-        {loading ? <Statistics SESSIONID={SESSIONID} /> : <></>}
+        />
+        {loading ? (
+          <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
+        ) : (
+          <></>
+        )}
         {repair_order_list ? (
           <CustomLink>
             <svg

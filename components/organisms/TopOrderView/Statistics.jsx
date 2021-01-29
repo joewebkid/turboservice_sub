@@ -51,6 +51,8 @@ const get_messages = (callback, SESSIONID, handleShow) => {
           Messages.data[0].MESSAGE
         )
           callback(Messages.data[0].MESSAGE);
+
+        localStorage.setItem("shown_modal", 1);
         handleShow();
       })
       .catch(function (error) {
@@ -59,7 +61,7 @@ const get_messages = (callback, SESSIONID, handleShow) => {
 };
 
 const Statistics = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, shownModal } = props;
 
   const [stats, setStats] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -72,7 +74,7 @@ const Statistics = (props) => {
   useEffect(() => {
     if (SESSIONID) {
       get_stat(setStats, SESSIONID);
-      get_messages(setMessages, SESSIONID, handleShow);
+      if (!shownModal) get_messages(setMessages, SESSIONID, handleShow);
     }
   }, [SESSIONID]);
 
@@ -84,7 +86,7 @@ const Statistics = (props) => {
 
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show && !shownModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Предупреждение</Modal.Title>
         </Modal.Header>

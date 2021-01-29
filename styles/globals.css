@@ -41,6 +41,7 @@ h1 {
 }
 .login-form-1 {
   padding: 5%;
+  padding-top: 4%;
   /* box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19); */
   background: white;
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.05);

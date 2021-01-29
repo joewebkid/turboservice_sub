@@ -3,6 +3,10 @@ import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 
 import axios from "axios";
+import FlexBlock from "../components/atoms/FlexBlock";
+
+const MODAL_SHOWN = 0;
+
 const save_user_data = (response, SESSIONID, user_auth_data) => {
   localStorage.setItem("user_info", response);
   localStorage.setItem("SESSIONID", SESSIONID);
@@ -39,6 +43,7 @@ const auth_login = (
             })
           )
         ) {
+          localStorage.setItem("shown_modal", MODAL_SHOWN);
           router.push("/");
           return SESSIONID;
         }
@@ -65,6 +70,13 @@ export const LoginPage = () => {
     <Container className="login-container">
       <Row className="login-row">
         <Col className="login-form-1" md="6">
+          <FlexBlock justify="center" className="mb-4">
+            <img
+              src="/TLT-Logo.png"
+              alt="Aktsiaselts Tallinna Linnatransport (TLT)"
+              height="64"
+            />
+          </FlexBlock>
           <h3>TLT Repair orders</h3>
 
           <Form>
