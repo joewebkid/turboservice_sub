@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pagination, Spinner, Table } from "react-bootstrap";
+import { Pagination, Spinner, Table, Button } from "react-bootstrap";
 import Block from "../../atoms/Block";
 import FlexBlock from "../../atoms/FlexBlock";
 import CustomLink from "../../atoms/CustomLink";
@@ -179,7 +179,15 @@ const RepairsOrders = (props) => {
   return (
     <Fade>
       <Section className="border p-4 text-center mb-4 box">
-        <h3>Repair orders</h3>
+        <FlexBlock align="center">
+          <Button variant="light" className="mr-2">
+            New
+          </Button>
+          <Button variant="dark" className="mr-2">
+            In progress
+          </Button>
+          <Button variant="dark">Done</Button>
+        </FlexBlock>
 
         <Table responsive className="text-center repairs-orders">
           <thead>

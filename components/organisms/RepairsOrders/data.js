@@ -73,12 +73,12 @@ export const headers = [
     // filter: "Plate",
     filter: "PlateContains",
   },
-  {
-    title: "Status",
-    type: "select",
-    slug: "ORDER_STATUS_NAME",
-    filter: "OrderStatusID",
-  },
+  // {
+  //   title: "Status",
+  //   type: "select",
+  //   slug: "ORDER_STATUS_NAME",
+  //   filter: "OrderStatusID",
+  // },
 ];
 
 export const entity_sizes = [10, 25, 50, 100];
