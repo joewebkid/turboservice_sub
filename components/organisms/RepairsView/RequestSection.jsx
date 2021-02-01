@@ -37,12 +37,15 @@ const RequestSection = (props) => {
                 <Button
                   variant="danger"
                   className="mr-2"
-                  onClick={() =>
-                    confirm(
-                      "Warring. Are you sure cancel start repair order?",
-                      callback_cancel()
-                    )
-                  }
+                  onClick={() => {
+                    if (
+                      confirm(
+                        "Warring. Are you sure cancel start repair order?"
+                      )
+                    ) {
+                      callback_cancel();
+                    }
+                  }}
                 >
                   Cancel start
                 </Button>
