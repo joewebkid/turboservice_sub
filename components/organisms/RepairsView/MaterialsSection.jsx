@@ -16,7 +16,8 @@ const get_parts = (callback, id, SESSIONID) => {
         "/api-v2/Contractors/WorkorderContractParts/" +
         id +
         "?SESSIONID=" +
-        SESSIONID
+        SESSIONID +
+        "&Formats=1"
     )
     .then(function (response) {
       const { data } = response;
@@ -171,7 +172,7 @@ const addNew = (materials, setMaterials, materials_struct) => {
   });
   let empty_object = {};
   titles.forEach((key, index) => {
-    empty_object[`${key}`] = "";
+    empty_object[`${key}`] = materials_struct[index].default || "";
   });
 
   setMaterials([...materials, empty_object]);
@@ -298,37 +299,44 @@ const MaterialsSection = (props) => {
                       // )
                       return struct.type != "hidden" ? (
                         <td scope="col">
-                          {status != 2 ? (
-                            <input
-                              value={value}
-                              className="form-control"
-                              placehorder="repair order"
-                              style={struct.style}
-                              readOnly={!loadDebounce ? true : false}
-                              onChange={(e) => {
-                                tempArr[key][struct.slug] = e.target.value;
+                          <FlexBlock>
+                            {status != 2 ? (
+                              <input
+                                value={value}
+                                className="form-control"
+                                placehorder="repair order"
+                                style={struct.style}
+                                readOnly={!loadDebounce ? true : false}
+                                onChange={(e) => {
+                                  tempArr[key][struct.slug] = e.target.value;
 
-                                // set_job(console.log, router.query.id, SESSIONID);
-                                setTempMaterials([...tempArr]);
-                                setChangedStringId(key);
-                              }}
-                            />
-                          ) : (
-                            <FlexBlock
-                              style={{
-                                ...struct.style,
-                              }}
-                            >
-                              {material[struct.slug]}
-                            </FlexBlock>
-                          )}
+                                  // set_job(console.log, router.query.id, SESSIONID);
+                                  setTempMaterials([...tempArr]);
+                                  setChangedStringId(key);
+                                }}
+                              />
+                            ) : (
+                              <FlexBlock
+                                style={{
+                                  ...struct.style,
+                                }}
+                              >
+                                {material[struct.slug]}
+                              </FlexBlock>
+                            )}
+                            {struct.required ? (
+                              <Block className="requiredBlock"></Block>
+                            ) : (
+                              ""
+                            )}
+                          </FlexBlock>
                         </td>
                       ) : (
                         <></>
                       );
                     })}
                     <td scope="col">
-                      <FlexBlock style={{ alignItems: "center" }}>
+                      <FlexBlock style={{ paddingTop: status != 2 ? 7 : 0 }}>
                         {material["PART_AMOUNT"] * material["PART_PRICE"]
                           ? Number(
                               material["PART_AMOUNT"] * material["PART_PRICE"]

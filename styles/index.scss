@@ -6,11 +6,14 @@ a {
   text-decoration: none;
   background-color: transparent;
 }
-.imageLogo {
-  max-height: 50px;
-  margin-left: 20px;
-  position: relative;
-  top: -9px;
+.imageLogoBlock {
+  margin-top: 15px;
+  & .imageLogo {
+    max-height: 30px;
+    margin-left: 10px;
+    position: relative;
+    top: -2px;
+  }
 }
 .sb {
   display: flex;
@@ -273,4 +276,18 @@ a {
 .sum {
   display: flex;
   align-items: center;
+}
+
+.white-bg {
+  background: #fff;
+}
+
+.requiredBlock {
+  position: relative;
+  &:after {
+    content: "*";
+    position: absolute;
+    right: 6px;
+    color: #929292;
+  }
 }

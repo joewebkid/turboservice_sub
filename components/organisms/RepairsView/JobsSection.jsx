@@ -23,7 +23,8 @@ const get_jobs = (callback, id, SESSIONID) => {
         "/api-v2/Contractors/WorkorderContractJobs/" +
         id +
         "?SESSIONID=" +
-        SESSIONID
+        SESSIONID +
+        "&Formats=1"
     )
     .then(function (response) {
       const { data } = response;
@@ -250,7 +251,7 @@ const addNew = (jobs, setJobs, jobs_struct) => {
   });
   let empty_object = {};
   titles.forEach((key, index) => {
-    empty_object[`${key}`] = "";
+    empty_object[`${key}`] = jobs_struct[index].default || "";
   });
 
   setJobs([...jobs, empty_object]);
@@ -480,60 +481,61 @@ const JobsSection = (props) => {
                       if (struct.type != "hidden")
                         return (
                           <td scope="col">
-                            {status != 2 ? (
-                              struct.type == "number" ? (
-                                <MaskedInput
-                                  mask={numberMask}
-                                  value={value}
-                                  className={"form-control"}
-                                  placehorder="repair order"
-                                  style={struct.style}
-                                  readOnly={!loadDebounce ? true : false}
-                                  // type={struct.type}
-                                  onChange={(e) => {
-                                    // console.log(e);
-
-                                    if (loadDebounce) {
-                                      tempArr[key][struct.slug] =
-                                        e.target.value;
-                                      // console.log(tempArr);
-                                      setJobs([...tempArr]);
-                                      setTempJobs([...tempArr]);
-                                      setChangedStringId(key);
-                                    }
-                                  }}
-                                />
+                            <FlexBlock>
+                              {status != 2 ? (
+                                struct.type == "number" ? (
+                                  <MaskedInput
+                                    mask={numberMask}
+                                    value={value}
+                                    className={"form-control"}
+                                    placehorder="repair order"
+                                    style={struct.style}
+                                    readOnly={!loadDebounce ? true : false}
+                                    onChange={(e) => {
+                                      if (loadDebounce) {
+                                        tempArr[key][struct.slug] =
+                                          e.target.value;
+                                        setJobs([...tempArr]);
+                                        setTempJobs([...tempArr]);
+                                        setChangedStringId(key);
+                                      }
+                                    }}
+                                  />
+                                ) : (
+                                  <input
+                                    value={value}
+                                    className={"form-control"}
+                                    placehorder="repair order"
+                                    style={struct.style}
+                                    readOnly={!loadDebounce ? true : false}
+                                    onChange={(e) => {
+                                      if (loadDebounce) {
+                                        tempArr[key][struct.slug] =
+                                          e.target.value;
+                                        setJobs([...tempArr]);
+                                        setTempJobs([...tempArr]);
+                                        setChangedStringId(key);
+                                      }
+                                    }}
+                                  />
+                                )
                               ) : (
-                                <input
-                                  value={value}
-                                  className={"form-control"}
-                                  placehorder="repair order"
-                                  style={struct.style}
-                                  readOnly={!loadDebounce ? true : false}
-                                  // type={struct.type}
-                                  onChange={(e) => {
-                                    if (loadDebounce) {
-                                      tempArr[key][struct.slug] =
-                                        e.target.value;
-                                      // console.log(tempArr);
-                                      setJobs([...tempArr]);
-                                      setTempJobs([...tempArr]);
-                                      setChangedStringId(key);
-                                    }
+                                <FlexBlock
+                                  style={{
+                                    ...struct.style,
                                   }}
-                                />
-                              )
-                            ) : (
-                              <FlexBlock
-                                style={{
-                                  ...struct.style,
-                                }}
-                              >
-                                {struct.type == "number"
-                                  ? Number(job[struct.slug]).toFixed(2)
-                                  : job[struct.slug]}
-                              </FlexBlock>
-                            )}
+                                >
+                                  {struct.type == "number"
+                                    ? Number(job[struct.slug]).toFixed(2)
+                                    : job[struct.slug]}
+                                </FlexBlock>
+                              )}
+                              {struct.required ? (
+                                <Block className="requiredBlock"></Block>
+                              ) : (
+                                ""
+                              )}
+                            </FlexBlock>
                           </td>
                         );
                     })}

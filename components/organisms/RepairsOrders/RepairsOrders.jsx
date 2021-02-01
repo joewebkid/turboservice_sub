@@ -190,6 +190,7 @@ const RepairsOrders = (props) => {
                 saveData={setOrders}
                 SESSIONID={SESSIONID}
                 filter_callback={get_orders}
+                toFirstPage={() => setCurrentPage(0)}
                 setTotal={setTotal}
                 limit={limit}
                 offset={offset}
@@ -264,26 +265,25 @@ const RepairsOrders = (props) => {
           </tbody>
         </Table>
 
-        <Block className="sizesSelBlock">
-          Show
-          <Block className="selectCont">
-            <select
-              className="form-control"
-              style={{ padding: ".15rem .15rem" }}
-              onChange={(e) => {
-                setElemCountOnPage(e.target.value);
-                setCurrentPage(0);
-              }}
-            >
-              {entity_sizes.map((e) => (
-                <option selected={e == elems_count}>{e}</option>
-              ))}
-            </select>
-          </Block>
-          entries
-        </Block>
-
         <FlexBlock justify="space-between">
+          <Block className="sizesSelBlock">
+            Show
+            <Block className="selectCont">
+              <select
+                className="form-control"
+                style={{ padding: ".15rem .15rem" }}
+                onChange={(e) => {
+                  setElemCountOnPage(e.target.value);
+                  setCurrentPage(0);
+                }}
+              >
+                {entity_sizes.map((e) => (
+                  <option selected={e == elems_count}>{e}</option>
+                ))}
+              </select>
+            </Block>
+            entries
+          </Block>
           <Pagination>
             {pages ? (
               <>

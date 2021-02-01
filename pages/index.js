@@ -55,8 +55,10 @@ export default function Home() {
   const [SESSIONID, setSESSIONID] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [tab, setTab] = useState(0);
+
   return (
-    <Container fluid className="login-container orders-list-container">
+    <>
       <TopOrderView
         statistics
         user_info={user_info}
@@ -64,25 +66,22 @@ export default function Home() {
         loading={loading}
         shownModal={shownModal}
       />
-      <RepairsOrders
-        SESSIONID={SESSIONID}
-        setLoading={setLoading}
-        loading={loading}
-      />
-      {SESSIONID && loading ? (
-        <FlexBlock
-          className="btn btn-link"
-          justify="center"
-          onClick={() => {
-            setLoading(false);
-            logout(SESSIONID, router);
-          }}
-        >
-          Logout
+      <Container fluid className="mt-3 orders-list-container">
+        <FlexBlock>
+          {/* <Block>1</Block> */}
+          {tab == 0 ? (
+            <RepairsOrders
+              SESSIONID={SESSIONID}
+              setLoading={setLoading}
+              loading={loading}
+            />
+          ) : tab == 1 ? (
+            <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
+          ) : (
+            <></>
+          )}
         </FlexBlock>
-      ) : (
-        <></>
-      )}
-    </Container>
+      </Container>
+    </>
   );
 }

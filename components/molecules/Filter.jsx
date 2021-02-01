@@ -20,6 +20,7 @@ const Filter = (props) => {
     setTotal,
     limit,
     offset,
+    toFirstPage,
   } = props;
 
   const [filter_values, saveFilterValues] = useState(false);
@@ -53,6 +54,10 @@ const Filter = (props) => {
       }, 500);
     }
   }, [filter_values, selected_statuses]);
+
+  useEffect(() => {
+    toFirstPage();
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
     filter_callback(

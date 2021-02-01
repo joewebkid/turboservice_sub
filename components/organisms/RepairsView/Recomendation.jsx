@@ -63,7 +63,8 @@ const set_recomendations = (
         id +
         (ADVICE_ID ? "/" + ADVICE_ID : "") +
         "?SESSIONID=" +
-        SESSIONID,
+        SESSIONID +
+        "&Formats=1",
       changedRecomendations,
       {
         headers: {
@@ -245,43 +246,50 @@ const Recomendation = (props) => {
                     date.setMonth(date.getMonth() + 1);
                     return struct.type != "hidden" ? (
                       <td scope="col" className="datapicker-top-left" key={ik}>
-                        {status != 2 ? (
-                          struct.type == "date" ? (
-                            <DataInput
-                              callback={(e) => {
-                                tempArr[key][struct.slug] = formatDateForPost(
-                                  e
-                                );
-
-                                setTempRecomendations([...tempArr]);
-                                setChangedStringId(key);
-                              }}
-                              value={recomendation[struct.slug]}
-                              defaultDate={date}
-                            />
-                          ) : (
-                            <input
-                              value={recomendation[struct.slug]}
-                              className="form-control"
-                              placehorder="repair order"
-                              readOnly={!loadDebounce ? true : false}
-                              onChange={(e) => {
-                                if (loadDebounce) {
-                                  tempArr[key][struct.slug] = e.target.value;
+                        <FlexBlock style={{}}>
+                          {status != 2 ? (
+                            struct.type == "date" ? (
+                              <DataInput
+                                callback={(e) => {
+                                  tempArr[key][struct.slug] = formatDateForPost(
+                                    e
+                                  );
 
                                   setTempRecomendations([...tempArr]);
                                   setChangedStringId(key);
-                                }
-                              }}
-                            />
-                          )
-                        ) : (
-                          <FlexBlock style={{}}>
-                            {struct.type == "date"
-                              ? formatDateForView(recomendation[struct.slug])
-                              : recomendation[struct.slug]}
-                          </FlexBlock>
-                        )}
+                                }}
+                                value={recomendation[struct.slug]}
+                                defaultDate={date}
+                              />
+                            ) : (
+                              <input
+                                value={recomendation[struct.slug]}
+                                className="form-control"
+                                placehorder="repair order"
+                                readOnly={!loadDebounce ? true : false}
+                                onChange={(e) => {
+                                  if (loadDebounce) {
+                                    tempArr[key][struct.slug] = e.target.value;
+
+                                    setTempRecomendations([...tempArr]);
+                                    setChangedStringId(key);
+                                  }
+                                }}
+                              />
+                            )
+                          ) : (
+                            <FlexBlock style={{}}>
+                              {struct.type == "date"
+                                ? formatDateForView(recomendation[struct.slug])
+                                : recomendation[struct.slug]}
+                            </FlexBlock>
+                          )}
+                          {struct.required ? (
+                            <Block className="requiredBlock"></Block>
+                          ) : (
+                            ""
+                          )}
+                        </FlexBlock>
                       </td>
                     ) : (
                       <></>

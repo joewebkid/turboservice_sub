@@ -90,13 +90,13 @@ const get_order_info = (callback, id, router, SESSIONID) => {
       .catch(function (error) {
         // console.log(error);
         if (error.response && error.response.status == 401) {
-          router.push("/login?session");
+          router.push("/login?session&&redirectto=order/" + id);
         }
       });
 };
 
 const Index = (props) => {
-  const { SESSIONID, OrdersLogout } = props;
+  const { SESSIONID } = props;
   const router = useRouter();
 
   const [order_info, setOrderInfo] = useState(false);
@@ -125,68 +125,14 @@ const Index = (props) => {
       {message.show ? <MessageToast {...message} /> : <></>}
       {order_info ? (
         <>
-          <Block className="box p-5 mb-5">
-            <TopSection order_info={order_info} />
-            {/* Button group for order start and finish */}
-            <RequestSection
-              order_info={order_info}
-              callback_start={() => {
-                set_order_info(
-                  setOrderInfo,
-                  router.query.id,
-                  router,
-                  SESSIONID,
-                  {
-                    ...order_info,
-                    JOB_STARTED_DATE: formatDateForPost(),
-                  },
-                  false,
-                  setMessage
-                );
-              }}
-              callback_cancel={() => {
-                set_order_info(
-                  setOrderInfo,
-                  router.query.id,
-                  router,
-                  SESSIONID,
-                  {
-                    ...order_info,
-                    JOB_STARTED_DATE: "",
-                  },
-                  false,
-                  setMessage
-                );
-              }}
-              callback_done={() => {
-                if (confirm("Are you sure you want to finish this order?")) {
-                  set_order_info(
-                    setOrderInfo,
-                    router.query.id,
-                    router,
-                    SESSIONID,
-                    {
-                      ...order_info,
-                      ORDER_STATUS_ID: 2,
-                      ORDER_STATUS_NAME: "COMPLETED",
-                      JOBS_DONE_DATE: formatDateForPost(),
-                    },
-                    "done"
-                  );
-                } else {
-                  // alert("Вы нажали кнопку отмена");
-                }
-              }}
-              status={order_info["ORDER_STATUS_ID"]}
-            />
+          <Block>
+            <Block className="box p-5 mb-3">
+              <TopSection order_info={order_info} />
+              {/* Button group for order start and finish */}
 
-            <FlexBlock justify="space-between" style={{ position: "relative" }}>
-              {/* Type, order contactor id and milage */}
-              <OrderInfoSection
+              <RequestSection
                 order_info={order_info}
-                SESSIONID={SESSIONID}
-                id={router.query.id}
-                callback={(order_info_section) => {
+                callback_start={() => {
                   set_order_info(
                     setOrderInfo,
                     router.query.id,
@@ -194,19 +140,13 @@ const Index = (props) => {
                     SESSIONID,
                     {
                       ...order_info,
-                      ...order_info_section,
+                      JOB_STARTED_DATE: formatDateForPost(),
                     },
                     false,
                     setMessage
                   );
                 }}
-                status={order_info["ORDER_STATUS_ID"]}
-              />
-              {/* Start time, Estimated and jobs done time */}
-              <TimeInfoSection
-                order_info={order_info}
-                SESSIONID={SESSIONID}
-                callback={(order_info_section) => {
+                callback_cancel={() => {
                   set_order_info(
                     setOrderInfo,
                     router.query.id,
@@ -214,46 +154,120 @@ const Index = (props) => {
                     SESSIONID,
                     {
                       ...order_info,
-                      ...order_info_section,
+                      JOB_STARTED_DATE: "",
                     },
                     false,
                     setMessage
                   );
                 }}
+                callback_done={() => {
+                  if (confirm("Are you sure you want to finish this order?")) {
+                    set_order_info(
+                      setOrderInfo,
+                      router.query.id,
+                      router,
+                      SESSIONID,
+                      {
+                        ...order_info,
+                        ORDER_STATUS_ID: 2,
+                        ORDER_STATUS_NAME: "COMPLETED",
+                        JOBS_DONE_DATE: formatDateForPost(),
+                      },
+                      "done"
+                    );
+                  } else {
+                    // alert("Вы нажали кнопку отмена");
+                  }
+                }}
                 status={order_info["ORDER_STATUS_ID"]}
               />
-            </FlexBlock>
+            </Block>
+
+            <Block className="box p-5 mb-3">
+              <FlexBlock
+                justify="space-between"
+                style={{ position: "relative" }}
+              >
+                {/* Type, order contactor id and milage */}
+                <OrderInfoSection
+                  order_info={order_info}
+                  SESSIONID={SESSIONID}
+                  id={router.query.id}
+                  callback={(order_info_section) => {
+                    set_order_info(
+                      setOrderInfo,
+                      router.query.id,
+                      router,
+                      SESSIONID,
+                      {
+                        ...order_info,
+                        ...order_info_section,
+                      },
+                      false,
+                      setMessage
+                    );
+                  }}
+                  status={order_info["ORDER_STATUS_ID"]}
+                />
+                {/* Start time, Estimated and jobs done time */}
+                <TimeInfoSection
+                  order_info={order_info}
+                  SESSIONID={SESSIONID}
+                  callback={(order_info_section) => {
+                    set_order_info(
+                      setOrderInfo,
+                      router.query.id,
+                      router,
+                      SESSIONID,
+                      {
+                        ...order_info,
+                        ...order_info_section,
+                      },
+                      false,
+                      setMessage
+                    );
+                  }}
+                  status={order_info["ORDER_STATUS_ID"]}
+                />
+              </FlexBlock>
+            </Block>
             {/* Jobs list */}
-            <JobsSection
-              SESSIONID={SESSIONID}
-              refreshPage={() => setRefresh(refresh + 1)}
-              refresh={refresh}
-              status={order_info["ORDER_STATUS_ID"]}
-              setTotal={setJobsTotal}
-            />
-            {/* Spare parts and materials */}
-            <MaterialsSection
-              SESSIONID={SESSIONID}
-              refresh={refresh}
-              status={order_info["ORDER_STATUS_ID"]}
-              total={total}
-              jobsTotal={jobsTotal}
-              setTotal={setTotal}
-            />
+            <Block className="box p-5 mb-3">
+              <JobsSection
+                SESSIONID={SESSIONID}
+                refreshPage={() => setRefresh(refresh + 1)}
+                refresh={refresh}
+                status={order_info["ORDER_STATUS_ID"]}
+                setTotal={setJobsTotal}
+              />
+              {/* Spare parts and materials */}
+              <MaterialsSection
+                SESSIONID={SESSIONID}
+                refresh={refresh}
+                status={order_info["ORDER_STATUS_ID"]}
+                total={total}
+                jobsTotal={jobsTotal}
+                setTotal={setTotal}
+              />
+            </Block>
             {/* Recomendation lists */}
-            <Recomendation
-              SESSIONID={SESSIONID}
-              refresh={refresh}
-              status={order_info["ORDER_STATUS_ID"]}
-            />
+            <Block className="box p-5 mb-3">
+              <Recomendation
+                SESSIONID={SESSIONID}
+                refresh={refresh}
+                status={order_info["ORDER_STATUS_ID"]}
+              />
+            </Block>
             {/* Attached files list */}
-            <Attached
-              SESSIONID={SESSIONID}
-              refresh={refresh}
-              status={order_info["ORDER_STATUS_ID"]}
-            />
+
+            <Block className="box p-5 mb-3">
+              <Attached
+                SESSIONID={SESSIONID}
+                refresh={refresh}
+                status={order_info["ORDER_STATUS_ID"]}
+              />
+            </Block>
           </Block>
-          <OrdersLogout />
         </>
       ) : (
         <></>

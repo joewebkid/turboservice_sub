@@ -48,37 +48,16 @@ const OrderView = () => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <Container
-      fluid
-      className="login-container orders-list-container order-container"
-    >
+    <>
       <TopOrderView
         repair_order_list
         user_info={user_info}
         SESSIONID={SESSIONID}
       />
-      <RepairView
-        SESSIONID={SESSIONID}
-        OrdersLogout={() => {
-          return SESSIONID ? (
-            <FlexBlock
-              className={"btn btn-link" + (loading ? " loading" : "")}
-              justify="center"
-              onClick={() => {
-                if (!loading) {
-                  setLoading(true);
-                  logout(SESSIONID, router);
-                }
-              }}
-            >
-              Logout {loading ? <Spinner animation="grow" /> : <></>}
-            </FlexBlock>
-          ) : (
-            <></>
-          );
-        }}
-      />
-    </Container>
+      <Container fluid className="mt-3 orders-list-container order-container">
+        <RepairView SESSIONID={SESSIONID} />
+      </Container>
+    </>
   );
 };
 
