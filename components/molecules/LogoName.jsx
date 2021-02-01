@@ -5,7 +5,8 @@ import FlexBlock from "../atoms/FlexBlock";
 
 const LogoName = (props) => {
   const [loading, setLoading] = useState(false);
-  const { user_info, SESSIONID } = props;
+  const { user_info, SESSIONID, logout, router } = props;
+  console.log(logout);
   return (
     <Block>
       <FlexBlock className="imageLogoBlock">

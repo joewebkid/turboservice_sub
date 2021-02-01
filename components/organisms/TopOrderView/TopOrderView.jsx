@@ -13,6 +13,8 @@ const TopOrderView = (props) => {
     SESSIONID,
     loading,
     shownModal,
+    logout,
+    router,
   } = props;
   return (
     <>
@@ -65,7 +67,12 @@ const TopOrderView = (props) => {
             ) : (
               <></>
             )}
-            <LogoName user_info={user_info} SESSIONID={SESSIONID} />
+            <LogoName
+              user_info={user_info}
+              SESSIONID={SESSIONID}
+              logout={logout}
+              router={router}
+            />
           </FlexBlock>
         </Container>
       </Section>

@@ -6,6 +6,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Block from "../components/atoms/Block";
 import FlexBlock from "../components/atoms/FlexBlock";
 import RepairsOrders from "../components/organisms/RepairsOrders/RepairsOrders";
+import Statistics from "../components/organisms/TopOrderView/Statistics";
 import TopOrderView from "../components/organisms/TopOrderView/TopOrderView";
 
 const get_user_data = (callback, router, setShownModal) => {
@@ -65,8 +66,11 @@ export default function Home() {
         SESSIONID={SESSIONID}
         loading={loading}
         shownModal={shownModal}
+        router={router}
+        logout={logout}
       />
       <Container fluid className="mt-3 orders-list-container">
+        <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
         <FlexBlock>
           {/* <Block>1</Block> */}
           {tab == 0 ? (

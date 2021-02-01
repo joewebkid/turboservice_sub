@@ -21,7 +21,7 @@ const auth_login = (
   router
 ) => {
   return axios
-    .get(process.env.NEXT_PUBLIC_URL + "/api-v2/auth/login", {
+    .get(process.env.NEXT_PUBLIC_URL + "/api-v2/auth/login?Locale=1033", {
       auth: {
         username: login,
         password: password,

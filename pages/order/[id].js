@@ -53,6 +53,8 @@ const OrderView = () => {
         repair_order_list
         user_info={user_info}
         SESSIONID={SESSIONID}
+        router={router}
+        logout={logout}
       />
       <Container fluid className="mt-3 orders-list-container order-container">
         <RepairView SESSIONID={SESSIONID} />
