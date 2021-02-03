@@ -23,13 +23,17 @@ const TopOrderView = (props) => {
           fluid
           className=" orders-list-container order-container pb-3 pt-3"
         >
-          <FlexBlock justify="space-between">
+          <FlexBlock justify="space-between" style={{ paddingLeft: 250 }}>
             <Block className="leftStatBlock">
-              <img
-                src="/TLT-Logo.png"
-                alt="Aktsiaselts Tallinna Linnatransport (TLT)"
-                height="64"
-              />
+              {repair_order_list ? (
+                <img
+                  src="/TLT-Logo.png"
+                  alt="Aktsiaselts Tallinna Linnatransport (TLT)"
+                  height="64"
+                />
+              ) : (
+                <></>
+              )}
 
               {repair_order_list ? (
                 <Block>
@@ -53,7 +57,9 @@ const TopOrderView = (props) => {
                   </CustomLink>
                 </Block>
               ) : (
-                <h5>Repair orders</h5>
+                <FlexBlock align="center" style={{ height: "100%" }}>
+                  <h5>Repair orders</h5>
+                </FlexBlock>
               )}
             </Block>
 

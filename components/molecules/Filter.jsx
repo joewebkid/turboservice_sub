@@ -35,7 +35,6 @@ const Filter = (props) => {
 
   // console.log(filter_values, selected_statuses);
   useEffect(() => {
-    console.log(selectStatus);
     if (!isSearching) {
       let stringInput = Object.keys(filter_values)
         .map(function (i) {
@@ -49,7 +48,28 @@ const Filter = (props) => {
   }, [filter_values, selectStatus]);
 
   useEffect(() => {
-    toFirstPage();
+    if (isFirstTime) {
+      setIsFirstTime(false);
+      return;
+    }
+    if (!isSearching) {
+      toFirstPage();
+      setIsSearching(true);
+      setDataLoading(true);
+      filter_callback(
+        saveData,
+        SESSIONID,
+        search_string,
+        setIsSearching,
+        setTotal,
+        0,
+        limit
+      );
+      setTimeout(() => {
+        setIsSearching(false);
+        setDataLoading(false);
+      }, 500);
+    }
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
@@ -74,24 +94,14 @@ const Filter = (props) => {
         setDataLoading(false);
       }, 500);
     }
-  }, [debouncedSearchTerm, offset, limit]);
-
-  // const handleSubmit = (event) => {
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //   }
-
-  //   setValidated(true);
-  // };
+  }, [offset, limit]);
 
   return (
     <>
       {headers.map((h, key) => (
         <th className={isSearching ? "loadingBlock" : ""} key={key}>
           {h.type == "text" ? (
-            <Block className="filterControll">
+            <FlexBlock className="filterControll">
               <Form.Control
                 required
                 type="text"
@@ -103,8 +113,27 @@ const Filter = (props) => {
                   });
                 }}
                 readonly={isSearching ? 1 : false}
+                value={filter_values[h.filter]}
               />
-            </Block>
+              {filter_values[h.filter] != "" &&
+              filter_values[h.filter] != undefined ? (
+                <FlexBlock className="deleteBlockRight">
+                  <FlexBlock
+                    className="deleteLink delFilter"
+                    onClick={() => {
+                      saveFilterValues({
+                        ...filter_values,
+                        [h.filter]: "",
+                      });
+                    }}
+                  >
+                    ✕
+                  </FlexBlock>
+                </FlexBlock>
+              ) : (
+                <></>
+              )}
+            </FlexBlock>
           ) : h.type == "date" ? (
             <FlexBlock className="dateRangeFilter">
               <DataInput

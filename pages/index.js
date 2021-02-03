@@ -69,23 +69,25 @@ export default function Home() {
         router={router}
         logout={logout}
       />
-      <Container fluid className="mt-3 orders-list-container">
-        <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
-        <FlexBlock>
-          {/* <Block>1</Block> */}
-          {tab == 0 ? (
-            <RepairsOrders
-              SESSIONID={SESSIONID}
-              setLoading={setLoading}
-              loading={loading}
-            />
-          ) : tab == 1 ? (
-            <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
-          ) : (
-            <></>
-          )}
-        </FlexBlock>
-      </Container>
+      <Block fluid className="">
+        <Block className="indexBlock">
+          <Block className="leftBlock">
+            <Block className="menuLeft">1</Block>
+          </Block>
+          <FlexBlock justify="center">
+            <Block className={tab == 0 ? "m-3 mw" : "m-3 mw hide"}>
+              <RepairsOrders
+                SESSIONID={SESSIONID}
+                setLoading={setLoading}
+                loading={loading}
+              />
+            </Block>
+            <Block className={tab == 1 ? "m-3 mw" : "m-3 mw hide"}>
+              <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
+            </Block>
+          </FlexBlock>
+        </Block>
+      </Block>
     </>
   );
 }

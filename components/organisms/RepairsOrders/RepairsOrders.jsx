@@ -199,13 +199,7 @@ const RepairsOrders = (props) => {
               <>
                 <tr
                   c={order["ORDER_STATUS_ID"]}
-                  className={
-                    order["ORDER_STATUS_ID"] == 2
-                      ? "success"
-                      : order["ORDER_STATUS_ID"] == 1
-                      ? "warning"
-                      : "second"
-                  }
+                  className={key % 2 ? "second" : ""}
                   key={key}
                   onDoubleClick={() => {
                     router.push("/order/" + order["WORKORDER_ID"]);
@@ -230,13 +224,7 @@ const RepairsOrders = (props) => {
                   })}
                 </tr>
                 <tr
-                  className={
-                    order["ORDER_STATUS_ID"] == 2
-                      ? "success"
-                      : order["ORDER_STATUS_ID"] == 1
-                      ? "warning"
-                      : "second"
-                  }
+                  className={key % 2 ? "second" : ""}
                   onDoubleClick={() => {
                     router.push("/order/" + order["WORKORDER_ID"]);
                   }}
