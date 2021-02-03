@@ -418,12 +418,14 @@ const JobsSection = (props) => {
             <Block
               className="text-left btn btn-link"
               onClick={() => {
-                delete_jobs(
-                  console.log,
-                  router.query.id,
-                  SESSIONID,
-                  setMessage
-                );
+                if (confirm("Are you sure want to delete all records?")) {
+                  delete_jobs(
+                    console.log,
+                    router.query.id,
+                    SESSIONID,
+                    setMessage
+                  );
+                }
               }}
             >
               Удалить все
@@ -559,17 +561,21 @@ const JobsSection = (props) => {
                             (!loadDebounce ? "loadDebounce" : "")
                           }
                           onClick={() => {
-                            if (loadDebounce) {
-                              if (job["JOB_ID"])
-                                delete_job(
-                                  setJobs,
-                                  router.query.id,
-                                  SESSIONID,
-                                  job["JOB_ID"],
-                                  jobs
-                                );
-                              else {
-                                setJobs(jobs.filter((f, k) => k != key));
+                            if (
+                              confirm(" Are you sure want to delete record?")
+                            ) {
+                              if (loadDebounce) {
+                                if (job["JOB_ID"])
+                                  delete_job(
+                                    setJobs,
+                                    router.query.id,
+                                    SESSIONID,
+                                    job["JOB_ID"],
+                                    jobs
+                                  );
+                                else {
+                                  setJobs(jobs.filter((f, k) => k != key));
+                                }
                               }
                             }
                           }}
