@@ -173,7 +173,7 @@ const addNew = (materials, setMaterials, materials_struct, user_info) => {
   let empty_object = {};
   titles.forEach((key, index) => {
     empty_object[`${key}`] =
-      "PART_BRAND" == key
+      "PART_BRAND" == key && user_info.DEFAULT_BRAND
         ? user_info.DEFAULT_BRAND
         : materials_struct[index].default || "";
   });
