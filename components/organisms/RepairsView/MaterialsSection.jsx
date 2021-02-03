@@ -166,20 +166,31 @@ const delete_material = (callback, id, SESSIONID, PART_ID, materials) => {
     });
 };
 
-const addNew = (materials, setMaterials, materials_struct) => {
+const addNew = (materials, setMaterials, materials_struct, user_info) => {
   const titles = materials_struct.map((s) => {
     return s.slug;
   });
   let empty_object = {};
   titles.forEach((key, index) => {
-    empty_object[`${key}`] = materials_struct[index].default || "";
+    empty_object[`${key}`] =
+      "PART_BRAND" == key
+        ? user_info.DEFAULT_BRAND
+        : materials_struct[index].default || "";
   });
 
   setMaterials([...materials, empty_object]);
 };
 
 const MaterialsSection = (props) => {
-  const { SESSIONID, refresh, status, setTotal, total, jobsTotal } = props;
+  const {
+    SESSIONID,
+    refresh,
+    status,
+    setTotal,
+    total,
+    jobsTotal,
+    user_info,
+  } = props;
   const router = useRouter();
   let material_sum = {};
 
@@ -421,7 +432,7 @@ const MaterialsSection = (props) => {
               onClick={() => {
                 if (loadDebounce) {
                   setAddNewStringFlag(1);
-                  addNew(materials, setMaterials, materials_struct);
+                  addNew(materials, setMaterials, materials_struct, user_info);
                 }
               }}
             >

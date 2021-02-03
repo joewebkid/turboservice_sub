@@ -95,7 +95,7 @@ const get_order_info = (callback, id, router, SESSIONID) => {
 };
 
 const Index = (props) => {
-  const { SESSIONID } = props;
+  const { SESSIONID, user_info } = props;
   const router = useRouter();
 
   const [order_info, setOrderInfo] = useState(false);
@@ -247,6 +247,7 @@ const Index = (props) => {
                 total={total}
                 jobsTotal={jobsTotal}
                 setTotal={setTotal}
+                user_info={user_info}
               />
             </Block>
             {/* Recomendation lists */}
