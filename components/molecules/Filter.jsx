@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Form, InputGroup } from "react-bootstrap";
+import { Button, Form, InputGroup, Spinner } from "react-bootstrap";
 import Block from "../atoms/Block";
 import DataInput from "../atoms/DataInput";
 import FilterData from "../atoms/FilterInput/FilterData";
@@ -13,7 +13,7 @@ import { formatDate } from "./data";
 const Filter = (props) => {
   const {
     headers,
-    statuses,
+    // statuses,
     saveData,
     SESSIONID,
     filter_callback,
@@ -21,54 +21,59 @@ const Filter = (props) => {
     limit,
     offset,
     toFirstPage,
+    selectStatus,
+    setDataLoading,
   } = props;
 
   const [filter_values, saveFilterValues] = useState(false);
   const [selected_statuses, setSelectedStatuses] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [search_string, setSearchString] = useState("");
+  const [isFirstTime, setIsFirstTime] = useState(1);
 
   const debouncedSearchTerm = useDebounce(search_string, 500);
 
   // console.log(filter_values, selected_statuses);
   useEffect(() => {
+    console.log(selectStatus);
     if (!isSearching) {
-      setIsSearching(true);
       let stringInput = Object.keys(filter_values)
         .map(function (i) {
           return [i, filter_values[i]].join("=");
         })
         .join("&");
-      if (selected_statuses)
-        stringInput =
-          stringInput +
-          "&" +
-          selected_statuses
-            .map(function (s) {
-              return ["OrderStatusID[]", s].join("=");
-            })
-            .join("&");
+
+      stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
       setSearchString(stringInput);
-      setTimeout(() => {
-        setIsSearching(false);
-      }, 500);
     }
-  }, [filter_values, selected_statuses]);
+  }, [filter_values, selectStatus]);
 
   useEffect(() => {
     toFirstPage();
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
-    filter_callback(
-      saveData,
-      SESSIONID,
-      search_string,
-      setIsSearching,
-      setTotal,
-      offset,
-      limit
-    );
+    if (isFirstTime) {
+      setIsFirstTime(false);
+      return;
+    }
+    if (!isSearching) {
+      setIsSearching(true);
+      setDataLoading(true);
+      filter_callback(
+        saveData,
+        SESSIONID,
+        search_string,
+        setIsSearching,
+        setTotal,
+        offset,
+        limit
+      );
+      setTimeout(() => {
+        setIsSearching(false);
+        setDataLoading(false);
+      }, 500);
+    }
   }, [debouncedSearchTerm, offset, limit]);
 
   // const handleSubmit = (event) => {
@@ -97,6 +102,7 @@ const Filter = (props) => {
                     [h.filter]: e.target.value,
                   });
                 }}
+                readonly={isSearching ? 1 : false}
               />
             </Block>
           ) : h.type == "date" ? (
@@ -114,6 +120,7 @@ const Filter = (props) => {
                     [h.filterFrom]: formDate,
                   });
                 }}
+                readonly={isSearching ? 1 : false}
               />
               <DataInput
                 short
@@ -128,6 +135,7 @@ const Filter = (props) => {
                     [h.filterTo]: formDate,
                   });
                 }}
+                readonly={isSearching}
               />
             </FlexBlock>
           ) : h.type == "select" ? (
@@ -142,6 +150,18 @@ const Filter = (props) => {
           )}
         </th>
       ))}
+
+      {isSearching ? (
+        <FlexBlock
+          justify="center"
+          align="center"
+          className="loadingSpinnerBlock"
+        >
+          <Spinner animation="grow" />
+        </FlexBlock>
+      ) : (
+        <></>
+      )}
     </>
   );
   // return (

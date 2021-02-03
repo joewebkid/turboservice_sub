@@ -40,7 +40,7 @@ const RequestSection = (props) => {
                   onClick={() => {
                     if (
                       confirm(
-                        "Warring. Are you sure cancel start repair order?"
+                        "Warning. Are you sure cancel start repair order?"
                       )
                     ) {
                       callback_cancel();

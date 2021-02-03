@@ -34,6 +34,7 @@ const OrderInfoSection = (props) => {
 
   const [types, setTypes] = useState([]);
   const [order_info_section, SetOrderInfo] = useState(order_info);
+  const [isFirstTime, setIsFirstTime] = useState(1);
 
   useEffect(() => {
     if (SESSIONID) get_types(setTypes, SESSIONID);
@@ -42,6 +43,10 @@ const OrderInfoSection = (props) => {
   const debouncedSearchTerm = useDebounce(order_info_section, 500);
 
   useEffect(() => {
+    if (isFirstTime) {
+      setIsFirstTime(0);
+      return 0;
+    }
     callback(order_info_section);
   }, [debouncedSearchTerm]);
 
@@ -59,12 +64,12 @@ const OrderInfoSection = (props) => {
                     value={order_info_section["CONTRACTOR_WORKORDER"] || ""}
                     className="form-control"
                     placehorder="repair order"
-                    onChange={(e) =>
+                    onChange={(e) => {
                       SetOrderInfo({
                         ...order_info,
                         CONTRACTOR_WORKORDER: e.target.value,
-                      })
-                    }
+                      });
+                    }}
                   />
                 ) : (
                   <FlexBlock

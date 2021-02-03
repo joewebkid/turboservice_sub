@@ -9,6 +9,7 @@ import { headers, entity_sizes } from "./data";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Fade from "react-reveal/Fade";
+import StatusTabs from "./StatusTabs";
 
 // Contractors/OrderStatusesList
 const get_statuses = (callback, router, SESSIONID, setLoading) => {
@@ -125,13 +126,16 @@ const RepairsOrders = (props) => {
   const [current_page, setCurrentPage] = useState(-1);
   const [elems_count, setElemCountOnPage] = useState(10);
 
+  const [selectStatus, setSelectStatus] = useState(0);
+
   const [total, setTotal] = useState(false);
   const [limit, setLimit] = useState(false);
   const [offset, setOffset] = useState(false);
 
+  const [dataLoading, setDataLoading] = useState(false);
+
   useEffect(() => {
     if (SESSIONID && router) {
-      // get_orders(setOrders, SESSIONID);
       get_statuses(setStatuses, router, SESSIONID, setLoading);
       setCurrentPage(0);
     }
@@ -143,28 +147,10 @@ const RepairsOrders = (props) => {
       setPages(Math.ceil(orders_length / elems_count));
     else setPages(false);
     setLimit(elems_count);
-
-    // setOrdersByPage(
-    //   orders.slice(
-    //     current_page * elems_count,
-    //     Number(current_page * elems_count) + Number(elems_count)
-    //   )
-    // );
   }, [total, elems_count]);
 
   useEffect(() => {
-    // console.log(
-    //   current_page * elems_count,
-    //   Number(current_page * elems_count) + Number(elems_count)
-    // );
-    // setOrdersByPage(
-    //   orders.slice(
-    //     current_page * elems_count,
-    //     Number(current_page * elems_count) + Number(elems_count)
-    //   )
-    // );
     setOffset(current_page * elems_count);
-    // setLimit(Number(current_page * elems_count) + Number(elems_count));
   }, [current_page]);
 
   if (current_page == -1) return <></>;
@@ -179,22 +165,18 @@ const RepairsOrders = (props) => {
   return (
     <Fade>
       <Section className="border p-4 text-center mb-4 box">
-        <FlexBlock align="center">
-          <Button variant="light" className="mr-2">
-            New
-          </Button>
-          <Button variant="dark" className="mr-2">
-            In progress
-          </Button>
-          <Button variant="dark">Done</Button>
-        </FlexBlock>
-
+        <StatusTabs
+          statuses={statuses}
+          selectStatus={selectStatus}
+          setSelectStatus={setSelectStatus}
+        />
         <Table responsive className="text-center repairs-orders">
           <thead>
             <tr>
               <Filter
+                setDataLoading={setDataLoading}
                 headers={headers}
-                statuses={statuses}
+                selectStatus={selectStatus}
                 saveData={setOrders}
                 SESSIONID={SESSIONID}
                 filter_callback={get_orders}
@@ -212,7 +194,7 @@ const RepairsOrders = (props) => {
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className={dataLoading ? "dataLoading" : ""}>
             {ordersByPage.map((order, key) => (
               <>
                 <tr

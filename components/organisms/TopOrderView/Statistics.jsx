@@ -47,13 +47,14 @@ const get_messages = (callback, SESSIONID, handleShow) => {
         if (
           Messages &&
           Messages.data &&
-          Messages.data[0] &&
-          Messages.data[0].MESSAGE
-        )
+          Messages.data[0] != undefined &&
+          Messages.data[0].MESSAGE != undefined
+        ) {
           callback(Messages.data[0].MESSAGE);
 
-        localStorage.setItem("shown_modal", 1);
-        handleShow();
+          localStorage.setItem("shown_modal", 1);
+          handleShow();
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -86,9 +87,9 @@ const Statistics = (props) => {
 
   return (
     <>
-      <Modal show={show && !shownModal} onHide={handleClose}>
+      <Modal show={show && !shownModal && messages} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Предупреждение</Modal.Title>
+          <Modal.Title>{"Warning"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{messages}</Modal.Body>
         <Modal.Footer>

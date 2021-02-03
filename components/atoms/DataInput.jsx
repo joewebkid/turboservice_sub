@@ -15,8 +15,13 @@ const DataInput = (props) => {
   const [date, setDate] = useState(
     clear ? "" : value || defaultDate || new Date()
   );
+  const [isFirstTime, setIsFirstTime] = useState(1);
 
   useEffect(() => {
+    if (isFirstTime) {
+      setIsFirstTime(0);
+      return;
+    }
     if (date) props.callback(date);
   }, [date]);
 

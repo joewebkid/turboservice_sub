@@ -63,7 +63,9 @@ const set_order_info = (
       }
     })
     .catch(function (error) {
-      console.log(error);
+      if (error.response && error.response.status == 401) {
+        router.push("/login?session&&redirectto=order/" + id);
+      }
       // router.push("/login?session");
     });
 };
@@ -89,9 +91,6 @@ const get_order_info = (callback, id, router, SESSIONID) => {
       })
       .catch(function (error) {
         // console.log(error);
-        if (error.response && error.response.status == 401) {
-          router.push("/login?session&&redirectto=order/" + id);
-        }
       });
 };
 

@@ -14,7 +14,7 @@ const TimeInfoSection = (props) => {
         <tr>
           <th scope="row">Start jobs</th>
 
-          <td>
+          <td className="datapicker-top-left right-215">
             {status != 0 ? (
               status != 2 ? (
                 <FlexBlock justify="flex-end" style={{}}>
@@ -41,7 +41,7 @@ const TimeInfoSection = (props) => {
         <tr>
           <th scope="row">Estimated time end of jobs</th>
 
-          <td>
+          <td className="datapicker-top-left right-215">
             {status != 2 ? (
               <FlexBlock justify="flex-end" style={{}}>
                 <DataInput
@@ -64,7 +64,7 @@ const TimeInfoSection = (props) => {
         <tr>
           <th scope="row">Jobs done</th>
 
-          <td>
+          <td className="datapicker-top-left">
             <FlexBlock style={{ width: 198, float: "right", paddingLeft: 10 }}>
               {order_info.JOBS_DONE_DATE
                 ? formatDateForView(order_info.JOBS_DONE_DATE)
