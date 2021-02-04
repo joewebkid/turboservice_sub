@@ -250,6 +250,9 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 // background-color: #189e82;
 // border-color: #10846b;
 .left-symb {
