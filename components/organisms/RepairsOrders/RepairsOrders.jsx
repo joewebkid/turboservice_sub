@@ -133,6 +133,8 @@ const RepairsOrders = (props) => {
   const [current_page, setCurrentPage] = useState(-1);
   const [elems_count, setElemCountOnPage] = useState(10);
 
+  const [page_input, setpage_input] = useState("");
+
   const [selectStatus, setSelectStatus] = useState(0);
 
   const [total, setTotal] = useState(false);
@@ -142,7 +144,7 @@ const RepairsOrders = (props) => {
   const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
-    console.log(saved_current_page);
+    // console.log(saved_current_page);
     setCurrentPage(saved_current_page);
   }, [saved_current_page]);
 
@@ -166,8 +168,9 @@ const RepairsOrders = (props) => {
   }, [total, elems_count]);
 
   useEffect(() => {
-    console.log(current_page * elems_count);
+    // console.log(current_page * elems_count);
     setOffset(current_page * elems_count);
+    setpage_input(Number(current_page) + 1);
   }, [current_page]);
 
   if (current_page == -1) return <></>;
@@ -288,15 +291,25 @@ const RepairsOrders = (props) => {
 
         <FlexBlock justify="space-between">
           <FlexBlock align="center" className="sizesSelBlock mr-2">
-            <FlexBlock className="mr-2" align="center">
-              Page{" "}
-              <Form.Control
-                style={{ width: 40 }}
-                className="ml-2"
-                onChange={(e) => setCurrentPage(e.target.value - 1)}
-                value={Number(current_page) + 1}
-              />
-            </FlexBlock>
+            {pages ? (
+              <FlexBlock className="mr-2" align="center">
+                Page{" "}
+                <Form.Control
+                  style={{ width: 50 }}
+                  className="ml-2"
+                  onChange={(e) => {
+                    if (pages >= e.target.value) {
+                      setpage_input(e.target.value);
+                      if (e.target.value) setCurrentPage(e.target.value - 1);
+                    }
+                  }}
+                  type="number"
+                  value={page_input}
+                />
+              </FlexBlock>
+            ) : (
+              <></>
+            )}
             <Block>
               Show
               <Block className="selectCont">
