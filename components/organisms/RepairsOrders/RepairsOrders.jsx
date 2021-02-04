@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pagination, Spinner, Table, Button } from "react-bootstrap";
+import { Pagination, Spinner, Table, Button, Form } from "react-bootstrap";
 import Block from "../../atoms/Block";
 import FlexBlock from "../../atoms/FlexBlock";
 import CustomLink from "../../atoms/CustomLink";
@@ -287,24 +287,34 @@ const RepairsOrders = (props) => {
         </Table>
 
         <FlexBlock justify="space-between">
-          <Block className="sizesSelBlock mr-2">
-            Show
-            <Block className="selectCont">
-              <select
-                className="form-control"
-                style={{ padding: ".15rem .15rem" }}
-                onChange={(e) => {
-                  setElemCountOnPage(e.target.value);
-                  setCurrentPage(0);
-                }}
-              >
-                {entity_sizes.map((e) => (
-                  <option selected={e == elems_count}>{e}</option>
-                ))}
-              </select>
+          <FlexBlock align="center" className="sizesSelBlock mr-2">
+            <FlexBlock className="mr-2" align="center">
+              Page{" "}
+              <Form.Control
+                style={{ width: 40 }}
+                className="ml-2"
+                onChange={(e) => setCurrentPage(e.target.value - 1)}
+              />
+            </FlexBlock>
+            <Block>
+              Show
+              <Block className="selectCont">
+                <select
+                  className="form-control"
+                  style={{ padding: ".15rem .15rem" }}
+                  onChange={(e) => {
+                    setElemCountOnPage(e.target.value);
+                    setCurrentPage(0);
+                  }}
+                >
+                  {entity_sizes.map((e) => (
+                    <option selected={e == elems_count}>{e}</option>
+                  ))}
+                </select>
+              </Block>
+              entries {total ? <>of {total}</> : <></>}
             </Block>
-            entries {total ? <>of {total}</> : <></>}
-          </Block>
+          </FlexBlock>
           <Pagination>
             {pages ? (
               <>
