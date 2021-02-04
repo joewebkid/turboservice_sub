@@ -192,12 +192,16 @@ const Recomendation = (props) => {
       }
 
       if (recomendations[changedStringId]) {
-        const changedRecomendations = recomendations[changedStringId];
-        const isFull = !Object.keys(changedRecomendations).find(
-          (e) => e != "ADVICE_ID" && !changedRecomendations[e]
-        );
+        let changedRecomendations = recomendations[changedStringId];
+        const date = new Date();
+        date.setMonth(date.getMonth() + 1);
+        changedRecomendations["ADVICE_FIX_BEFORE"] = changedRecomendations[
+          "ADVICE_FIX_BEFORE"
+        ]
+          ? changedRecomendations["ADVICE_FIX_BEFORE"]
+          : formatDateForPost(date);
 
-        if (isFull)
+        if (changedRecomendations["ADVICE_TEXT"])
           set_recomendations(
             setRecomendations,
             router.query.id,
@@ -221,7 +225,7 @@ const Recomendation = (props) => {
     <>
       {message.show ? <MessageToast {...message} /> : <></>}
       <Section className="text-center mb-1">
-        <Block className="text-left w500">Recommendation</Block>
+        <Block className="text-left w500 headerTableList">Recommendation</Block>
 
         <Table className="relative">
           <thead>
@@ -308,21 +312,21 @@ const Recomendation = (props) => {
                           (!loadDebounce ? "loadDebounce" : "")
                         }
                         onClick={() => {
-                          if (recomendation["ADVICE_ID"])
-                            delete_recomendation(
-                              setRecomendations,
-                              router.query.id,
-                              SESSIONID,
-                              recomendation["ADVICE_ID"],
-                              recomendations
-                            );
-                          else {
-                            setRecomendations(
-                              recomendations.filter((f, k) => k != key)
-                            );
+                          if (confirm(" Are you sure want to delete record?")) {
+                            if (recomendation["ADVICE_ID"])
+                              delete_recomendation(
+                                setRecomendations,
+                                router.query.id,
+                                SESSIONID,
+                                recomendation["ADVICE_ID"],
+                                recomendations
+                              );
+                            else {
+                              setRecomendations(
+                                recomendations.filter((f, k) => k != key)
+                              );
+                            }
                           }
-                          // setAddNewStringFlag(1);
-                          // addNew(jobs, setJobs, jobs_struct);
                         }}
                       >
                         ✕

@@ -51,6 +51,16 @@ const TimeInfoSection = (props) => {
                   type="info"
                   value={order_info.EXPECTED_ISSUE_DATE}
                 />
+                {/* <FlexBlock className="deleteBlockRight">
+                  <FlexBlock
+                    className="deleteLink delFilter"
+                    onClick={() => {
+                      props.callback({ EXPECTED_ISSUE_DATE: "" });
+                    }}
+                  >
+                    ✕
+                  </FlexBlock>
+                </FlexBlock> */}
               </FlexBlock>
             ) : (
               <FlexBlock

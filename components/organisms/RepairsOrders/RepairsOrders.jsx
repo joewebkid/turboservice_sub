@@ -115,7 +115,14 @@ const get_orders = (
 // };
 
 const RepairsOrders = (props) => {
-  const { SESSIONID, setLoading, loading } = props;
+  const {
+    SESSIONID,
+    setLoading,
+    loading,
+    filter_values,
+    filter_status,
+    saved_current_page,
+  } = props;
   const router = useRouter();
 
   const [ordersByPage, setOrders] = useState([]);
@@ -135,9 +142,18 @@ const RepairsOrders = (props) => {
   const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
+    console.log(saved_current_page);
+    setCurrentPage(saved_current_page);
+  }, [saved_current_page]);
+
+  useEffect(() => {
+    setSelectStatus(filter_status);
+  }, [filter_status]);
+
+  useEffect(() => {
     if (SESSIONID && router) {
       get_statuses(setStatuses, router, SESSIONID, setLoading);
-      setCurrentPage(0);
+      setCurrentPage(saved_current_page);
     }
   }, [SESSIONID]);
 
@@ -150,6 +166,7 @@ const RepairsOrders = (props) => {
   }, [total, elems_count]);
 
   useEffect(() => {
+    console.log(current_page * elems_count);
     setOffset(current_page * elems_count);
   }, [current_page]);
 
@@ -173,6 +190,13 @@ const RepairsOrders = (props) => {
         <Table responsive className="text-center repairs-orders">
           <thead>
             <tr>
+              {headers.map((e, key) => (
+                <th scope="col" style={e.style ? e.style : {}} key={key}>
+                  {e.title}
+                </th>
+              ))}
+            </tr>
+            <tr>
               <Filter
                 setDataLoading={setDataLoading}
                 headers={headers}
@@ -180,10 +204,11 @@ const RepairsOrders = (props) => {
                 saveData={setOrders}
                 SESSIONID={SESSIONID}
                 filter_callback={get_orders}
-                toFirstPage={() => setCurrentPage(0)}
+                // toFirstPage={() => setCurrentPage(0)}
                 setTotal={setTotal}
                 limit={limit}
                 offset={offset}
+                filter_values_saved={filter_values}
               />
             </tr>
             <tr>
@@ -267,15 +292,22 @@ const RepairsOrders = (props) => {
               <>
                 {/* <Pagination.First /> */}
                 <Pagination.Prev
-                  onClick={() =>
-                    setCurrentPage(current_page ? current_page - 1 : 0)
-                  }
+                  onClick={() => {
+                    localStorage.setItem(
+                      "current_page",
+                      current_page ? current_page - 1 : 0
+                    );
+                    setCurrentPage(current_page ? current_page - 1 : 0);
+                  }}
                 />
                 {/* <Pagination.Ellipsis /> */}
                 {[...Array(pages).keys()].map((k) => (
                   <Pagination.Item
                     active={current_page == k}
-                    onClick={() => setCurrentPage(k)}
+                    onClick={() => {
+                      setCurrentPage(k);
+                      localStorage.setItem("current_page", k);
+                    }}
                   >
                     {k + 1}
                   </Pagination.Item>
@@ -286,11 +318,15 @@ const RepairsOrders = (props) => {
               <Pagination.Item disabled>{14}</Pagination.Item> */}
                 {/* <Pagination.Ellipsis /> */}
                 <Pagination.Next
-                  onClick={() =>
+                  onClick={() => {
+                    localStorage.setItem(
+                      "current_page",
+                      current_page != pages - 1 ? current_page + 1 : pages - 1
+                    );
                     setCurrentPage(
                       current_page != pages - 1 ? current_page + 1 : pages - 1
-                    )
-                  }
+                    );
+                  }}
                 />
                 {/* <Pagination.Last /> */}
               </>
@@ -298,10 +334,6 @@ const RepairsOrders = (props) => {
               <></>
             )}
           </Pagination>
-
-          <CustomLink href="mailto:Support@CarService.Software">
-            Contact support
-          </CustomLink>
         </FlexBlock>
       </Section>
     </Fade>

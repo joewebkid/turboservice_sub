@@ -316,10 +316,36 @@ a {
   color: #fff;
   border-radius: 4px 4px 0 0;
   &:hover {
+    opacity: 0.9;
   }
   &.active {
     background: #fff;
     border-bottom: 2px solid #fff;
+    color: #212529;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.indexTab {
+  cursor: pointer;
+  padding: 0.375rem 0.75rem;
+  // border: 2px solid #f8f9fa;
+  // border: 2px solid #d8efe9;
+  // background: #d8efe9;
+  border: 2px solid #2dba99;
+  background-color: #2dba99;
+  margin-bottom: -2px;
+  z-index: 1;
+  color: #fff;
+  border-radius: 4px;
+  text-align: center;
+  &:hover {
+    opacity: 0.9;
+  }
+  &.active {
+    background: #fff;
     color: #212529;
   }
 }
@@ -335,6 +361,8 @@ a {
 .leftBlock {
   height: calc(100vh - 128px);
   .menuLeft {
+    position: fixed;
+    top: 0;
     background-color: #fff;
     width: 250px;
     height: 100%;
@@ -342,4 +370,29 @@ a {
 }
 .mw {
   max-width: 1425px;
+}
+
+.leftTopLogo {
+  height: 118px;
+}
+
+.bottomLink {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+.headerTableList {
+  background: #a8e8d8;
+  font-size: 20px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px 4px 0 0;
+}
+.headerTableList .delAllLink {
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  bottom: -6px;
+  background-color: white;
+  border-bottom: 0;
+  padding: 0.275rem 0.75rem;
 }

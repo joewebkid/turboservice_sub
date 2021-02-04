@@ -249,18 +249,23 @@ const MaterialsSection = (props) => {
     <>
       {message.show ? <MessageToast {...message} /> : <></>}
       <Section className="text-center mb-1">
-        <FlexBlock className="text-left w500" justify="space-between">
+        <FlexBlock
+          className="text-left w500 headerTableList"
+          justify="space-between"
+        >
           Spare parts and materials
           {status != 2 ? (
             <Block
-              className="text-left btn btn-link"
+              className="text-left btn btn-link delAllLink"
               onClick={() => {
-                delete_materials(
-                  console.log,
-                  router.query.id,
-                  SESSIONID,
-                  setMessage
-                );
+                if (confirm("Are you sure want to delete all records?")) {
+                  delete_materials(
+                    console.log,
+                    router.query.id,
+                    SESSIONID,
+                    setMessage
+                  );
+                }
               }}
             >
               Удалить все
@@ -366,23 +371,26 @@ const MaterialsSection = (props) => {
                           className="deleteNewString"
                           onClick={() => {
                             // console.log("er");
-                            if (loadDebounce) {
-                              if (material["PART_ID"])
-                                delete_material(
-                                  setMaterials,
-                                  router.query.id,
-                                  SESSIONID,
-                                  material["PART_ID"],
-                                  materials
-                                );
-                              else {
-                                setMaterials(
-                                  materials.filter((f, k) => k != key)
-                                );
+
+                            if (
+                              confirm(" Are you sure want to delete record?")
+                            ) {
+                              if (loadDebounce) {
+                                if (material["PART_ID"])
+                                  delete_material(
+                                    setMaterials,
+                                    router.query.id,
+                                    SESSIONID,
+                                    material["PART_ID"],
+                                    materials
+                                  );
+                                else {
+                                  setMaterials(
+                                    materials.filter((f, k) => k != key)
+                                  );
+                                }
                               }
                             }
-                            // setAddNewStringFlag(1);
-                            // addNew(jobs, setJobs, jobs_struct);
                           }}
                         >
                           ✕

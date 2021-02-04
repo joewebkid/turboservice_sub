@@ -18,61 +18,53 @@ const TopOrderView = (props) => {
   } = props;
   return (
     <>
-      <Section className="text-center white-bg">
+      <Section
+        className="text-center white-bg"
+        style={!repair_order_list ? { paddingLeft: 250 } : {}}
+      >
         <Container
           fluid
           className=" orders-list-container order-container pb-3 pt-3"
         >
-          <FlexBlock justify="space-between" style={{ paddingLeft: 250 }}>
+          <FlexBlock justify="space-between">
             <Block className="leftStatBlock">
               {repair_order_list ? (
-                <img
-                  src="/TLT-Logo.png"
-                  alt="Aktsiaselts Tallinna Linnatransport (TLT)"
-                  height="64"
-                />
-              ) : (
-                <></>
-              )}
-
-              {repair_order_list ? (
-                <Block>
-                  <CustomLink>
-                    <svg
-                      ariaHidden="true"
-                      focusable="false"
-                      dataPrefix="fal"
-                      dataIcon="angle-left"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 192 512"
-                      className="left-symb"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M25.1 247.5l117.8-116c4.7-4.7 12.3-4.7 17 0l7.1 7.1c4.7 4.7 4.7 12.3 0 17L64.7 256l102.2 100.4c4.7 4.7 4.7 12.3 0 17l-7.1 7.1c-4.7 4.7-12.3 4.7-17 0L25 264.5c-4.6-4.7-4.6-12.3.1-17z"
-                      ></path>
-                    </svg>{" "}
-                    Repair orders list
-                  </CustomLink>
-                </Block>
+                <>
+                  <Block>
+                    <img
+                      src="/TLT-Logo.png"
+                      alt="Aktsiaselts Tallinna Linnatransport (TLT)"
+                      height="64"
+                    />
+                  </Block>
+                  <Block>
+                    <CustomLink>
+                      <svg
+                        ariaHidden="true"
+                        focusable="false"
+                        dataPrefix="fal"
+                        dataIcon="angle-left"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 192 512"
+                        className="left-symb"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M25.1 247.5l117.8-116c4.7-4.7 12.3-4.7 17 0l7.1 7.1c4.7 4.7 4.7 12.3 0 17L64.7 256l102.2 100.4c4.7 4.7 4.7 12.3 0 17l-7.1 7.1c-4.7 4.7-12.3 4.7-17 0L25 264.5c-4.6-4.7-4.6-12.3.1-17z"
+                        ></path>
+                      </svg>{" "}
+                      Repair orders list
+                    </CustomLink>
+                  </Block>
+                </>
               ) : (
                 <FlexBlock align="center" style={{ height: "100%" }}>
-                  <h5>Repair orders</h5>
+                  <h4>Repair orders</h4>
                 </FlexBlock>
               )}
             </Block>
 
-            {!repair_order_list ? (
-              <FlexBlock align="center">
-                <Button variant="light" className="mr-2">
-                  Statistics for 30 days
-                </Button>
-                <Button variant="dark">Repair orders</Button>
-              </FlexBlock>
-            ) : (
-              <></>
-            )}
             <LogoName
               user_info={user_info}
               SESSIONID={SESSIONID}

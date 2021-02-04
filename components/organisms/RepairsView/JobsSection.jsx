@@ -412,11 +412,14 @@ const JobsSection = (props) => {
           </FlexBlock>
         </FlexBlock>
 
-        <FlexBlock className="text-left w500" justify="space-between">
+        <FlexBlock
+          className="text-left w500 headerTableList"
+          justify="space-between"
+        >
           Jobs
           {status != 2 ? (
             <Block
-              className="text-left btn btn-link"
+              className="text-left btn btn-link delAllLink"
               onClick={() => {
                 if (confirm("Are you sure want to delete all records?")) {
                   delete_jobs(

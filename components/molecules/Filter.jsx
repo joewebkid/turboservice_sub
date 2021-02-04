@@ -23,9 +23,10 @@ const Filter = (props) => {
     toFirstPage,
     selectStatus,
     setDataLoading,
+    filter_values_saved,
   } = props;
 
-  const [filter_values, saveFilterValues] = useState(false);
+  const [filter_values, saveFilterValues] = useState(filter_values_saved);
   const [selected_statuses, setSelectedStatuses] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [search_string, setSearchString] = useState("");
@@ -36,6 +37,8 @@ const Filter = (props) => {
   // console.log(filter_values, selected_statuses);
   useEffect(() => {
     if (!isSearching) {
+      localStorage.setItem("filter_values", JSON.stringify(filter_values));
+      localStorage.setItem("filter_status", selectStatus);
       let stringInput = Object.keys(filter_values)
         .map(function (i) {
           return [i, filter_values[i]].join("=");
@@ -53,7 +56,7 @@ const Filter = (props) => {
       return;
     }
     if (!isSearching) {
-      toFirstPage();
+      // toFirstPage();
       setIsSearching(true);
       setDataLoading(true);
       filter_callback(
