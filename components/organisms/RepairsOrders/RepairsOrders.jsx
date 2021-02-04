@@ -294,6 +294,7 @@ const RepairsOrders = (props) => {
                 style={{ width: 40 }}
                 className="ml-2"
                 onChange={(e) => setCurrentPage(e.target.value - 1)}
+                value={Number(current_page) + 1}
               />
             </FlexBlock>
             <Block>
