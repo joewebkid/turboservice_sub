@@ -55,7 +55,8 @@ a {
 }
 
 .sizesSelBlock {
-  width: 161px;
+  // width: 161px;
+  width: 190px;
   margin: 10px 0;
   & .selectCont {
     margin: 0 7px;
@@ -395,4 +396,7 @@ a {
   background-color: white;
   border-bottom: 0;
   padding: 0.275rem 0.75rem;
+}
+.table-responsive {
+  min-height: 450px;
 }
