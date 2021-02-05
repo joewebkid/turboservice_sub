@@ -23,7 +23,7 @@ const get_user_data = (
   const filter_values = localStorage.getItem("filter_values");
   const filter_status = localStorage.getItem("filter_status");
   const current_page = localStorage.getItem("current_page");
-  console.log(filter_status);
+  // console.log(filter_status);
   // max_order_in_progess
   const shown_modal = localStorage.getItem("shown_modal");
 

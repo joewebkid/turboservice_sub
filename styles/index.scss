@@ -354,6 +354,10 @@ input[type="number"] {
   &:hover {
     opacity: 0.9;
   }
+  &:active {
+    background-color: #249a7e;
+    border: 2px solid #249a7e;
+  }
   &.active {
     background: #fff;
     color: #212529;

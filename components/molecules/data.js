@@ -27,7 +27,7 @@ export const formatShortDate = (e) => {
     if (month.length < 2) month = "0" + month;
     if (day.length < 2) day = "0" + day;
 
-    return [month, day].join("/");
+    return [day, month].join("/");
   }
 };
 export const formatDateForView = (e, symb = "-") => {

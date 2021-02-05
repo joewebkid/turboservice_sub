@@ -199,21 +199,19 @@ const RepairsOrders = (props) => {
                 </th>
               ))}
             </tr>
-            <tr>
-              <Filter
-                setDataLoading={setDataLoading}
-                headers={headers}
-                selectStatus={selectStatus}
-                saveData={setOrders}
-                SESSIONID={SESSIONID}
-                filter_callback={get_orders}
-                // toFirstPage={() => setCurrentPage(0)}
-                setTotal={setTotal}
-                limit={limit}
-                offset={offset}
-                filter_values_saved={filter_values}
-              />
-            </tr>
+            <Filter
+              setDataLoading={setDataLoading}
+              headers={headers}
+              selectStatus={selectStatus}
+              saveData={setOrders}
+              SESSIONID={SESSIONID}
+              filter_callback={get_orders}
+              // toFirstPage={() => setCurrentPage(0)}
+              setTotal={setTotal}
+              limit={limit}
+              offset={offset}
+              filter_values_saved={filter_values}
+            />
             <tr>
               {headers.map((e, key) => (
                 <th scope="col" style={e.style ? e.style : {}} key={key}>
@@ -343,13 +341,14 @@ const RepairsOrders = (props) => {
                   }}
                 />
                 {/* <Pagination.Ellipsis /> */}
-                {[...Array(pages).keys()].map((k) => (
+                {[...Array(pages).keys()].map((k, key) => (
                   <Pagination.Item
                     active={current_page == k}
                     onClick={() => {
                       setCurrentPage(k);
                       localStorage.setItem("current_page", k);
                     }}
+                    key={key}
                   >
                     {k + 1}
                   </Pagination.Item>

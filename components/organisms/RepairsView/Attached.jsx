@@ -133,14 +133,15 @@ const Attached = (props) => {
               <span
                 className="deleteLink"
                 onClick={() => {
-                  delete_file(
-                    setFiles,
-                    router.query.id,
-                    SESSIONID,
-                    f.FILE_NAME,
-                    files,
-                    key
-                  );
+                  if (confirm("Are you sure want to delete file?"))
+                    delete_file(
+                      setFiles,
+                      router.query.id,
+                      SESSIONID,
+                      f.FILE_NAME,
+                      files,
+                      key
+                    );
                 }}
               >
                 ✕

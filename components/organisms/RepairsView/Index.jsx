@@ -90,7 +90,9 @@ const get_order_info = (callback, id, router, SESSIONID) => {
         // else router.push("/login?session");
       })
       .catch(function (error) {
-        // console.log(error);
+        if (error.response && error.response.status == 401) {
+          router.push("/login?session&&redirectto=order/" + id);
+        }
       });
 };
 

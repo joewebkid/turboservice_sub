@@ -107,8 +107,10 @@ const Statistics = (props) => {
       >
         <thead>
           <tr>
-            {statistic.map((e) => (
-              <th scope="col">{e.title}</th>
+            {statistic.map((e, k) => (
+              <th scope="col" key={k}>
+                {e.title}
+              </th>
             ))}
           </tr>
         </thead>
