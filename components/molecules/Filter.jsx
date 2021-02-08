@@ -201,7 +201,10 @@ const Filter = memo((props) => {
       <tr>
         <td colSpan={headers.length}>
           <FlexBlock justify="flex-end">
-            <div class="indexTab" onClick={() => saveFilterValues({})}>
+            <div
+              class="indexTab"
+              onClick={() => saveFilterValues(filter_values.map((e) => ""))}
+            >
               Clear
             </div>
           </FlexBlock>
