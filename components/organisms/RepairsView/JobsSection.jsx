@@ -444,7 +444,7 @@ const JobsSection = (props) => {
                 }
               }}
             >
-              Удалить все
+              Delete all records
             </Block>
           ) : (
             <></>

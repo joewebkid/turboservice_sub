@@ -416,5 +416,28 @@ input[type="number"] {
 
 @media (max-width: 1250px) {
   .headerBlock {
+    padding-left: 0 !important;
+  }
+  .indexBlock {
+    display: block;
+    & .mw {
+      width: 100%;
+    }
+  }
+  .leftBlock {
+    height: 290px;
+    margin-bottom: -123px;
+    display: flex;
+    justify-content: center;
+    & .menuLeft {
+      position: relative;
+      height: 290px;
+      top: -117px;
+      background: transparent;
+      & .p-4.pt-3 {
+        background: white;
+        padding-bottom: 33px !important;
+      }
+    }
   }
 }

@@ -268,7 +268,7 @@ const MaterialsSection = (props) => {
                 }
               }}
             >
-              Удалить все
+              Delete all records
             </Block>
           ) : (
             <></>
