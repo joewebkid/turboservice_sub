@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Table, Button, Popover, OverlayTrigger, Alert } from "react-bootstrap";
 import Section from "../../atoms/Section";
 import Block from "../../atoms/Block";
@@ -258,18 +258,6 @@ const addNew = (jobs, setJobs, jobs_struct) => {
 };
 // const changeHandler = (value, slug, setJobs, jobs, key) => {};
 
-const popover = (
-  <Popover id="popover-basic">
-    <Popover.Title as="h3">Load from file</Popover.Title>
-    <Popover.Content>
-      You can load{" "}
-      <CustomLink href="/data.xml" target="_blank" download="template.xml">
-        template
-      </CustomLink>
-    </Popover.Content>
-  </Popover>
-);
-
 const JobsSection = (props) => {
   const { SESSIONID, refresh, refreshPage, status, setTotal } = props;
   const router = useRouter();
@@ -279,6 +267,29 @@ const JobsSection = (props) => {
   const [errorText, setErrorText] = useState("");
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [changedStringId, setChangedStringId] = useState(0);
+
+  const popoverRef = useRef(null);
+  const popover = (e) => {
+    return (
+      <Popover id="popover-basic" {...e}>
+        <Popover.Title as="h3">Load from file</Popover.Title>
+        <Popover.Content>
+          You can load{" "}
+          <CustomLink
+            href="/data.xml"
+            target="_blank"
+            download="template.xml"
+            onClick={() => {
+              console.log(popoverRef);
+              popoverRef.current.click();
+            }}
+          >
+            template
+          </CustomLink>
+        </Popover.Content>
+      </Popover>
+    );
+  };
 
   const [message, setMessage] = useState({});
   const [loadDebounce, setLoadDebounce] = useState(true);
@@ -366,6 +377,7 @@ const JobsSection = (props) => {
 
             {status != 2 ? (
               <>
+                <input className="hide" ref={popoverRef} />
                 <label
                   className="btn btn-secondary mr-1"
                   style={{ width: 215, height: 38 }}
@@ -394,7 +406,8 @@ const JobsSection = (props) => {
                 <OverlayTrigger
                   trigger="click"
                   placement="left"
-                  overlay={popover}
+                  overlay={(e) => popover(e)}
+                  rootClose={true}
                 >
                   <Button
                     variant="secondary"
