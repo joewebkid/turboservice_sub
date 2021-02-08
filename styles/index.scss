@@ -413,3 +413,8 @@ input[type="number"] {
 .table-responsive {
   min-height: 450px;
 }
+
+@media (max-width: 1250px) {
+  .headerBlock {
+  }
+}

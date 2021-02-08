@@ -19,7 +19,7 @@ const TopOrderView = (props) => {
   return (
     <>
       <Section
-        className="text-center white-bg"
+        className="text-center white-bg headerBlock"
         style={!repair_order_list ? { paddingLeft: 250 } : {}}
       >
         <Container

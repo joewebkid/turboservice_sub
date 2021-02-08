@@ -31,7 +31,6 @@ const Filter = memo((props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [search_string, setSearchString] = useState("");
   const [isFirstTime, setIsFirstTime] = useState(1);
-  console.log(filter_values);
 
   const debouncedSearchTerm = useDebounce(search_string, 500);
 
@@ -118,7 +117,11 @@ const Filter = memo((props) => {
                     });
                   }}
                   readonly={isSearching ? 1 : false}
-                  value={filter_values[h.filter]}
+                  value={
+                    Object.keys(filter_values).length
+                      ? filter_values[h.filter]
+                      : ""
+                  }
                 />
                 {filter_values[h.filter] != "" &&
                 filter_values[h.filter] != undefined ? (
@@ -201,10 +204,7 @@ const Filter = memo((props) => {
       <tr>
         <td colSpan={headers.length}>
           <FlexBlock justify="flex-end">
-            <div
-              class="indexTab"
-              onClick={() => saveFilterValues(filter_values.map((e) => ""))}
-            >
+            <div class="indexTab" onClick={() => saveFilterValues({})}>
               Clear
             </div>
           </FlexBlock>
