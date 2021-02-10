@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Image, Spinner } from "react-bootstrap";
 import Block from "../atoms/Block";
 import FlexBlock from "../atoms/FlexBlock";
+import { t } from "../translations/data";
 
 const LogoName = (props) => {
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ const LogoName = (props) => {
               }
             }}
           >
-            Logout {loading ? <Spinner animation="grow" /> : <></>}
+            {t("logout")} {loading ? <Spinner animation="grow" /> : <></>}
           </FlexBlock>
         ) : (
           <></>

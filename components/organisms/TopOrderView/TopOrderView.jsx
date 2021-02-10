@@ -5,6 +5,7 @@ import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
 import LogoName from "../../molecules/LogoName";
 import Statistics from "./Statistics";
+import { t } from "../../translations/data";
 
 const TopOrderView = (props) => {
   const {
@@ -54,13 +55,13 @@ const TopOrderView = (props) => {
                           d="M25.1 247.5l117.8-116c4.7-4.7 12.3-4.7 17 0l7.1 7.1c4.7 4.7 4.7 12.3 0 17L64.7 256l102.2 100.4c4.7 4.7 4.7 12.3 0 17l-7.1 7.1c-4.7 4.7-12.3 4.7-17 0L25 264.5c-4.6-4.7-4.6-12.3.1-17z"
                         ></path>
                       </svg>{" "}
-                      Repair orders list
+                      {t("repair_orders_list")}
                     </CustomLink>
                   </Block>
                 </>
               ) : (
                 <FlexBlock align="center" style={{ height: "100%" }}>
-                  <h4>Repair orders</h4>
+                  <h4>{t("repair_orders")}</h4>
                 </FlexBlock>
               )}
             </Block>

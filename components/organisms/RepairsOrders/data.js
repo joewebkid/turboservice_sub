@@ -17,12 +17,14 @@ export const headers = [
     type: "text",
     slug: "CONTRACTOR_WORKORDER",
     filter: "ContractorWorkorder",
+    t: "contractor_order",
   },
   {
     title: "Repair order #",
     type: "text",
     slug: "WORKORDER_NUMBER",
     filter: "RepairOrderNumber",
+    t: "repair_order",
   },
   // {
   //   title: "Request date",
@@ -37,6 +39,7 @@ export const headers = [
     slug: "JOB_STARTED_DATE",
     filterTo: "JobStartedTo",
     filterFrom: "JobStartedFrom",
+    t: "jobs_started",
   },
   {
     title: "Jobs done",
@@ -44,6 +47,7 @@ export const headers = [
     slug: "JOBS_DONE_DATE",
     filterTo: "JobDoneTo",
     filterFrom: "JobDoneFrom",
+    t: "jobs_done",
   },
   // {
   //   title: "Expected issue",
@@ -58,6 +62,7 @@ export const headers = [
     slug: "VEHICLE",
     style: { minWidth: 150 },
     filter: "VehicleContains",
+    t: "vehicle",
   },
   {
     title: "VIN",
@@ -65,6 +70,7 @@ export const headers = [
     slug: "VIN",
     // filter: "VIN",
     filter: "VINContains",
+    t: "vin",
   },
   {
     title: "Plate#",
@@ -72,6 +78,7 @@ export const headers = [
     slug: "PLATE_NUMBER",
     // filter: "Plate",
     filter: "PlateContains",
+    t: "plate",
   },
   // {
   //   title: "Status",

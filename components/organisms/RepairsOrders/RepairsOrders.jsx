@@ -10,6 +10,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Fade from "react-reveal/Fade";
 import StatusTabs from "./StatusTabs";
+import { t } from "../../translations/data";
 
 // Contractors/OrderStatusesList
 const get_statuses = (callback, router, SESSIONID, setLoading) => {
@@ -195,7 +196,7 @@ const RepairsOrders = (props) => {
             <tr>
               {headers.map((e, key) => (
                 <th scope="col" style={e.style ? e.style : {}} key={key}>
-                  {e.title}
+                  {t(e.t)}
                 </th>
               ))}
             </tr>
@@ -215,7 +216,7 @@ const RepairsOrders = (props) => {
             <tr>
               {headers.map((e, key) => (
                 <th scope="col" style={e.style ? e.style : {}} key={key}>
-                  {e.title}
+                  {t(e.t)}
                 </th>
               ))}
             </tr>
@@ -286,7 +287,6 @@ const RepairsOrders = (props) => {
             ))}
           </tbody>
         </Table>
-
         <FlexBlock justify="space-between">
           <FlexBlock align="center" className="sizesSelBlock mr-2">
             {pages ? (

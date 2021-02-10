@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Table, Button } from "react-bootstrap";
 import { statistic } from "./data";
 import axios from "axios";
+import { t } from "../../translations/data";
 
 const get_stat = (callback, SESSIONID) => {
   if (SESSIONID)
@@ -98,7 +99,7 @@ const Statistics = (props) => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <p className="text-left b500">Statistics for 30 days</p>
+      <p className="text-left b500">{t("stat_30")}</p>
       <Table
         bordered
         striped
