@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 
 import axios from "axios";
 import FlexBlock from "../components/atoms/FlexBlock";
+import { t } from "../components/translations/data";
 const save_user_data = (response, SESSIONID, user_auth_data) => {
   localStorage.setItem("user_info", response);
   localStorage.setItem("SESSIONID", SESSIONID);
@@ -56,12 +57,14 @@ export const RememberPasswordPage = () => {
               height="64"
             />
           </FlexBlock>
-          <h3>TLT Repair orders</h3>
-          <h5 className="text-secondary text-center">Restore password</h5>
+          <h3>{t("tlt_Repair_orders")}</h3>
+          <h5 className="text-secondary text-center">
+            {t("restore_password")}
+          </h5>
 
           <Form>
             {router.query.session != undefined ? (
-              <Alert variant="warning">Your session time is expired</Alert>
+              <Alert variant="warning">{t("session_expired")}</Alert>
             ) : (
               <></>
             )}
@@ -85,7 +88,7 @@ export const RememberPasswordPage = () => {
                 className="btnSubmit"
                 onClick={() => auth_login(login, setError, setSuccess, router)}
               >
-                Restore
+                {t("restore")}
               </Button>
             </Form.Group>
             <Form.Group
@@ -93,7 +96,7 @@ export const RememberPasswordPage = () => {
               className="formGroupCenter"
             >
               <a href="/login" className="ForgetPwd">
-                To sign in form
+                {t("to_sign")}
               </a>
             </Form.Group>
           </Form>

@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 
 import axios from "axios";
 import FlexBlock from "../components/atoms/FlexBlock";
+import { t } from "../components/translations/data";
+import Block from "../components/atoms/Block";
 
 const MODAL_SHOWN = 0;
 
@@ -77,8 +79,10 @@ export const LoginPage = () => {
               height="64"
             />
           </FlexBlock>
-          <h3>TLT Repair orders</h3>
-
+          <h3>{t("tlt_Repair_orders")}</h3>
+          <FlexBlock>
+            <Block>ET</Block>|<Block>EN</Block>|<Block>RU</Block>
+          </FlexBlock>
           <Form>
             {router.query.session != undefined ? (
               <Alert variant="warning">Your session time is expired</Alert>
@@ -119,7 +123,7 @@ export const LoginPage = () => {
                   auth_login(login, password, setError, save_user_data, router)
                 }
               >
-                Login
+                {t("login")}
               </Button>
             </Form.Group>
             <Form.Group
@@ -127,7 +131,7 @@ export const LoginPage = () => {
               className="formGroupCenter"
             >
               <a href="/remember" className="ForgetPwd">
-                Restore password
+                {t("restore_password")}
               </a>
             </Form.Group>
           </Form>

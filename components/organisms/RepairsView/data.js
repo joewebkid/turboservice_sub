@@ -7,6 +7,7 @@ export const jobs_struct = [
     xmlName: "name",
     hide: true,
     required: 1,
+    t: "jobs_name",
   },
   {
     title: "Norm hours",
@@ -16,6 +17,7 @@ export const jobs_struct = [
     xmlName: "norm_hour",
     default: "1.00",
     required: 1,
+    t: "norm_hours",
   },
   {
     title: "Amount",
@@ -25,6 +27,7 @@ export const jobs_struct = [
     xmlName: "amount",
     default: "1.00",
     required: 1,
+    t: "amount",
   },
   {
     title: "Price",
@@ -34,6 +37,7 @@ export const jobs_struct = [
     xmlName: "price",
     default: "0.00",
     required: 1,
+    t: "price",
   },
   {
     title: "Id",
@@ -61,6 +65,7 @@ export const materials = [
     style: { minWidth: 155, width: "100%" },
     type: "string",
     required: 1,
+    t: "product_code",
   },
   {
     title: "brand",
@@ -68,6 +73,7 @@ export const materials = [
     style: { minWidth: 200, width: "100%" },
     slug: "PART_BRAND",
     required: 0,
+    t: "brand",
   },
   {
     title: "Product name",
@@ -76,6 +82,7 @@ export const materials = [
     style: { minWidth: 480, width: "100%" },
     type: "string",
     required: 1,
+    t: "product_name",
   },
   {
     title: "Amount",
@@ -84,6 +91,7 @@ export const materials = [
     type: "number",
     default: "1.00",
     required: 1,
+    t: "amount",
   },
   {
     title: "Price",
@@ -92,6 +100,7 @@ export const materials = [
     type: "number",
     default: "0.00",
     required: 1,
+    t: "price",
   },
   {
     title: "Id",
@@ -114,6 +123,7 @@ export const recomendation = [
     type: "text",
     // style: { width: "88%" },
     required: 1,
+    t: "recommendation",
   },
   {
     title: "Fix before",
@@ -121,6 +131,7 @@ export const recomendation = [
     type: "date",
     style: { width: 132 },
     required: 1,
+    t: "fix_before",
   },
   {
     title: "Id",

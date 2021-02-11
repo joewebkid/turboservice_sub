@@ -8,6 +8,7 @@ import { materials as materials_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
 import MessageToast from "./MessageToast";
+import { t } from "../../translations/data";
 
 const get_parts = (callback, id, SESSIONID) => {
   axios
@@ -253,7 +254,7 @@ const MaterialsSection = (props) => {
           className="text-left w500 headerTableList"
           justify="space-between"
         >
-          Spare parts and materials
+          {t("spare_parts_and_materials")}
           {status != 2 ? (
             <Block
               className="text-left btn btn-link delAllLink"
@@ -268,7 +269,7 @@ const MaterialsSection = (props) => {
                 }
               }}
             >
-              Delete all records
+              {t("delete_all")}
             </Block>
           ) : (
             <></>
@@ -278,9 +279,9 @@ const MaterialsSection = (props) => {
           <thead>
             <tr>
               {materials_struct.map((e) =>
-                e.type != "hidden" ? <th scope="col">{e.title}</th> : <></>
+                e.type != "hidden" ? <th scope="col">{t(e.t)}</th> : <></>
               )}
-              <th scope="col">Sum</th>
+              <th scope="col">{t("sum")}</th>
             </tr>
           </thead>
           <tbody>
@@ -455,7 +456,7 @@ const MaterialsSection = (props) => {
             <thead>
               <tr>
                 <th scope="col" style={{ width: "40%" }}>
-                  Total
+                  {t("total")}
                 </th>
                 <th scope="col" style={{ width: "40%" }}>
                   {Number(total).toFixed(2)}
@@ -464,11 +465,11 @@ const MaterialsSection = (props) => {
             </thead>
             <tbody>
               <tr>
-                <th scope="row">VAT</th>
+                <th scope="row">{t("vat")}</th>
                 <td>{Number(total * 0.2).toFixed(2)}</td>
               </tr>
               <tr>
-                <th scope="row">Grand Total</th>
+                <th scope="row">{t("grand_total")}</th>
                 <td>{Number(total + total * 0.2).toFixed(2)}</td>
               </tr>
             </tbody>

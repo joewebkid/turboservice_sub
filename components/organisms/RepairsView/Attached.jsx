@@ -7,6 +7,7 @@ import Block from "../../atoms/Block";
 import { jobs_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 import CustomLink from "../../atoms/CustomLink";
+import { t } from "../../translations/data";
 
 const get_files = (callback, id, SESSIONID) => {
   axios
@@ -122,7 +123,7 @@ const Attached = (props) => {
   return (
     <>
       <Section className="text-left mb-1">
-        <Block className="text-left w500  mb-1">Attached files</Block>
+        <Block className="text-left w500  mb-1">{t("attached_files")}</Block>
         {files.map((f, key) => (
           <Block className="text-left" key={key}>
             <CustomLink target="_blank" href={f.FILE_URL}>
@@ -153,7 +154,7 @@ const Attached = (props) => {
         ))}
         {status != 2 ? (
           <label className="btn btn-secondary mr-1 mt-2">
-            Upload file
+            {t("upload_file")}
             <input
               id="attachedFile"
               onChange={(e) =>

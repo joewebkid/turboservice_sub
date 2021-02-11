@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button, DropdownButton, Dropdown, Table } from "react-bootstrap";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
 import FlexBlock from "../../atoms/FlexBlock";
+import { t } from "../../translations/data";
 
 const get_types = (callback, SESSIONID) => {
   if (SESSIONID)
@@ -55,7 +56,7 @@ const OrderInfoSection = (props) => {
       <Table style={{ maxWidth: 500 }} className="text-left">
         <tbody>
           <tr>
-            <th scope="row">Contractor repair order #</th>
+            <th scope="row">{t("contractor_repair_order")}</th>
 
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
@@ -86,7 +87,7 @@ const OrderInfoSection = (props) => {
             </td>
           </tr>
           <tr>
-            <th scope="row">Milage</th>
+            <th scope="row">{t("milage")}</th>
 
             <td>
               <FlexBlock justify="flex-end" style={{ position: "relative" }}>
@@ -117,7 +118,7 @@ const OrderInfoSection = (props) => {
             </td>
           </tr>
           <tr>
-            <th scope="row">Order type</th>
+            <th scope="row">{t("order_type")}</th>
 
             <td>
               {status != 2 ? (

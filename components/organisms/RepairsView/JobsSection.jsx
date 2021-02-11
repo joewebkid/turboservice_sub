@@ -15,6 +15,7 @@ import { formatDateForPost } from "../../molecules/data";
 import MaskedInput from "react-text-mask";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import Fade from "react-reveal/Fade";
+import { t } from "../../translations/data";
 
 const get_jobs = (callback, id, SESSIONID) => {
   axios
@@ -429,7 +430,7 @@ const JobsSection = (props) => {
           className="text-left w500 headerTableList"
           justify="space-between"
         >
-          Jobs
+          {t("jobs")}
           {status != 2 ? (
             <Block
               className="text-left btn btn-link delAllLink"
@@ -444,7 +445,7 @@ const JobsSection = (props) => {
                 }
               }}
             >
-              Delete all records
+              {t("delete_all")}
             </Block>
           ) : (
             <></>
@@ -459,13 +460,13 @@ const JobsSection = (props) => {
                     scope="col"
                     style={struct.width ? { width: struct.width } : {}}
                   >
-                    {struct.title}
+                    {t(struct.t)}
                   </th>
                 ) : (
                   <></>
                 )
               )}
-              <th scope="col">Sum</th>
+              <th scope="col">{t("sum")}</th>
             </tr>
           </thead>
           <tbody>

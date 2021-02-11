@@ -90,7 +90,7 @@ const Statistics = (props) => {
     <>
       <Modal show={show && !shownModal && messages} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{"Warning"}</Modal.Title>
+          <Modal.Title>{t("attention")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{messages}</Modal.Body>
         <Modal.Footer>
@@ -110,7 +110,7 @@ const Statistics = (props) => {
           <tr>
             {statistic.map((e, k) => (
               <th scope="col" key={k}>
-                {e.title}
+                {t(e.t)}
               </th>
             ))}
           </tr>

@@ -57,8 +57,13 @@ const en = (a = {}) => {
     logout: "Logout",
     tlt_Repair_orders: "TLT Repair orders",
     login: "Login",
+    restore: "Restore",
+    to_sign: "To sign in form",
+    session_expired: "Your session time is expired",
     restore_password: "Restore password",
     attention: "Attention",
+    contact_support: "Contact support",
+    sure_cancel_start: "Warning. Are you sure cancel start repair order?",
   };
 };
 const ru = (a = {}) => {
@@ -117,10 +122,17 @@ const ru = (a = {}) => {
     fix_before: "Устранить до",
     attached_files: "Прикрепленные файлы",
     upload_file: "Загрузить файл",
-    logout: "Logout",
-    tlt_Repair_orders: "TLT Repair orders",
-    login: "Login",
-    restore_password: "Restore password",
+    logout: "Выйти",
+    tlt_Repair_orders: "TLT заказ-наряды",
+    login: "Войти",
+    restore: "Восстановить",
+    to_sign: "К форме входа",
+    session_expired: "Ваша сессия истекла",
+    restore_password: "Восстановить пароль",
+    attention: "Внимание",
+    contact_support: "Служба поддержки",
+    sure_cancel_start:
+      "Внимание. Вы уверены, что хотите отменить начало работ?",
   };
 };
 
@@ -183,8 +195,14 @@ const est = (a = {}) => {
     logout: "Logi välja",
     tlt_Repair_orders: "TLT remondi töökäsud",
     login: "Logi sisse",
+    restore: "Taastama",
+    to_sign: "Vormi allkirjastamiseks",
+    session_expired: "Teie seansi aeg on lõppenud",
     restore_password: "Taasta parool",
     attention: "Hoiatus",
+    contact_support: "Kontakt tugi",
+    sure_cancel_start:
+      "Hoiatus. Kas olete kindel, et tühistate remondi alustamise tellimuse?",
   };
 };
 
@@ -207,7 +225,8 @@ const tMap = (l = "en", a) => {
 };
 
 export const t = (slug, a = {}, l = "est") => {
-  const from_store = localStorage.getItem("lang");
+  const from_store =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : "en";
   const language = from_store ? from_store : l;
 
   return tMap(language, a)[slug];

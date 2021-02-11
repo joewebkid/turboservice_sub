@@ -4,6 +4,7 @@ import FlexBlock from "../../atoms/FlexBlock";
 import Fade from "react-reveal/Fade";
 import DataInput from "../../atoms/DataInput";
 import { formatDateForPost, formatDateForView } from "../../molecules/data";
+import { t } from "../../translations/data";
 
 const TimeInfoSection = (props) => {
   const { order_info } = props;
@@ -12,7 +13,7 @@ const TimeInfoSection = (props) => {
     <Table style={{ maxWidth: 500 }}>
       <tbody>
         <tr>
-          <th scope="row">Start jobs</th>
+          <th scope="row">{t("start_jobs")}</th>
 
           <td className="datapicker-top-left right-215">
             {status != 0 ? (
@@ -39,7 +40,7 @@ const TimeInfoSection = (props) => {
           </td>
         </tr>
         <tr>
-          <th scope="row">Estimated time end of jobs</th>
+          <th scope="row">{t("estimated_time_end_of_jobs")}</th>
 
           <td className="datapicker-top-left right-215">
             {status != 2 ? (
@@ -72,7 +73,7 @@ const TimeInfoSection = (props) => {
           </td>
         </tr>
         <tr>
-          <th scope="row">Jobs done</th>
+          <th scope="row">{t("jobs_done")}</th>
 
           <td className="datapicker-top-left">
             <FlexBlock style={{ width: 198, float: "right", paddingLeft: 10 }}>

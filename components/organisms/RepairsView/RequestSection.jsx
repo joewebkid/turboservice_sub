@@ -5,13 +5,14 @@ import CustomLink from "../../atoms/CustomLink";
 import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
 import Fade from "react-reveal/Fade";
+import { t } from "../../translations/data";
 
 const RequestSection = (props) => {
   const { order_info, callback_start, callback_cancel, callback_done } = props;
   return (
     <>
       <Section className="text-center">
-        <Block className="text-left w500">Repair request</Block>
+        <Block className="text-left w500">{t("repair_request")}</Block>
         <FlexBlock justify="space-between" className="text-left">
           <Block
             className="border p-1 mb-1"
@@ -29,7 +30,7 @@ const RequestSection = (props) => {
                   className="mr-2"
                   onClick={callback_start}
                 >
-                  Start jobs
+                  {t("start_jobs")}
                 </Button>
               </Fade>
             ) : order_info["ORDER_STATUS_ID"] == 1 ? (
@@ -38,19 +39,15 @@ const RequestSection = (props) => {
                   variant="danger"
                   className="mr-2"
                   onClick={() => {
-                    if (
-                      confirm(
-                        "Warning. Are you sure cancel start repair order?"
-                      )
-                    ) {
+                    if (confirm(t("sure_cancel_start"))) {
                       callback_cancel();
                     }
                   }}
                 >
-                  Cancel start
+                  {t("cancel_start")}
                 </Button>
                 <Button variant="success" onClick={callback_done}>
-                  Repair order done
+                  {t("repair_order_done")}
                 </Button>
               </Fade>
             ) : (

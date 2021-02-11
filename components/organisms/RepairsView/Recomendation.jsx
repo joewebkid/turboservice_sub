@@ -15,6 +15,7 @@ import {
   formatDateForView,
 } from "../../molecules/data";
 import MessageToast from "./MessageToast";
+import { t } from "../../translations/data";
 
 const get_recomendations = (callback, id, router, SESSIONID) => {
   axios
@@ -225,7 +226,9 @@ const Recomendation = (props) => {
     <>
       {message.show ? <MessageToast {...message} /> : <></>}
       <Section className="text-center mb-1">
-        <Block className="text-left w500 headerTableList">Recommendation</Block>
+        <Block className="text-left w500 headerTableList">
+          {t("recommendation")}
+        </Block>
 
         <Table className="relative">
           <thead>
@@ -233,7 +236,7 @@ const Recomendation = (props) => {
               {recomendations_struct.map((e, k) =>
                 e.type != "hidden" ? (
                   <th scope="col" key={k} style={e.style ? e.style : {}}>
-                    {e.title}
+                    {t(e.t)}
                   </th>
                 ) : (
                   <></>

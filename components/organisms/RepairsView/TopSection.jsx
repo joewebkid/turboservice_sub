@@ -2,8 +2,10 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import CustomLink from "../../atoms/CustomLink";
 import FlexBlock from "../../atoms/FlexBlock";
+import Block from "../../atoms/Block";
 import Section from "../../atoms/Section";
 import { formatDateForView } from "../../molecules/data";
+import { t } from "../../translations/data";
 
 const TopSection = (props) => {
   const { order_info } = props;
@@ -12,26 +14,28 @@ const TopSection = (props) => {
     <>
       <Section className="text-center mb-4">
         <h5>
-          Repair order for TLT request # {order_info["REQUEST_NUMBER"]} (repair
-          order # {order_info["WORKORDER_NUMBER"]}) from{" "}
-          {formatDateForView(order_info["REQUEST_DATE"], "/")}
+          {t("repair_order_for_tlt_reques", {
+            repair_request_order_id: order_info["REQUEST_NUMBER"],
+            repair_order_id: order_info["WORKORDER_NUMBER"],
+            date: formatDateForView(order_info["REQUEST_DATE"], "/"),
+          })}
         </h5>
-        <Row className="text-left border p-4 mb-4">
-          <Col sm={6}>
+        <FlexBlock
+          justify="space-between"
+          className="text-left border p-4 mb-4"
+        >
+          <Block sm>
             <div>{order_info["VEHICLE"]}</div>
-            <FlexBlock justify="space-between">
-              <span>
-                Registration:{" "}
-                {formatDateForView(order_info["VEHICLE_REGISTRATION_DATE"])}
-              </span>
+            <FlexBlock justify="flex-start">
               <span>
                 {" "}
-                Manufacture year: {order_info["VEHICLE_MANUFACTURE_YEAR"]}
+                {t("manufacture_year")} {order_info["VEHICLE_MANUFACTURE_YEAR"]}
               </span>
             </FlexBlock>
-            <FlexBlock justify="space-between">
+            <FlexBlock justify="flex-start">
               <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                TLT contact:
+                {t("tlt_contact")}
+                &nbsp;
               </span>
               <span className="text-right">
                 {order_info["CONTACT_NAME"]} {order_info["CONTACT_PHONE"]},{" "}
@@ -44,18 +48,24 @@ const TopSection = (props) => {
                 )}
               </span>
             </FlexBlock>
-          </Col>
-          <Col sm>
+          </Block>
+          <Block sm={2} style={{ maxWidth: 290, width: "100%" }}>
             <FlexBlock justify="space-between">
-              <span>LPMR</span>
+              <span>{t("plate")}</span>
               <span>{order_info["PLATE_NUMBER"]}</span>
             </FlexBlock>
             <FlexBlock justify="space-between">
-              <span>GARAGE #:</span>
+              <span>{t("garage")}</span>
               <span>{order_info["GARAGE_NUMBER"]}</span>
             </FlexBlock>
-            <FlexBlock justify="space-between">
-              <span>Status</span>
+          </Block>
+          <Block sm className="text-right">
+            <FlexBlock justify="flex-start">{order_info["VIN"]}</FlexBlock>
+            <FlexBlock justify="flex-start">
+              {t("manufacture_year")} {order_info["VEHICLE_MANUFACTURE_YEAR"]}
+            </FlexBlock>{" "}
+            <FlexBlock justify="space-between" className="mt-2">
+              <span>{t("status")}</span>
               <b
                 className={
                   status == 2
@@ -68,11 +78,8 @@ const TopSection = (props) => {
                 {order_info["ORDER_STATUS_NAME"]}
               </b>
             </FlexBlock>
-          </Col>
-          <Col sm className="text-right">
-            {order_info["VIN"]}
-          </Col>
-        </Row>
+          </Block>
+        </FlexBlock>
       </Section>
     </>
   );

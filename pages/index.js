@@ -9,6 +9,7 @@ import FlexBlock from "../components/atoms/FlexBlock";
 import RepairsOrders from "../components/organisms/RepairsOrders/RepairsOrders";
 import Statistics from "../components/organisms/TopOrderView/Statistics";
 import TopOrderView from "../components/organisms/TopOrderView/TopOrderView";
+import { t } from "../components/translations/data";
 
 const get_user_data = (
   callback,
@@ -127,18 +128,18 @@ export default function Home() {
                   className={"mb-3 indexTab " + (tab == 1 ? "active" : "")}
                   onClick={() => setTab(1)}
                 >
-                  Statistics for 30 days
+                  {t("stat_30")}
                 </Block>
                 <Block
                   className={"mb-3 indexTab " + (tab == 0 ? "active" : "")}
                   onClick={() => setTab(0)}
                 >
-                  Repair orders
+                  {t("repair_orders")}
                 </Block>
               </FlexBlock>
               <FlexBlock justify="center" className="bottomLink pb-3">
                 <CustomLink href="mailto:Support@CarService.Software">
-                  Contact support
+                  {t("contact_support")}
                 </CustomLink>
               </FlexBlock>
             </Block>
