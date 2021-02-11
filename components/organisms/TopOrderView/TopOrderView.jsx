@@ -6,6 +6,7 @@ import Section from "../../atoms/Section";
 import LogoName from "../../molecules/LogoName";
 import Statistics from "./Statistics";
 import { t } from "../../translations/data";
+import LangChooser from "../../atoms/LangChooser";
 
 const TopOrderView = (props) => {
   const {
@@ -65,6 +66,14 @@ const TopOrderView = (props) => {
                 </FlexBlock>
               )}
             </Block>
+
+            <FlexBlock
+              justify="center"
+              align="center"
+              className={repair_order_list ? "" : "lang_block"}
+            >
+              <LangChooser />
+            </FlexBlock>
 
             <LogoName
               user_info={user_info}

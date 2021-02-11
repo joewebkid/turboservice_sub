@@ -26,8 +26,9 @@ const DataInput = (props) => {
   }, [date]);
 
   useEffect(() => {
+    if (!value) setDate(false);
     // if (props.value) setDate(props.value);
-  }, []);
+  }, [value]);
   // console.log(date, 1);
 
   return (

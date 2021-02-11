@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import FlexBlock from "../components/atoms/FlexBlock";
 import { t } from "../components/translations/data";
+import LangChooser from "../components/atoms/LangChooser";
 const save_user_data = (response, SESSIONID, user_auth_data) => {
   localStorage.setItem("user_info", response);
   localStorage.setItem("SESSIONID", SESSIONID);
@@ -61,6 +62,9 @@ export const RememberPasswordPage = () => {
           <h5 className="text-secondary text-center">
             {t("restore_password")}
           </h5>
+          <FlexBlock justify="center">
+            <LangChooser />
+          </FlexBlock>
 
           <Form>
             {router.query.session != undefined ? (

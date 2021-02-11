@@ -55,6 +55,7 @@ const Filter = memo((props) => {
       setIsFirstTime(false);
       return;
     }
+    console.log("isSearching", isSearching);
     if (!isSearching) {
       // toFirstPage();
       setIsSearching(true);
@@ -65,7 +66,7 @@ const Filter = memo((props) => {
         search_string,
         setIsSearching,
         setTotal,
-        0,
+        offset,
         limit
       );
       setTimeout(() => {
@@ -80,7 +81,9 @@ const Filter = memo((props) => {
       setIsFirstTime(false);
       return;
     }
-    if (!isSearching) {
+
+    console.log("isSearching", isSearching);
+    if (!isSearching && offset >= 0) {
       setIsSearching(true);
       setDataLoading(true);
       filter_callback(
@@ -158,6 +161,11 @@ const Filter = memo((props) => {
                     });
                   }}
                   readonly={isSearching ? 1 : false}
+                  value={
+                    Object.keys(filter_values).length
+                      ? filter_values[h.filterFrom]
+                      : ""
+                  }
                 />
                 <DataInput
                   short
@@ -173,6 +181,11 @@ const Filter = memo((props) => {
                     });
                   }}
                   readonly={isSearching}
+                  value={
+                    Object.keys(filter_values).length
+                      ? filter_values[h.filterTo]
+                      : ""
+                  }
                 />
               </FlexBlock>
             ) : h.type == "select" ? (

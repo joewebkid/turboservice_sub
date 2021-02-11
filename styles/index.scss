@@ -440,4 +440,25 @@ input[type="number"] {
       }
     }
   }
+  .lang_block {
+    position: relative;
+    z-index: 2;
+    top: 44px;
+    left: 33px;
+  }
+}
+
+.lang_symb {
+  font-family: "Inter";
+  font-size: 18px;
+  color: #bababa;
+  font-weight: 500;
+  cursor: pointer;
+}
+.active_symb {
+  @extend .lang_symb;
+  color: #555;
+}
+.divider_lang {
+  @extend .lang_symb;
 }

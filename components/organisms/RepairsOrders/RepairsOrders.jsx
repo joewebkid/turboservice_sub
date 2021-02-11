@@ -59,7 +59,7 @@ const get_orders = (
   offset,
   limit
 ) => {
-  // console.log("Я иду на запрос", SESSIONID);
+  console.log("Я иду на запрос", offset);
   if (SESSIONID)
     return axios
       .get(
@@ -145,8 +145,7 @@ const RepairsOrders = (props) => {
   const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
-    // console.log(saved_current_page);
-    setCurrentPage(saved_current_page);
+    if (saved_current_page) setCurrentPage(saved_current_page);
   }, [saved_current_page]);
 
   useEffect(() => {
@@ -169,7 +168,6 @@ const RepairsOrders = (props) => {
   }, [total, elems_count]);
 
   useEffect(() => {
-    // console.log(current_page * elems_count);
     setOffset(current_page * elems_count);
     setpage_input(Number(current_page) + 1);
   }, [current_page]);
