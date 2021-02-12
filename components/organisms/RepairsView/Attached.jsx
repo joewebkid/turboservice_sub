@@ -7,7 +7,7 @@ import Block from "../../atoms/Block";
 import { jobs_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 import CustomLink from "../../atoms/CustomLink";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 const get_files = (callback, id, SESSIONID) => {
   axios

@@ -9,7 +9,7 @@ import FlexBlock from "../components/atoms/FlexBlock";
 import RepairsOrders from "../components/organisms/RepairsOrders/RepairsOrders";
 import Statistics from "../components/organisms/TopOrderView/Statistics";
 import TopOrderView from "../components/organisms/TopOrderView/TopOrderView";
-import { t } from "../components/translations/data";
+import { t } from "../components/translation/data";
 
 const get_user_data = (
   callback,

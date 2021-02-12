@@ -15,7 +15,7 @@ import {
   formatDateForView,
 } from "../../molecules/data";
 import MessageToast from "./MessageToast";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 const get_recomendations = (callback, id, router, SESSIONID) => {
   axios

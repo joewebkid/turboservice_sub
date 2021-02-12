@@ -10,7 +10,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Fade from "react-reveal/Fade";
 import StatusTabs from "./StatusTabs";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 // Contractors/OrderStatusesList
 const get_statuses = (callback, router, SESSIONID, setLoading) => {
@@ -59,7 +59,7 @@ const get_orders = (
   offset,
   limit
 ) => {
-  console.log("Я иду на запрос", offset);
+  // console.log("Я иду на запрос", offset);
   if (SESSIONID)
     return axios
       .get(
@@ -83,7 +83,10 @@ const get_orders = (
         return response;
       })
       .catch(function (error) {
-        console.log(error);
+        const router = useRouter();
+        if (error.response && error.response.status == 401) {
+          router.push("/login?session&&redirectto=order/" + id);
+        }
       });
   else
     return new Promise((resolve, reject) => {
@@ -145,7 +148,9 @@ const RepairsOrders = (props) => {
   const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
-    if (saved_current_page) setCurrentPage(saved_current_page);
+    // console.log(total > elems_count);
+    if (saved_current_page && total > elems_count)
+      setCurrentPage(saved_current_page);
   }, [saved_current_page]);
 
   useEffect(() => {
@@ -155,7 +160,8 @@ const RepairsOrders = (props) => {
   useEffect(() => {
     if (SESSIONID && router) {
       get_statuses(setStatuses, router, SESSIONID, setLoading);
-      setCurrentPage(saved_current_page);
+      if (saved_current_page)
+        setCurrentPage(total > elems_count ? saved_current_page : 0);
     }
   }, [SESSIONID]);
 
@@ -205,7 +211,7 @@ const RepairsOrders = (props) => {
               saveData={setOrders}
               SESSIONID={SESSIONID}
               filter_callback={get_orders}
-              // toFirstPage={() => setCurrentPage(0)}
+              setCurrentPage={setCurrentPage}
               setTotal={setTotal}
               limit={limit}
               offset={offset}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Image, Spinner } from "react-bootstrap";
 import Block from "../atoms/Block";
 import FlexBlock from "../atoms/FlexBlock";
-import { t } from "../translations/data";
+import { t } from "../translation/data";
 
 const LogoName = (props) => {
   const [loading, setLoading] = useState(false);

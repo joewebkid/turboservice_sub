@@ -15,7 +15,7 @@ import { formatDateForPost } from "../../molecules/data";
 import MaskedInput from "react-text-mask";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import Fade from "react-reveal/Fade";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 const get_jobs = (callback, id, SESSIONID) => {
   axios

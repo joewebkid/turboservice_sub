@@ -4,7 +4,7 @@ import FlexBlock from "../../atoms/FlexBlock";
 import Fade from "react-reveal/Fade";
 import DataInput from "../../atoms/DataInput";
 import { formatDateForPost, formatDateForView } from "../../molecules/data";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 const TimeInfoSection = (props) => {
   const { order_info } = props;

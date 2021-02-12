@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Table, Button } from "react-bootstrap";
 import { statistic } from "./data";
+import { useRouter } from "next/router";
 import axios from "axios";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 const get_stat = (callback, SESSIONID) => {
   if (SESSIONID)
@@ -24,7 +25,10 @@ const get_stat = (callback, SESSIONID) => {
         callback(WorkshopStatistics30Days.data[0]);
       })
       .catch(function (error) {
-        console.log(error);
+        const router = useRouter();
+        if (error.response && error.response.status == 401) {
+          router.push("/login?session&&redirectto=order/" + id);
+        }
         // router.push("/login?session");
       });
 };

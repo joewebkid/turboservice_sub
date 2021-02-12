@@ -8,7 +8,7 @@ import { materials as materials_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
 import MessageToast from "./MessageToast";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 const get_parts = (callback, id, SESSIONID) => {
   axios

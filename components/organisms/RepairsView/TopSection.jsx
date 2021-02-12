@@ -5,7 +5,7 @@ import FlexBlock from "../../atoms/FlexBlock";
 import Block from "../../atoms/Block";
 import Section from "../../atoms/Section";
 import { formatDateForView } from "../../molecules/data";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 const TopSection = (props) => {
   const { order_info } = props;

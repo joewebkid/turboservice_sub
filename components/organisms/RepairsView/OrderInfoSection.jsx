@@ -3,7 +3,7 @@ import axios from "axios";
 import { Button, DropdownButton, Dropdown, Table } from "react-bootstrap";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
 import FlexBlock from "../../atoms/FlexBlock";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 const get_types = (callback, SESSIONID) => {
   if (SESSIONID)

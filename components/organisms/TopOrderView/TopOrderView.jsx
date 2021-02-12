@@ -5,7 +5,7 @@ import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
 import LogoName from "../../molecules/LogoName";
 import Statistics from "./Statistics";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 import LangChooser from "../../atoms/LangChooser";
 
 const TopOrderView = (props) => {

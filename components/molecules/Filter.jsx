@@ -20,7 +20,7 @@ const Filter = memo((props) => {
     setTotal,
     limit,
     offset,
-    toFirstPage,
+    setCurrentPage,
     selectStatus,
     setDataLoading,
     filter_values_saved,
@@ -57,7 +57,6 @@ const Filter = memo((props) => {
     }
     console.log("isSearching", isSearching);
     if (!isSearching) {
-      // toFirstPage();
       setIsSearching(true);
       setDataLoading(true);
       filter_callback(
@@ -114,6 +113,7 @@ const Filter = memo((props) => {
                   type="text"
                   placeholder="ALL"
                   onChange={(e) => {
+                    setCurrentPage(0);
                     saveFilterValues({
                       ...filter_values,
                       [h.filter]: e.target.value,
@@ -154,6 +154,7 @@ const Filter = memo((props) => {
                   className="dateFrom"
                   callback={(e) => {
                     // console.log(e);
+                    setCurrentPage(0);
                     const formDate = formatDate(e);
                     saveFilterValues({
                       ...filter_values,
@@ -174,6 +175,7 @@ const Filter = memo((props) => {
                   className="dateTo"
                   callback={(e) => {
                     // console.log(e);
+                    setCurrentPage(0);
                     const formDate = formatDate(e);
                     saveFilterValues({
                       ...filter_values,

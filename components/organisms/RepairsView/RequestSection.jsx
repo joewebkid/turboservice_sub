@@ -5,7 +5,7 @@ import CustomLink from "../../atoms/CustomLink";
 import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
 import Fade from "react-reveal/Fade";
-import { t } from "../../translations/data";
+import { t } from "../../translation/data";
 
 const RequestSection = (props) => {
   const { order_info, callback_start, callback_cancel, callback_done } = props;
