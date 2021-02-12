@@ -1,8 +1,28 @@
 import React, { useState, useEffect } from "react";
 import FlexBlock from "./FlexBlock";
 import Block from "./Block";
-import { langs } from "./data";
+import { langs, langCode } from "./data";
 import { useRouter, useLocation } from "next/router";
+import axios from "axios";
+
+const set_lang = (callback, id) => {
+  console.log(id);
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/auth/SetLocale/" +
+        id +
+        "?SESSIONID=" +
+        localStorage.getItem("SESSIONID")
+    )
+    .then(function (response) {
+      const { data } = response;
+      callback();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
 const LangChooser = (props) => {
   const [choosed_lang, setLang] = useState(0);
@@ -13,7 +33,7 @@ const LangChooser = (props) => {
     if (choosed_lang) {
       localStorage.setItem("lang", choosed_lang);
 
-      if (isNotFirstTime) router.reload();
+      if (isNotFirstTime) set_lang(router.reload, langCode[choosed_lang]);
       else setIsNotFirstTime(1);
     }
   }, [choosed_lang]);
