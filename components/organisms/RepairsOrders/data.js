@@ -16,14 +16,16 @@ export const headers = [
     // title: "Our order #",
     type: "text",
     slug: "CONTRACTOR_WORKORDER",
-    filter: "ContractorWorkorder",
+    // filter: "ContractorWorkorder",
+    filter: "ContractorWorkorderContains",
     t: "contractor_order",
   },
   {
     title: "Repair order #",
     type: "text",
     slug: "WORKORDER_NUMBER",
-    filter: "RepairOrderNumber",
+    // filter: "RepairOrderNumber",
+    filter: "RepairOrderNumberContains",
     t: "repair_order",
   },
   // {

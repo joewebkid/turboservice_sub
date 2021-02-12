@@ -4,6 +4,7 @@ import { Button, DropdownButton, Dropdown, Table } from "react-bootstrap";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
 import FlexBlock from "../../atoms/FlexBlock";
 import { t } from "../../translation/data";
+import WheelTight from "./WheelTight";
 
 const get_types = (callback, SESSIONID) => {
   if (SESSIONID)
@@ -172,6 +173,34 @@ const OrderInfoSection = (props) => {
                     }}
                   >
                     {order_info_section["ORDER_TYPE_NAME"]}
+                  </FlexBlock>
+                </FlexBlock>
+              )}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Wheel tight</th>
+            <td>
+              {status != 2 ? (
+                <FlexBlock justify="flex-end" style={{ position: "relative" }}>
+                  <WheelTight
+                    id={id}
+                    SESSIONID={SESSIONID}
+                    order_info_section={order_info_section}
+                    order_info={order_info}
+                    SetOrderInfo={SetOrderInfo}
+                  />
+                </FlexBlock>
+              ) : (
+                <FlexBlock justify="flex-end" style={{ position: "relative" }}>
+                  <FlexBlock
+                    style={{
+                      width: 198,
+                      float: "left",
+                      paddingLeft: 10,
+                    }}
+                  >
+                    {order_info_section["WHEEL_TIGHTENING_TASK_NAME"]}
                   </FlexBlock>
                 </FlexBlock>
               )}

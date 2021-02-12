@@ -6,6 +6,7 @@ import axios from "axios";
 import FlexBlock from "../components/atoms/FlexBlock";
 import { t } from "../components/translation/data";
 import LangChooser from "../components/atoms/LangChooser";
+import { langCode } from "../components/atoms/data";
 
 const MODAL_SHOWN = 0;
 
@@ -22,13 +23,25 @@ const auth_login = (
   callback_success,
   router
 ) => {
+  const lang =
+    typeof window !== "undefined"
+      ? localStorage.getItem("lang")
+        ? localStorage.getItem("lang")
+        : "en"
+      : "en";
+
   return axios
-    .get(process.env.NEXT_PUBLIC_URL + "/api-v2/auth/login?Locale=1033", {
-      auth: {
-        username: login,
-        password: password,
-      },
-    })
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/auth/login?Locale=" +
+        langCode[lang],
+      {
+        auth: {
+          username: login,
+          password: password,
+        },
+      }
+    )
     .then(function (response) {
       const { data } = response;
       const { result, SESSIONID } = data;

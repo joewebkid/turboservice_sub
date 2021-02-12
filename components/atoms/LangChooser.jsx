@@ -9,6 +9,7 @@ const LangChooser = (props) => {
   const [isNotFirstTime, setIsNotFirstTime] = useState(0);
   const router = useRouter();
   useEffect(() => {
+    console.log(choosed_lang);
     if (choosed_lang) {
       localStorage.setItem("lang", choosed_lang);
 
@@ -19,7 +20,11 @@ const LangChooser = (props) => {
 
   useEffect(() => {
     setLang(
-      typeof window !== "undefined" ? localStorage.getItem("lang") : langs[0]
+      typeof window !== "undefined"
+        ? localStorage.getItem("lang")
+          ? localStorage.getItem("lang")
+          : langs[1]
+        : langs[1]
     );
   }, []);
 

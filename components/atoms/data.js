@@ -1,6 +1,6 @@
-export const langs = ["est", "en", "ru"];
+export const langs = ["et", "en", "ru"];
 export const langCode = {
-  ru: 570,
-  est: 850,
-  en: 45,
+  ru: 1049,
+  et: 1061,
+  en: 1033,
 };

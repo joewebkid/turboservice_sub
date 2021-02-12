@@ -136,7 +136,7 @@ const ru = (a = {}) => {
   };
 };
 
-const est = (a = {}) => {
+const et = (a = {}) => {
   return {
     stat_30: "30 päeva statistika",
     total_repair_orders_done: "Kokku teostatud töökäskusid",
@@ -211,8 +211,8 @@ const tMap = (l = "en", a) => {
     case "en":
       return en(a);
       break;
-    case "est":
-      return est(a);
+    case "et":
+      return et(a);
       break;
     case "ru":
       return ru(a);
@@ -224,7 +224,7 @@ const tMap = (l = "en", a) => {
   }
 };
 
-export const t = (slug, a = {}, l = "est") => {
+export const t = (slug, a = {}, l = "et") => {
   const from_store =
     typeof window !== "undefined" ? localStorage.getItem("lang") : "en";
   const language = from_store ? from_store : l;
