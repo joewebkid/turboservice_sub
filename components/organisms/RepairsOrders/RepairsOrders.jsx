@@ -135,7 +135,7 @@ const RepairsOrders = (props) => {
 
   const [pages, setPages] = useState(false);
   const [current_page, setCurrentPage] = useState(-1);
-  const [elems_count, setElemCountOnPage] = useState(1);
+  const [elems_count, setElemCountOnPage] = useState(10);
 
   const [page_input, setpage_input] = useState("");
 
