@@ -57,14 +57,13 @@ const delete_jobs = (callback, id, SESSIONID, setMessage) => {
     .then(function (response) {
       const { data } = response;
       const { result } = data;
-      const { Response, Message } = result;
-      const { WorkorderContractJobs } = Response;
+      const { Message } = result;
       if (Message == "Ok") {
         setMessage({ type: "success", text: "success", show: true });
         setTimeout(() => {
           setMessage({});
         }, 2500);
-        callback({});
+        callback([]);
       }
     })
     .catch(function (error) {
@@ -169,6 +168,7 @@ const delete_job = (callback, id, SESSIONID, JOB_ID, jobs) => {
       return error;
     });
 };
+
 const xmlLoad = async (
   e,
   setErrorText,
@@ -178,17 +178,9 @@ const xmlLoad = async (
   errorText,
   refreshPage
 ) => {
-  // console.log(e);
-  // setMessage({ type: "error", text: "error", show: true });
-  // setTimeout(() => {
-  //   setMessage({});
-  // }, 2500);
-  // const xml_text = await file.text();
-
   const file = e.target.files[0];
   const xml_text = await file.text();
-  // var data = new FormData();
-  // data.append("data", file, file.name);
+
   const xml = parseXml(xml_text);
   if (xml.getElementsByTagName("parsererror")[0]) {
     setErrorText(
@@ -257,7 +249,6 @@ const addNew = (jobs, setJobs, jobs_struct) => {
 
   setJobs([...jobs, empty_object]);
 };
-// const changeHandler = (value, slug, setJobs, jobs, key) => {};
 
 const JobsSection = (props) => {
   const { SESSIONID, refresh, refreshPage, status, setTotal } = props;
@@ -326,14 +317,7 @@ const JobsSection = (props) => {
             changedJobs[e] = "0.00";
           }
         });
-        // JOB_NORM_HOUR
-        // JOB_AMOUNT
-        // JOB_PRICE
-        // const isFull = !Object.keys(changedJobs).find(
-        //   (e) => e != "JOB_ID" && !changedJobs[e]
-        // );
 
-        // if (isFull)
         set_job(
           setJobs,
           router.query.id,
@@ -345,16 +329,6 @@ const JobsSection = (props) => {
         );
       }
     }
-
-    // let jobsTotalSum = 0;
-    // {
-    //   temp_jobs.map((job, key) => {
-    //     if (!jobsTotalSum) jobsTotalSum = 0;
-    //     jobsTotalSum =
-    //       jobsTotalSum + Number(job["JOB_AMOUNT"]) * Number(job["JOB_PRICE"]);
-    //   });
-    // }
-    // setTotal(jobsTotalSum);
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
@@ -436,12 +410,7 @@ const JobsSection = (props) => {
               className="text-left btn btn-link delAllLink"
               onClick={() => {
                 if (confirm("Are you sure want to delete all records?")) {
-                  delete_jobs(
-                    console.log,
-                    router.query.id,
-                    SESSIONID,
-                    setMessage
-                  );
+                  delete_jobs(setJobs, router.query.id, SESSIONID, setMessage);
                 }
               }}
             >

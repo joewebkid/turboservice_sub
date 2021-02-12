@@ -49,6 +49,7 @@ const TimeInfoSection = (props) => {
                   callback={(e) => {
                     props.callback({ EXPECTED_ISSUE_DATE: e });
                   }}
+                  clear
                   type="info"
                   value={order_info.EXPECTED_ISSUE_DATE}
                 />

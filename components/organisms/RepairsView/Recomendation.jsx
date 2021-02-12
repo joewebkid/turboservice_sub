@@ -81,17 +81,17 @@ const set_recomendations = (
       const { WorkorderAdvice } = Response;
 
       if (Message == "Ok") {
-        console.log("success  status", changedRecomendations);
+        // console.log("success  status", changedRecomendations);
         setMessage({ type: "success", text: "success", show: true });
         setTimeout(() => {
           setMessage({});
         }, 2500);
+
         callback(
           recomendations.map((e, key) =>
             changedRecomendations.ADVICE_TEXT == e.ADVICE_TEXT &&
             currentKey == key
-              ? // !changedRecomendations.ADVICE_ID
-                WorkorderAdvice.data
+              ? WorkorderAdvice.data
               : e
           )
         );
@@ -155,6 +155,34 @@ const delete_recomendation = (
     });
 };
 
+const delete_recomendations = (callback, id, SESSIONID) => {
+  axios
+    .delete(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkorderAdvices/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID +
+        "&Formats=1"
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { Message } = Response;
+      if (Message == "Ok") {
+        setMessage({ type: "success", text: "success", show: true });
+        setTimeout(() => {
+          setMessage({});
+        }, 2500);
+        callback([]);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
 const addNew = (recomendations, setRecomendations, recomendations_struct) => {
   const titles = recomendations_struct.map((s) => {
     return s.slug;
@@ -185,7 +213,6 @@ const Recomendation = (props) => {
   const debouncedSearchTerm = useDebounce(temp_recomendations, 500);
 
   useEffect(() => {
-    console.log(recomendations[changedStringId]);
     if (SESSIONID && router && router.query && router.query.id) {
       if (addNewStringFlag) {
         setAddNewStringFlag(0);
@@ -226,9 +253,31 @@ const Recomendation = (props) => {
     <>
       {message.show ? <MessageToast {...message} /> : <></>}
       <Section className="text-center mb-1">
-        <Block className="text-left w500 headerTableList">
+        <FlexBlock
+          className="text-left w500 headerTableList"
+          justify="space-between"
+        >
           {t("recommendation")}
-        </Block>
+          {status != 2 ? (
+            <Block
+              className="text-left btn btn-link delAllLink"
+              onClick={() => {
+                if (confirm("Are you sure want to delete all records?")) {
+                  delete_recomendations(
+                    setRecomendations,
+                    router.query.id,
+                    SESSIONID,
+                    setMessage
+                  );
+                }
+              }}
+            >
+              {t("delete_all")}
+            </Block>
+          ) : (
+            <></>
+          )}
+        </FlexBlock>
 
         <Table className="relative">
           <thead>
@@ -256,18 +305,23 @@ const Recomendation = (props) => {
                         <FlexBlock style={{}}>
                           {status != 2 ? (
                             struct.type == "date" ? (
-                              <DataInput
-                                callback={(e) => {
-                                  tempArr[key][struct.slug] = formatDateForPost(
-                                    e
-                                  );
+                              <>
+                                <DataInput
+                                  callback={(e) => {
+                                    if (loadDebounce) {
+                                      tempArr[key][
+                                        struct.slug
+                                      ] = formatDateForPost(e);
 
-                                  setTempRecomendations([...tempArr]);
-                                  setChangedStringId(key);
-                                }}
-                                value={recomendation[struct.slug]}
-                                defaultDate={date}
-                              />
+                                      setTempRecomendations([...tempArr]);
+                                      setChangedStringId(key);
+                                    }
+                                  }}
+                                  noreload
+                                  value={recomendation[struct.slug]}
+                                  defaultDate={date}
+                                />
+                              </>
                             ) : (
                               <input
                                 value={recomendation[struct.slug]}

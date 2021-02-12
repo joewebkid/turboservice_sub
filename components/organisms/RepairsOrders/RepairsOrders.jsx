@@ -135,7 +135,7 @@ const RepairsOrders = (props) => {
 
   const [pages, setPages] = useState(false);
   const [current_page, setCurrentPage] = useState(-1);
-  const [elems_count, setElemCountOnPage] = useState(10);
+  const [elems_count, setElemCountOnPage] = useState(1);
 
   const [page_input, setpage_input] = useState("");
 
@@ -293,7 +293,7 @@ const RepairsOrders = (props) => {
         </Table>
         <FlexBlock justify="space-between">
           <FlexBlock align="center" className="sizesSelBlock mr-2">
-            {pages ? (
+            {/* {pages ? (
               <FlexBlock className="mr-2" align="center">
                 Page{" "}
                 <Form.Control
@@ -311,7 +311,7 @@ const RepairsOrders = (props) => {
               </FlexBlock>
             ) : (
               <></>
-            )}
+            )} */}
             <Block>
               Show
               <Block className="selectCont">
@@ -328,13 +328,18 @@ const RepairsOrders = (props) => {
                   ))}
                 </select>
               </Block>
-              entries {total ? <>of {total}</> : <></>}
+              Total records: {total}
             </Block>
           </FlexBlock>
           <Pagination>
             {pages ? (
               <>
-                {/* <Pagination.First /> */}
+                <Pagination.First
+                  onClick={() => {
+                    localStorage.setItem("current_page", 0);
+                    setCurrentPage(0);
+                  }}
+                />
                 <Pagination.Prev
                   onClick={() => {
                     localStorage.setItem(
@@ -373,7 +378,12 @@ const RepairsOrders = (props) => {
                     );
                   }}
                 />
-                {/* <Pagination.Last /> */}
+                <Pagination.Last
+                  onClick={() => {
+                    localStorage.setItem("current_page", pages - 1);
+                    setCurrentPage(pages - 1);
+                  }}
+                />
               </>
             ) : (
               <></>

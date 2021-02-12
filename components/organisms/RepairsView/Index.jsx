@@ -156,6 +156,7 @@ const Index = (props) => {
                     {
                       ...order_info,
                       JOB_STARTED_DATE: "",
+                      EXPECTED_ISSUE_DATE: "",
                     },
                     false,
                     setMessage

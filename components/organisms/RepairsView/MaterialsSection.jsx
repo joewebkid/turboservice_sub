@@ -51,14 +51,13 @@ const delete_materials = (callback, id, SESSIONID, setMessage) => {
     .then(function (response) {
       const { data } = response;
       const { result } = data;
-      const { Response } = result;
-      const { Message } = Response;
+      const { Message, Response } = result;
       if (Message == "Ok") {
         setMessage({ type: "success", text: "success", show: true });
         setTimeout(() => {
           setMessage({});
         }, 2500);
-        callback(WorkorderContractJobs.data);
+        callback([]);
       }
     })
     .catch(function (error) {
@@ -261,7 +260,7 @@ const MaterialsSection = (props) => {
               onClick={() => {
                 if (confirm("Are you sure want to delete all records?")) {
                   delete_materials(
-                    console.log,
+                    setMaterials,
                     router.query.id,
                     SESSIONID,
                     setMessage
