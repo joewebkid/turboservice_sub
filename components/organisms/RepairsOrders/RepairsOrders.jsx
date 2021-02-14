@@ -161,8 +161,7 @@ const RepairsOrders = (props) => {
   useEffect(() => {
     if (SESSIONID && router) {
       get_statuses(setStatuses, router, SESSIONID, setLoading);
-      if (saved_current_page)
-        setCurrentPage(total > elems_count ? saved_current_page : 0);
+      setCurrentPage(total > elems_count ? saved_current_page : 0);
     }
   }, [SESSIONID]);
 
