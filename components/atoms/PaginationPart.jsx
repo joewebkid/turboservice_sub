@@ -1,13 +1,45 @@
 import React from "react";
 import { Pagination } from "react-bootstrap";
+// $outOfRange = false;
+// for($i = 1; $i <= $count_pages; $i++) {
 
+//     if ($i <= 2 || $i >= $count_pages - 2 || abs($i - $page) <= 2) {
+
+//         // page number should be echoed so do as you did before
+
+//         $outOfRange = false;
+
+//         if($i == $page) {
+//             echo "<li><a class='active-page' href='./latest.php?page=$i'>$i</a></li>";
+//         } else {
+//             echo "<li><a href='./latest.php?page=$i'>$i</a></li>";
+//         }
+//     } else {
+
+//         // we are out of range! if not already out of range, echo ellipsis
+
+//         if (!$outOfRange) {
+//             echo ' ... ';
+//         }
+
+//         $outOfRange = true;
+
+//     }
+// }
 export default function PaginationPart(props) {
   const { setCurrentPage, current_page, pages } = props;
+  let out;
+
   return (
     <Pagination>
       {pages ? (
         <>
-          {/* <Pagination.First /> */}
+          <Pagination.First
+            onClick={() => {
+              localStorage.setItem("current_page", 0);
+              setCurrentPage(0);
+            }}
+          />
           <Pagination.Prev
             onClick={() => {
               localStorage.setItem(
@@ -17,19 +49,34 @@ export default function PaginationPart(props) {
               setCurrentPage(current_page ? current_page - 1 : 0);
             }}
           />
-          {/* <Pagination.Ellipsis /> */}
-          {[...Array(pages).keys()].map((k, key) => (
-            <Pagination.Item
-              active={current_page == k}
-              onClick={() => {
-                setCurrentPage(k);
-                localStorage.setItem("current_page", k);
-              }}
-              key={key}
-            >
-              {k + 1}
-            </Pagination.Item>
-          ))}
+
+          {[...Array(pages).keys()].map((k, key) => {
+            if (k <= 1 || k >= pages - 2 || Math.abs(k - current_page) <= 1) {
+              out = false;
+              return (
+                <Pagination.Item
+                  active={current_page == k}
+                  onClick={() => {
+                    setCurrentPage(k);
+                    localStorage.setItem("current_page", k);
+                  }}
+                  key={key}
+                >
+                  {k + 1}
+                </Pagination.Item>
+              );
+            } else {
+              if (!out) {
+                out = true;
+                return (
+                  <>
+                    <Pagination.Ellipsis />
+                  </>
+                );
+              } else return <></>;
+            }
+          })}
+
           {/* <Pagination.Item>{11}</Pagination.Item>
     <Pagination.Item active>{12}</Pagination.Item>
     <Pagination.Item>{13}</Pagination.Item>
@@ -46,7 +93,12 @@ export default function PaginationPart(props) {
               );
             }}
           />
-          {/* <Pagination.Last /> */}
+          <Pagination.Last
+            onClick={() => {
+              localStorage.setItem("current_page", pages);
+              setCurrentPage(pages);
+            }}
+          />
         </>
       ) : (
         <></>
