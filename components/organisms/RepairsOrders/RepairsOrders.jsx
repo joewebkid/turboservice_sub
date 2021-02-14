@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pagination, Spinner, Table, Button, Form } from "react-bootstrap";
+import { Spinner, Table, Button, Form } from "react-bootstrap";
 import Block from "../../atoms/Block";
 import FlexBlock from "../../atoms/FlexBlock";
 import CustomLink from "../../atoms/CustomLink";
@@ -10,6 +10,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Fade from "react-reveal/Fade";
 import StatusTabs from "./StatusTabs";
+import PaginationPart from "../../atoms/PaginationPart";
 import { t } from "../../translation/data";
 
 // Contractors/OrderStatusesList
@@ -135,7 +136,7 @@ const RepairsOrders = (props) => {
 
   const [pages, setPages] = useState(false);
   const [current_page, setCurrentPage] = useState(-1);
-  const [elems_count, setElemCountOnPage] = useState(10);
+  const [elems_count, setElemCountOnPage] = useState(1);
 
   const [page_input, setpage_input] = useState("");
 
@@ -331,64 +332,12 @@ const RepairsOrders = (props) => {
               Total records: {total}
             </Block>
           </FlexBlock>
-          <Pagination>
-            {pages ? (
-              <>
-                <Pagination.First
-                  onClick={() => {
-                    localStorage.setItem("current_page", 0);
-                    setCurrentPage(0);
-                  }}
-                />
-                <Pagination.Prev
-                  onClick={() => {
-                    localStorage.setItem(
-                      "current_page",
-                      current_page ? current_page - 1 : 0
-                    );
-                    setCurrentPage(current_page ? current_page - 1 : 0);
-                  }}
-                />
-                {/* <Pagination.Ellipsis /> */}
-                {[...Array(pages).keys()].map((k, key) => (
-                  <Pagination.Item
-                    active={current_page == k}
-                    onClick={() => {
-                      setCurrentPage(k);
-                      localStorage.setItem("current_page", k);
-                    }}
-                    key={key}
-                  >
-                    {k + 1}
-                  </Pagination.Item>
-                ))}
-                {/* <Pagination.Item>{11}</Pagination.Item>
-              <Pagination.Item active>{12}</Pagination.Item>
-              <Pagination.Item>{13}</Pagination.Item>
-              <Pagination.Item disabled>{14}</Pagination.Item> */}
-                {/* <Pagination.Ellipsis /> */}
-                <Pagination.Next
-                  onClick={() => {
-                    localStorage.setItem(
-                      "current_page",
-                      current_page != pages - 1 ? current_page + 1 : pages - 1
-                    );
-                    setCurrentPage(
-                      current_page != pages - 1 ? current_page + 1 : pages - 1
-                    );
-                  }}
-                />
-                <Pagination.Last
-                  onClick={() => {
-                    localStorage.setItem("current_page", pages - 1);
-                    setCurrentPage(pages - 1);
-                  }}
-                />
-              </>
-            ) : (
-              <></>
-            )}
-          </Pagination>
+
+          <PaginationPart
+            setCurrentPage={setCurrentPage}
+            current_page={current_page}
+            pages={pages}
+          />
         </FlexBlock>
       </Section>
     </Fade>
