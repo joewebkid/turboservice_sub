@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { t } from "../../translation/data";
 
-const get_stat = (callback, SESSIONID) => {
+const get_stat = (callback, SESSIONID, router) => {
   if (SESSIONID)
     axios
       .get(
@@ -25,7 +25,6 @@ const get_stat = (callback, SESSIONID) => {
         callback(WorkshopStatistics30Days.data[0]);
       })
       .catch(function (error) {
-        const router = useRouter();
         if (error.response && error.response.status == 401) {
           router.push("/login?session&&redirectto=order/" + id);
         }
@@ -68,6 +67,7 @@ const get_messages = (callback, SESSIONID, handleShow) => {
 
 const Statistics = (props) => {
   const { SESSIONID, shownModal } = props;
+  const router = useRouter();
 
   const [stats, setStats] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -79,7 +79,7 @@ const Statistics = (props) => {
 
   useEffect(() => {
     if (SESSIONID) {
-      get_stat(setStats, SESSIONID);
+      get_stat(setStats, SESSIONID, router);
       if (!shownModal) get_messages(setMessages, SESSIONID, handleShow);
     }
   }, [SESSIONID]);
