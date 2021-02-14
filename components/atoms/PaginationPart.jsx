@@ -95,8 +95,8 @@ export default function PaginationPart(props) {
           />
           <Pagination.Last
             onClick={() => {
-              localStorage.setItem("current_page", pages);
-              setCurrentPage(pages);
+              localStorage.setItem("current_page", pages - 1);
+              setCurrentPage(pages - 1);
             }}
           />
         </>
