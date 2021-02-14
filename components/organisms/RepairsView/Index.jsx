@@ -163,6 +163,10 @@ const Index = (props) => {
                   );
                 }}
                 callback_done={() => {
+                  if (order_info["WHEEL_TIGHTENING_TASK_ID"] == 10) {
+                    alert("Set wheel tightening, before finish order");
+                    return;
+                  }
                   if (confirm("Are you sure you want to finish this order?")) {
                     set_order_info(
                       setOrderInfo,

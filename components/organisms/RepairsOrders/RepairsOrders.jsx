@@ -136,7 +136,7 @@ const RepairsOrders = (props) => {
 
   const [pages, setPages] = useState(false);
   const [current_page, setCurrentPage] = useState(-1);
-  const [elems_count, setElemCountOnPage] = useState(1);
+  const [elems_count, setElemCountOnPage] = useState(10);
 
   const [page_input, setpage_input] = useState("");
 
@@ -195,6 +195,7 @@ const RepairsOrders = (props) => {
           statuses={statuses}
           selectStatus={selectStatus}
           setSelectStatus={setSelectStatus}
+          setCurrentPage={setCurrentPage}
         />
         <Table responsive className="text-center repairs-orders">
           <thead>
