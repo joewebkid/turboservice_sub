@@ -21,6 +21,7 @@ import { formatDateForPost } from "../../molecules/data";
 import dynamic from "next/dynamic";
 import MessageToast from "./MessageToast";
 import Block from "../../atoms/Block";
+import { t } from "../../translation/data";
 
 const JobsSection = dynamic(() => import("./JobsSection"), { ssr: false });
 
@@ -163,11 +164,14 @@ const Index = (props) => {
                   );
                 }}
                 callback_done={() => {
-                  if (order_info["WHEEL_TIGHTENING_TASK_ID"] == 10) {
-                    alert("Set wheel tightening, before finish order");
+                  if (
+                    order_info["WHEEL_TIGHTENING_TASK_ID"] == 0 ||
+                    order_info["WHEEL_TIGHTENING_TASK_ID"] == null
+                  ) {
+                    alert(t("wheels_tightening_error"));
                     return;
                   }
-                  if (confirm("Are you sure you want to finish this order?")) {
+                  if (confirm(t("sure_finish_order"))) {
                     set_order_info(
                       setOrderInfo,
                       router.query.id,

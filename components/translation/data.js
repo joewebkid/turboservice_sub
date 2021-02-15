@@ -64,8 +64,14 @@ const en = (a = {}) => {
     attention: "Attention",
     contact_support: "Contact support",
     sure_cancel_start: "Warning. Are you sure cancel start repair order?",
+    sure_finish_order: "Are you sure you want to finish this order?",
+    please_select: "Please select",
+    wheels_tightening_required: "Wheels tightening required",
+    wheels_tightening_error:
+      "Select the type of wheels tightening, before finishing order",
   };
 };
+
 const ru = (a = {}) => {
   return {
     stat_30: "Статистика за 30 дней",
@@ -133,6 +139,11 @@ const ru = (a = {}) => {
     contact_support: "Служба поддержки",
     sure_cancel_start:
       "Внимание. Вы уверены, что хотите отменить начало работ?",
+    sure_finish_order: "Вы уверены, что хотите завершить этот заказ?",
+    please_select: "Не выбрано",
+    wheels_tightening_required: "Требуется протяжка колес",
+    wheels_tightening_error:
+      "Выберите тип протяжка колес, прежде чем завершить заказ",
   };
 };
 
@@ -203,6 +214,10 @@ const et = (a = {}) => {
     contact_support: "Kontakt tugi",
     sure_cancel_start:
       "Hoiatus. Kas olete kindel, et tühistate remondi alustamise tellimuse?",
+    sure_finish_order: "Kas olete kindel, et soovite selle tellimuse lõpetada?",
+    please_select: "Palun vali",
+    wheels_tightening_required: "Vajalik rataste pingutamine",
+    wheels_tightening_error: "Valige tüüp rataste rattad, enne kui tellimus on",
   };
 };
 

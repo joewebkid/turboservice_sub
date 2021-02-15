@@ -15,6 +15,8 @@ function StatusTabs(props) {
           onClick={() => {
             setSelectStatus(e.ORDER_STATUS_ID);
             setCurrentPage(0);
+
+            localStorage.setItem("current_page", 0);
           }}
         >
           {e.ORDER_STATUS_NAME}

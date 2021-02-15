@@ -449,7 +449,7 @@ const JobsSection = (props) => {
               return (
                 <>
                   <tr key={key}>
-                    {jobs_struct.map((struct) => {
+                    {jobs_struct.map((struct, k) => {
                       // const value =
                       //   struct.type == "number"
                       //     ? Number(job[struct.slug]).toFixed(2)
@@ -468,7 +468,7 @@ const JobsSection = (props) => {
 
                       if (struct.type != "hidden")
                         return (
-                          <td scope="col">
+                          <td scope="col" key={k}>
                             <FlexBlock>
                               {status != 2 ? (
                                 struct.type == "number" ? (
@@ -577,11 +577,11 @@ const JobsSection = (props) => {
               );
             })}
             <tr>
-              {jobs_struct.map((struct) => {
+              {jobs_struct.map((struct, k) => {
                 const num = Number(jobsSum[struct.slug]);
                 if (struct.type != "hidden")
                   return (
-                    <td scope="col">
+                    <td scope="col" key={k}>
                       <Block
                         className={struct.hide ? "d-none" : "show"}
                         style={{}}

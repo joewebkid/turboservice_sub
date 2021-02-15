@@ -162,6 +162,7 @@ const RepairsOrders = (props) => {
     if (SESSIONID && router) {
       get_statuses(setStatuses, router, SESSIONID, setLoading);
       setCurrentPage(total > elems_count ? saved_current_page : 0);
+      // setCurrentPage(saved_current_page);
     }
   }, [SESSIONID]);
 

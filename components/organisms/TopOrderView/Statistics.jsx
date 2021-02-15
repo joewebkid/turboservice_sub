@@ -26,7 +26,7 @@ const get_stat = (callback, SESSIONID, router) => {
       })
       .catch(function (error) {
         if (error.response && error.response.status == 401) {
-          router.push("/login?session&&redirectto=order/" + id);
+          router.push("/login?session");
         }
         // router.push("/login?session");
       });

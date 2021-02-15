@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Block from "../../atoms/Block";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import axios from "axios";
+import { t } from "../../translation/data";
 
 const set_wheel_tight = (callback, id, SESSIONID) => {
   axios
@@ -45,6 +46,7 @@ const WheelTight = (props) => {
       set_wheel_tight(setwheel_tight, id, SESSIONID);
     }
   }, [id, SESSIONID]);
+
   return (
     <Block>
       {wheel_tight ? (
@@ -52,17 +54,22 @@ const WheelTight = (props) => {
           menuAlign="right"
           title={
             order_info_section["WHEEL_TIGHTENING_TASK_NAME"] ||
-            wheel_tight[9].WHEEL_TIGHTENING_TASK_NAME
+            t("please_select")
           }
           id="dropdown-menu-align-right"
         >
-          {wheel_tight.map((t, k) => {
+          {[
+            {
+              WHEEL_TIGHTENING_TASK_ID: null,
+              WHEEL_TIGHTENING_TASK_NAME: t("please_select"),
+            },
+            ...wheel_tight,
+          ].map((t, k) => {
             return (
               <Dropdown.Item
-                eventKey={t.WHEEL_TIGHTENING_TASK_ID}
+                eventKey={Number(t.WHEEL_TIGHTENING_TASK_ID)}
                 key={k}
                 onClick={(e) => {
-                  console.log(e.target.innerText);
                   SetOrderInfo({
                     ...order_info,
                     WHEEL_TIGHTENING_TASK_ID: t.WHEEL_TIGHTENING_TASK_ID,

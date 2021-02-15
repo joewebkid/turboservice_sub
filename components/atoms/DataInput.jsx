@@ -12,10 +12,15 @@ import FlexBlock from "./FlexBlock";
 
 const DataInput = (props) => {
   const { defaultDate, value, short, clear, placeholder, noreload } = props;
-  const [date, setDate] = useState(
-    clear ? "" : value || defaultDate || new Date()
-  );
+  const [date, setDate] = useState(value || defaultDate || new Date());
   const [isFirstTime, setIsFirstTime] = useState(1);
+
+  useEffect(() => {
+    if (!noreload) {
+      if (!value) setDate(false);
+      else setDate(value);
+    }
+  }, [value]);
 
   useEffect(() => {
     if (isFirstTime) {
@@ -25,13 +30,6 @@ const DataInput = (props) => {
 
     if (date) props.callback(date);
   }, [date]);
-
-  useEffect(() => {
-    if (!noreload) {
-      if (!value) setDate(false);
-      else setDate(value);
-    }
-  }, [value]);
   // console.log(date, 1);
 
   return (
