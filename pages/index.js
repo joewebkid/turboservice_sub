@@ -17,13 +17,16 @@ const get_user_data = (
   setShownModal,
   setfilter_values,
   setfilter_status,
-  setcurrent_page
+  setcurrent_page,
+  setactive_tab
 ) => {
   const user_info = localStorage.getItem("user_info");
   const SESSIONID = localStorage.getItem("SESSIONID");
   const filter_values = localStorage.getItem("filter_values");
   const filter_status = localStorage.getItem("filter_status");
   const current_page = localStorage.getItem("current_page");
+
+  const active_tab = localStorage.getItem("active_tab");
   // console.log(filter_status);
   // max_order_in_progess
   const shown_modal = localStorage.getItem("shown_modal");
@@ -35,6 +38,7 @@ const get_user_data = (
   if (SESSIONID) {
     if (user_info) callback(JSON.parse(user_info));
   } else router.push("/login");
+  if (active_tab) setactive_tab(active_tab);
 
   return SESSIONID;
 };
@@ -74,7 +78,8 @@ export default function Home() {
         setShownModal,
         setfilter_values,
         setfilter_status,
-        setcurrent_page
+        setcurrent_page,
+        setTab
       )
     );
   }, []);
@@ -126,13 +131,19 @@ export default function Home() {
                 {" "}
                 <Block
                   className={"mb-3 indexTab " + (tab == 1 ? "active" : "")}
-                  onClick={() => setTab(1)}
+                  onClick={() => {
+                    localStorage.setItem("active_tab", 1);
+                    setTab(1);
+                  }}
                 >
                   {t("stat_30")}
                 </Block>
                 <Block
                   className={"mb-3 indexTab " + (tab == 0 ? "active" : "")}
-                  onClick={() => setTab(0)}
+                  onClick={() => {
+                    localStorage.setItem("active_tab", 0);
+                    setTab(0);
+                  }}
                 >
                   {t("repair_orders")}
                 </Block>
