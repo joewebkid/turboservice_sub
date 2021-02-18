@@ -26,13 +26,21 @@ const Filter = memo((props) => {
     filter_values_saved,
   } = props;
 
+  const debonceTime = process.env.NEXT_PUBLIC_FILTER_DEBONCE
+    ? Number(process.env.NEXT_PUBLIC_FILTER_DEBONCE)
+    : 1000;
+
   const [filter_values, saveFilterValues] = useState(filter_values_saved);
   const [selected_statuses, setSelectedStatuses] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [search_string, setSearchString] = useState("");
   const [isFirstTime, setIsFirstTime] = useState(1);
+  const [isClearFilter, setIsClearFilter] = useState(true);
 
-  const debouncedSearchTerm = useDebounce(search_string, 500);
+  const debouncedSearchTerm = useDebounce(
+    search_string,
+    isClearFilter ? 10 : debonceTime
+  );
 
   // console.log(filter_values, selected_statuses);
   useEffect(() => {
@@ -55,7 +63,8 @@ const Filter = memo((props) => {
       setIsFirstTime(false);
       return;
     }
-    console.log("isSearching", isSearching);
+    setIsClearFilter(false);
+
     if (!isSearching) {
       setIsSearching(true);
       setDataLoading(true);
@@ -66,12 +75,13 @@ const Filter = memo((props) => {
         setIsSearching,
         setTotal,
         offset,
-        limit
+        limit,
+        () => {
+          setIsSearching(false);
+          setDataLoading(false);
+        }
       );
-      setTimeout(() => {
-        setIsSearching(false);
-        setDataLoading(false);
-      }, 500);
+      setTimeout(() => {}, 10);
     }
   }, [debouncedSearchTerm]);
 
@@ -81,7 +91,6 @@ const Filter = memo((props) => {
       return;
     }
 
-    console.log("isSearching", isSearching);
     if (!isSearching && offset >= 0) {
       setIsSearching(true);
       setDataLoading(true);
@@ -97,7 +106,7 @@ const Filter = memo((props) => {
       setTimeout(() => {
         setIsSearching(false);
         setDataLoading(false);
-      }, 500);
+      }, 10);
     }
   }, [offset, limit]);
 
@@ -132,6 +141,7 @@ const Filter = memo((props) => {
                     <FlexBlock
                       className="deleteLink delFilter"
                       onClick={() => {
+                        setIsClearFilter(true);
                         saveFilterValues({
                           ...filter_values,
                           [h.filter]: "",
@@ -219,7 +229,13 @@ const Filter = memo((props) => {
       <tr>
         <td colSpan={headers.length}>
           <FlexBlock justify="flex-end">
-            <div class="indexTab" onClick={() => saveFilterValues({})}>
+            <div
+              class="indexTab"
+              onClick={() => {
+                setIsClearFilter(true);
+                saveFilterValues({});
+              }}
+            >
               Clear
             </div>
           </FlexBlock>

@@ -6,7 +6,6 @@ import { useRouter, useLocation } from "next/router";
 import axios from "axios";
 
 const set_lang = (callback, id) => {
-  console.log(id);
   axios
     .get(
       process.env.NEXT_PUBLIC_URL +
@@ -29,12 +28,16 @@ const LangChooser = (props) => {
   const [isNotFirstTime, setIsNotFirstTime] = useState(0);
   const router = useRouter();
   useEffect(() => {
-    console.log(choosed_lang);
     if (choosed_lang) {
       localStorage.setItem("lang", choosed_lang);
 
-      if (isNotFirstTime) set_lang(router.reload, langCode[choosed_lang]);
-      else setIsNotFirstTime(1);
+      if (router.route != "/remember" && router.route != "/login") {
+        if (isNotFirstTime) set_lang(router.reload, langCode[choosed_lang]);
+        else setIsNotFirstTime(1);
+      } else {
+        if (isNotFirstTime) router.reload();
+        else setIsNotFirstTime(1);
+      }
     }
   }, [choosed_lang]);
 

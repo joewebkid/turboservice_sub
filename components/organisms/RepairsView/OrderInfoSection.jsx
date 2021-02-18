@@ -31,7 +31,7 @@ const get_types = (callback, SESSIONID) => {
 };
 
 const OrderInfoSection = (props) => {
-  const { order_info, id, SESSIONID, callback } = props;
+  const { order_info, id, SESSIONID, callback, debonceTime } = props;
   const status = order_info["ORDER_STATUS_ID"];
 
   const [types, setTypes] = useState([]);
@@ -42,7 +42,7 @@ const OrderInfoSection = (props) => {
     if (SESSIONID) get_types(setTypes, SESSIONID);
   }, [id, SESSIONID]);
 
-  const debouncedSearchTerm = useDebounce(order_info_section, 500);
+  const debouncedSearchTerm = useDebounce(order_info_section, debonceTime);
 
   useEffect(() => {
     if (isFirstTime) {

@@ -251,7 +251,14 @@ const addNew = (jobs, setJobs, jobs_struct) => {
 };
 
 const JobsSection = (props) => {
-  const { SESSIONID, refresh, refreshPage, status, setTotal } = props;
+  const {
+    SESSIONID,
+    refresh,
+    refreshPage,
+    status,
+    setTotal,
+    debonceTime,
+  } = props;
   const router = useRouter();
 
   const [jobs, setJobs] = useState([]);
@@ -289,7 +296,7 @@ const JobsSection = (props) => {
   let tempArr = jobs;
   let jobsSum = {};
 
-  const debouncedSearchTerm = useDebounce(temp_jobs, 500);
+  const debouncedSearchTerm = useDebounce(temp_jobs, debonceTime);
 
   const numberMask = createNumberMask({
     prefix: "",
@@ -302,10 +309,10 @@ const JobsSection = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
-      if (addNewStringFlag) {
-        setAddNewStringFlag(0);
-        return;
-      }
+      // if (addNewStringFlag) {
+      //   setAddNewStringFlag(0);
+      //   return;
+      // }
 
       if (jobs[changedStringId]) {
         let changedJobs = jobs[changedStringId];

@@ -190,6 +190,7 @@ const MaterialsSection = (props) => {
     total,
     jobsTotal,
     user_info,
+    debonceTime,
   } = props;
   const router = useRouter();
   let material_sum = {};
@@ -202,14 +203,14 @@ const MaterialsSection = (props) => {
   const [loadDebounce, setLoadDebounce] = useState(true);
   let tempArr = materials;
 
-  const debouncedSearchTerm = useDebounce(temp_materials, 500);
+  const debouncedSearchTerm = useDebounce(temp_materials, debonceTime);
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
-      if (addNewStringFlag) {
-        setAddNewStringFlag(0);
-        return;
-      }
+      // if (addNewStringFlag) {
+      //   setAddNewStringFlag(0);
+      //   return;
+      // }
 
       if (materials[changedStringId]) {
         const changedMaterials = materials[changedStringId];

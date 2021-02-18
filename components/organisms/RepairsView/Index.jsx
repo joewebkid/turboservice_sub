@@ -99,6 +99,9 @@ const get_order_info = (callback, id, router, SESSIONID) => {
 
 const Index = (props) => {
   const { SESSIONID, user_info } = props;
+  const debonceTime = process.env.NEXT_PUBLIC_ORDER_DEBONCE
+    ? Number(process.env.NEXT_PUBLIC_ORDER_DEBONCE)
+    : 1000;
   const router = useRouter();
 
   const [order_info, setOrderInfo] = useState(false);
@@ -129,10 +132,11 @@ const Index = (props) => {
         <>
           <Block>
             <Block className="box p-5 mb-3">
-              <TopSection order_info={order_info} />
+              <TopSection order_info={order_info} debonceTime={debonceTime} />
               {/* Button group for order start and finish */}
 
               <RequestSection
+                debonceTime={debonceTime}
                 order_info={order_info}
                 callback_start={() => {
                   set_order_info(
@@ -200,6 +204,7 @@ const Index = (props) => {
               >
                 {/* Type, order contactor id and milage */}
                 <OrderInfoSection
+                  debonceTime={debonceTime}
                   order_info={order_info}
                   SESSIONID={SESSIONID}
                   id={router.query.id}
@@ -221,6 +226,7 @@ const Index = (props) => {
                 />
                 {/* Start time, Estimated and jobs done time */}
                 <TimeInfoSection
+                  debonceTime={debonceTime}
                   order_info={order_info}
                   SESSIONID={SESSIONID}
                   callback={(order_info_section) => {
@@ -244,6 +250,7 @@ const Index = (props) => {
             {/* Jobs list */}
             <Block className="box p-5 mb-3">
               <JobsSection
+                debonceTime={debonceTime}
                 SESSIONID={SESSIONID}
                 refreshPage={() => setRefresh(refresh + 1)}
                 refresh={refresh}
@@ -252,6 +259,7 @@ const Index = (props) => {
               />
               {/* Spare parts and materials */}
               <MaterialsSection
+                debonceTime={debonceTime}
                 SESSIONID={SESSIONID}
                 refresh={refresh}
                 status={order_info["ORDER_STATUS_ID"]}
@@ -264,6 +272,7 @@ const Index = (props) => {
             {/* Recomendation lists */}
             <Block className="box p-5 mb-3">
               <Recomendation
+                debonceTime={debonceTime}
                 SESSIONID={SESSIONID}
                 refresh={refresh}
                 status={order_info["ORDER_STATUS_ID"]}
@@ -273,6 +282,7 @@ const Index = (props) => {
 
             <Block className="box p-5 mb-3">
               <Attached
+                debonceTime={debonceTime}
                 SESSIONID={SESSIONID}
                 refresh={refresh}
                 status={order_info["ORDER_STATUS_ID"]}

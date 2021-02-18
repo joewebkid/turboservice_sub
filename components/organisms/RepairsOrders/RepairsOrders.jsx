@@ -58,7 +58,8 @@ const get_orders = (
   setIsSearching,
   setTotal,
   offset,
-  limit
+  limit,
+  onResponse
 ) => {
   // console.log("Я иду на запрос", offset);
   if (SESSIONID)
@@ -80,7 +81,7 @@ const get_orders = (
         callback(WorkorderList.data);
         setIsSearching(false);
         setTotal(WorkorderList.totalRecords);
-
+        onResponse();
         return response;
       })
       .catch(function (error) {

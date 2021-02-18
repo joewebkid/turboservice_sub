@@ -58,6 +58,10 @@ const auth_login = (
             })
           )
         ) {
+          localStorage.removeItem("filter_values");
+          localStorage.removeItem("filter_status");
+          localStorage.removeItem("current_page");
+
           localStorage.setItem("shown_modal", MODAL_SHOWN);
           router.push(router.query.redirectto || "/");
           return SESSIONID;
