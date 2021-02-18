@@ -196,7 +196,7 @@ const addNew = (recomendations, setRecomendations, recomendations_struct) => {
 };
 
 const Recomendation = (props) => {
-  const { SESSIONID, refresh, status } = props;
+  const { SESSIONID, refresh, status, debonceTime } = props;
   const router = useRouter();
 
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
@@ -210,7 +210,7 @@ const Recomendation = (props) => {
   const [loadDebounce, setLoadDebounce] = useState(true);
   let tempArr = recomendations;
 
-  const debouncedSearchTerm = useDebounce(temp_recomendations, 500);
+  const debouncedSearchTerm = useDebounce(temp_recomendations, debonceTime);
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {

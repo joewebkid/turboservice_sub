@@ -26,13 +26,17 @@ const Filter = memo((props) => {
     filter_values_saved,
   } = props;
 
+  const debonceTime = process.env.NEXT_PUBLIC_FILTER_DEBONCE
+    ? Number(process.env.NEXT_PUBLIC_FILTER_DEBONCE)
+    : 1000;
+
   const [filter_values, saveFilterValues] = useState(filter_values_saved);
   const [selected_statuses, setSelectedStatuses] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [search_string, setSearchString] = useState("");
   const [isFirstTime, setIsFirstTime] = useState(1);
 
-  const debouncedSearchTerm = useDebounce(search_string, 500);
+  const debouncedSearchTerm = useDebounce(search_string, debonceTime);
 
   // console.log(filter_values, selected_statuses);
   useEffect(() => {
@@ -71,7 +75,7 @@ const Filter = memo((props) => {
       setTimeout(() => {
         setIsSearching(false);
         setDataLoading(false);
-      }, 500);
+      }, debonceTime);
     }
   }, [debouncedSearchTerm]);
 
@@ -97,7 +101,7 @@ const Filter = memo((props) => {
       setTimeout(() => {
         setIsSearching(false);
         setDataLoading(false);
-      }, 500);
+      }, process.env.NEXT_PUBLIC_FILTER_DEBONCE);
     }
   }, [offset, limit]);
 
