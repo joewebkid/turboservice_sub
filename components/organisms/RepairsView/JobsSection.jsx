@@ -309,10 +309,10 @@ const JobsSection = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
-      if (addNewStringFlag) {
-        setAddNewStringFlag(0);
-        return;
-      }
+      // if (addNewStringFlag) {
+      //   setAddNewStringFlag(0);
+      //   return;
+      // }
 
       if (jobs[changedStringId]) {
         let changedJobs = jobs[changedStringId];

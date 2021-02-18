@@ -207,10 +207,10 @@ const MaterialsSection = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
-      if (addNewStringFlag) {
-        setAddNewStringFlag(0);
-        return;
-      }
+      // if (addNewStringFlag) {
+      //   setAddNewStringFlag(0);
+      //   return;
+      // }
 
       if (materials[changedStringId]) {
         const changedMaterials = materials[changedStringId];

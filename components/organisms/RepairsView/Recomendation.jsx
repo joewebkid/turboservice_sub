@@ -214,10 +214,10 @@ const Recomendation = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
-      if (addNewStringFlag) {
-        setAddNewStringFlag(0);
-        return;
-      }
+      // if (addNewStringFlag) {
+      //   setAddNewStringFlag(0);
+      //   return;
+      // }
 
       if (recomendations[changedStringId]) {
         let changedRecomendations = recomendations[changedStringId];

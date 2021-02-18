@@ -29,6 +29,9 @@ const logout = (SESSIONID, router) => {
       const { data } = response;
       const { result } = data;
       const { Message, Status } = result;
+      localStorage.removeItem("filter_values");
+      localStorage.removeItem("filter_status");
+      localStorage.removeItem("current_page");
       router.push("/login");
       // console.log(result);
     })
