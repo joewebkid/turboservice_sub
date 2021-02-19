@@ -24,15 +24,19 @@ const Vehicles = () => {
   const [SESSIONID, setSESSIONID] = useState(false);
 
   return (
-    <Container className="login-container">
+    <>
       <TopOrderView
-        statistics
+        repair_order_list
         user_info={user_info}
-        auth_data={null}
         SESSIONID={SESSIONID}
+        router={router}
+        // logout={logout}
       />
-      <VehiclesList SESSIONID={SESSIONID} />
-    </Container>
+
+      <Container fluid className="mt-3 orders-list-container order-container">
+        <VehiclesList SESSIONID={SESSIONID} />
+      </Container>
+    </>
   );
 };
 

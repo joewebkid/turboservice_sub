@@ -6,11 +6,8 @@ const get_vehicles = (callback, SESSIONID, auth_data) => {
     axios
       .get(
         process.env.NEXT_PUBLIC_URL +
-          "/api-v2/Contractors/VehiclesList?SESSIONID=" +
-          SESSIONID,
-        {
-          //   auth: auth_data,
-        }
+          "/api-v2/Contractors/VehiclesList?Total=1&SESSIONID=" +
+          SESSIONID
       )
       .then(function (response) {
         const { data } = response;
@@ -23,6 +20,60 @@ const get_vehicles = (callback, SESSIONID, auth_data) => {
       .catch(function (error) {
         console.log(error);
       });
+
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/WorkordersListByVehicleID/12?SESSIONID=" +
+        SESSIONID
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { VehiclesList } = Response;
+      // console.log(response);
+      callback(VehiclesList.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/JobsAndPartsListByWorkorderID/167557?SESSIONID=" +
+        SESSIONID
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { VehiclesList } = Response;
+      // console.log(response);
+      callback(VehiclesList.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/JobsAndPartsListCSV?SESSIONID=" +
+        SESSIONID
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const { VehiclesList } = Response;
+      // console.log(response);
+      callback(VehiclesList.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 };
 
 const VehiclesList = (props) => {
