@@ -7,8 +7,14 @@ import LogoName from "../../molecules/LogoName";
 import Statistics from "./Statistics";
 import { t } from "../../translation/data";
 import LangChooser from "../../atoms/LangChooser";
+import { useRouter } from "next/router";
 
 const TopOrderView = (props) => {
+  // if (typeof window !== "undefined")
+  //   window.onbeforeunload = function () {
+  //     return "Данные не сохранены. Точно перейти?";
+  //   };
+
   const {
     repair_order_list,
     user_info,
@@ -17,7 +23,9 @@ const TopOrderView = (props) => {
     shownModal,
     logout,
     router,
+    saveData,
   } = props;
+
   return (
     <>
       <Section
@@ -40,7 +48,15 @@ const TopOrderView = (props) => {
                     />
                   </Block>
                   <Block>
-                    <CustomLink>
+                    <Block
+                      className="btn btn-link"
+                      onClick={() => {
+                        saveData();
+                        setInterval(() => {
+                          router.push("/");
+                        }, 1000);
+                      }}
+                    >
                       <svg
                         ariaHidden="true"
                         focusable="false"
@@ -57,7 +73,7 @@ const TopOrderView = (props) => {
                         ></path>
                       </svg>{" "}
                       {t("repair_orders_list")}
-                    </CustomLink>
+                    </Block>
                   </Block>
                 </>
               ) : (

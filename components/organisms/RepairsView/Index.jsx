@@ -98,7 +98,7 @@ const get_order_info = (callback, id, router, SESSIONID) => {
 };
 
 const Index = (props) => {
-  const { SESSIONID, user_info } = props;
+  const { SESSIONID, user_info, save_date } = props;
   const debonceTime = process.env.NEXT_PUBLIC_ORDER_DEBONCE
     ? Number(process.env.NEXT_PUBLIC_ORDER_DEBONCE)
     : 1000;
@@ -223,6 +223,7 @@ const Index = (props) => {
                     );
                   }}
                   status={order_info["ORDER_STATUS_ID"]}
+                  save_date={save_date}
                 />
                 {/* Start time, Estimated and jobs done time */}
                 <TimeInfoSection
@@ -256,6 +257,7 @@ const Index = (props) => {
                 refresh={refresh}
                 status={order_info["ORDER_STATUS_ID"]}
                 setTotal={setJobsTotal}
+                save_date={save_date}
               />
               {/* Spare parts and materials */}
               <MaterialsSection
@@ -267,6 +269,7 @@ const Index = (props) => {
                 jobsTotal={jobsTotal}
                 setTotal={setTotal}
                 user_info={user_info}
+                save_date={save_date}
               />
             </Block>
             {/* Recomendation lists */}
@@ -276,6 +279,7 @@ const Index = (props) => {
                 SESSIONID={SESSIONID}
                 refresh={refresh}
                 status={order_info["ORDER_STATUS_ID"]}
+                save_date={save_date}
               />
             </Block>
             {/* Attached files list */}

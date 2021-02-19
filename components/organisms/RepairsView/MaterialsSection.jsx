@@ -8,6 +8,8 @@ import { materials as materials_struct } from "./data";
 import FlexBlock from "../../atoms/FlexBlock";
 import useDebounce from "../../atoms/FilterInput/useDebounce";
 import MessageToast from "./MessageToast";
+import MaskedInput from "react-text-mask";
+import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import { t } from "../../translation/data";
 
 const get_parts = (callback, id, SESSIONID) => {
@@ -191,6 +193,7 @@ const MaterialsSection = (props) => {
     jobsTotal,
     user_info,
     debonceTime,
+    save_date,
   } = props;
   const router = useRouter();
   let material_sum = {};
@@ -201,9 +204,23 @@ const MaterialsSection = (props) => {
   const [materials, setMaterials] = useState([]);
   const [temp_materials, setTempMaterials] = useState([]);
   const [loadDebounce, setLoadDebounce] = useState(true);
+  const [isClearFilter, setIsClearFilter] = useState(true);
+
   let tempArr = materials;
 
-  const debouncedSearchTerm = useDebounce(temp_materials, debonceTime);
+  const debouncedSearchTerm = useDebounce(
+    temp_materials,
+    isClearFilter ? 10 : debonceTime
+  );
+
+  const numberMask = createNumberMask({
+    prefix: "",
+    suffix: "",
+    thousandsSeparatorSymbol: "",
+    allowDecimal: true,
+    decimalSymbol: ".",
+    decimalLimit: 2,
+  });
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
@@ -212,6 +229,7 @@ const MaterialsSection = (props) => {
       //   return;
       // }
 
+      setIsClearFilter(false);
       if (materials[changedStringId]) {
         const changedMaterials = materials[changedStringId];
         const isFull = !Object.keys(changedMaterials).find(
@@ -234,7 +252,7 @@ const MaterialsSection = (props) => {
           );
       }
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, save_date]);
 
   useEffect(() => {
     setTotal(jobsTotal);
@@ -296,10 +314,7 @@ const MaterialsSection = (props) => {
                 <>
                   <tr>
                     {materials_struct.map((struct) => {
-                      const value =
-                        struct.type == "number"
-                          ? Number(material[struct.slug]).toFixed(2)
-                          : material[struct.slug];
+                      const value = material[struct.slug];
 
                       if (struct.type == "number") {
                         if (!material_sum[struct.slug])
@@ -318,20 +333,61 @@ const MaterialsSection = (props) => {
                         <td scope="col">
                           <FlexBlock>
                             {status != 2 ? (
-                              <input
-                                value={value}
-                                className="form-control"
-                                placehorder="repair order"
-                                style={struct.style}
-                                readOnly={!loadDebounce ? true : false}
-                                onChange={(e) => {
-                                  tempArr[key][struct.slug] = e.target.value;
+                              struct.type == "number" ? (
+                                <MaskedInput
+                                  mask={numberMask}
+                                  value={value}
+                                  className={"form-control"}
+                                  placehorder="repair order"
+                                  style={struct.style}
+                                  readOnly={!loadDebounce ? true : false}
+                                  onChange={(e) => {
+                                    console.log(e.target.value);
+                                    if (loadDebounce) {
+                                      tempArr[key][struct.slug] =
+                                        e.target.value;
+                                      setMaterials([...tempArr]);
+                                      setTempMaterials([...tempArr]);
+                                      setChangedStringId(key);
+                                    }
+                                  }}
+                                  // onBlur={(e) => {
+                                  //   if (loadDebounce) {
+                                  //     setIsClearFilter(1000);
+                                  //     tempArr[key][struct.slug] =
+                                  //       e.target.value;
+                                  //     setMaterials([...tempArr]);
+                                  //     setTempMaterials([...tempArr]);
+                                  //     setChangedStringId(key);
+                                  //   }
+                                  // }}
+                                />
+                              ) : (
+                                <input
+                                  value={value}
+                                  className="form-control"
+                                  placehorder="repair order"
+                                  style={struct.style}
+                                  readOnly={!loadDebounce ? true : false}
+                                  onChange={(e) => {
+                                    tempArr[key][struct.slug] = e.target.value;
 
-                                  // set_job(console.log, router.query.id, SESSIONID);
-                                  setTempMaterials([...tempArr]);
-                                  setChangedStringId(key);
-                                }}
-                              />
+                                    // set_job(console.log, router.query.id, SESSIONID);
+                                    setTempMaterials([...tempArr]);
+                                    setChangedStringId(key);
+                                  }}
+                                  // onBlur={(e) => {
+                                  //   if (loadDebounce) {
+                                  //     setIsClearFilter(1000);
+                                  //     tempArr[key][struct.slug] =
+                                  //       e.target.value;
+                                  //     setMaterials([...tempArr]);
+                                  //     setTempMaterials([...tempArr]);
+                                  //     setChangedStringId(key);
+                                  //   }
+                                  // }}
+                                />
+                              )
                             ) : (
                               <FlexBlock
                                 style={{

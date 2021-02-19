@@ -31,7 +31,7 @@ const get_types = (callback, SESSIONID) => {
 };
 
 const OrderInfoSection = (props) => {
-  const { order_info, id, SESSIONID, callback, debonceTime } = props;
+  const { order_info, id, SESSIONID, callback, debonceTime, save_date } = props;
   const status = order_info["ORDER_STATUS_ID"];
 
   const [types, setTypes] = useState([]);
@@ -50,7 +50,7 @@ const OrderInfoSection = (props) => {
       return 0;
     }
     callback(order_info_section);
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, save_date]);
 
   return (
     <>

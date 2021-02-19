@@ -35,11 +35,11 @@ const Filter = memo((props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [search_string, setSearchString] = useState("");
   const [isFirstTime, setIsFirstTime] = useState(1);
-  const [isClearFilter, setIsClearFilter] = useState(true);
+  const [isClearFilter, setIsClearFilter] = useState(10);
 
   const debouncedSearchTerm = useDebounce(
     search_string,
-    isClearFilter ? 10 : debonceTime
+    isClearFilter ? isClearFilter : debonceTime
   );
 
   // console.log(filter_values, selected_statuses);

@@ -196,7 +196,7 @@ const addNew = (recomendations, setRecomendations, recomendations_struct) => {
 };
 
 const Recomendation = (props) => {
-  const { SESSIONID, refresh, status, debonceTime } = props;
+  const { SESSIONID, refresh, status, debonceTime, save_date } = props;
   const router = useRouter();
 
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
@@ -242,7 +242,7 @@ const Recomendation = (props) => {
           );
       }
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, save_date]);
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)

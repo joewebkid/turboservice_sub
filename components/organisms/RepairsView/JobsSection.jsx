@@ -258,6 +258,7 @@ const JobsSection = (props) => {
     status,
     setTotal,
     debonceTime,
+    save_date,
   } = props;
   const router = useRouter();
 
@@ -309,11 +310,6 @@ const JobsSection = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
-      // if (addNewStringFlag) {
-      //   setAddNewStringFlag(0);
-      //   return;
-      // }
-
       if (jobs[changedStringId]) {
         let changedJobs = jobs[changedStringId];
         Object.keys(changedJobs).map((e) => {
@@ -336,7 +332,7 @@ const JobsSection = (props) => {
         );
       }
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, save_date]);
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)

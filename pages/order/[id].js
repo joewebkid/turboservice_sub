@@ -46,9 +46,11 @@ const OrderView = () => {
   useEffect(() => {
     setSESSIONID(get_user_data(setUserInfo, router));
   }, []);
+
   const [user_info, setUserInfo] = useState(false);
   const [SESSIONID, setSESSIONID] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [save_date, setSaveDate] = useState(false);
 
   return (
     <>
@@ -58,9 +60,14 @@ const OrderView = () => {
         SESSIONID={SESSIONID}
         router={router}
         logout={logout}
+        saveData={() => setSaveDate(save_date + 1)}
       />
       <Container fluid className="mt-3 orders-list-container order-container">
-        <RepairView SESSIONID={SESSIONID} user_info={user_info} />
+        <RepairView
+          SESSIONID={SESSIONID}
+          user_info={user_info}
+          save_date={save_date}
+        />
       </Container>
     </>
   );
