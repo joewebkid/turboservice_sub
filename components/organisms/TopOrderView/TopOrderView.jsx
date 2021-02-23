@@ -52,9 +52,10 @@ const TopOrderView = (props) => {
                       className="btn btn-link"
                       onClick={() => {
                         saveData();
-                        setInterval(() => {
+                        const c = setInterval(() => {
+                          clearInterval(c);
                           router.push("/");
-                        }, 1000);
+                        }, 2900);
                       }}
                     >
                       <svg
@@ -100,16 +101,6 @@ const TopOrderView = (props) => {
           </FlexBlock>
         </Container>
       </Section>
-      {/* {loading ? (
-        <Container
-          fluid
-          className=" orders-list-container order-container pt-3"
-        >
-          <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
-        </Container>
-      ) : (
-        <></>
-      )} */}
     </>
   );
 };
