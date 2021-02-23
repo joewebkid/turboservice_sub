@@ -71,7 +71,7 @@ const set_order_info = (
     });
 };
 
-const get_order_info = (callback, id, router, SESSIONID) => {
+const get_order_info = (callback, id, router, SESSIONID, setOrderStatus) => {
   if (SESSIONID)
     axios
       .get(
@@ -87,7 +87,10 @@ const get_order_info = (callback, id, router, SESSIONID) => {
         const { Response } = result;
         const { WorkorderHeader } = Response;
 
-        if (WorkorderHeader.data) callback(WorkorderHeader.data);
+        if (WorkorderHeader.data) {
+          callback(WorkorderHeader.data);
+          setOrderStatus(WorkorderHeader.data.ORDER_STATUS_ID);
+        }
         // else router.push("/login?session");
       })
       .catch(function (error) {
@@ -98,7 +101,7 @@ const get_order_info = (callback, id, router, SESSIONID) => {
 };
 
 const Index = (props) => {
-  const { SESSIONID, user_info, save_date } = props;
+  const { SESSIONID, user_info, save_date, setOrderStatus } = props;
   const debonceTime = process.env.NEXT_PUBLIC_ORDER_DEBONCE
     ? Number(process.env.NEXT_PUBLIC_ORDER_DEBONCE)
     : 1000;
@@ -114,7 +117,13 @@ const Index = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query.id) {
-      get_order_info(setOrderInfo, router.query.id, router, SESSIONID);
+      get_order_info(
+        setOrderInfo,
+        router.query.id,
+        router,
+        SESSIONID,
+        setOrderStatus
+      );
     }
   }, [router, SESSIONID]);
 

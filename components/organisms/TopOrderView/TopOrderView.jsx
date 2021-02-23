@@ -10,10 +10,10 @@ import LangChooser from "../../atoms/LangChooser";
 import { useRouter } from "next/router";
 
 const TopOrderView = (props) => {
-  // if (typeof window !== "undefined")
-  //   window.onbeforeunload = function () {
-  //     return "Данные не сохранены. Точно перейти?";
-  //   };
+  if (typeof window !== "undefined")
+    window.onbeforeunload = function () {
+      return "Данные не сохранены. Точно перейти?";
+    };
 
   const {
     repair_order_list,
@@ -24,6 +24,7 @@ const TopOrderView = (props) => {
     logout,
     router,
     saveData,
+    order_status,
   } = props;
 
   return (
@@ -51,11 +52,15 @@ const TopOrderView = (props) => {
                     <Block
                       className="btn btn-link"
                       onClick={() => {
-                        saveData();
-                        const c = setInterval(() => {
-                          clearInterval(c);
+                        if (order_status != 2) {
+                          saveData();
+                          const c = setInterval(() => {
+                            clearInterval(c);
+                            router.push("/");
+                          }, 2900);
+                        } else {
                           router.push("/");
-                        }, 2900);
+                        }
                       }}
                     >
                       <svg
