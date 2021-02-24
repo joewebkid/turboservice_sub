@@ -58,3 +58,5 @@ export const headers = [
     filter: "OrderStatusID",
   },
 ];
+
+export const entity_sizes = [1, 3, 10, 25, 50, 100];

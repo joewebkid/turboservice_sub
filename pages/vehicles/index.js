@@ -22,6 +22,7 @@ const Vehicles = () => {
   }, []);
   const [user_info, setUserInfo] = useState(false);
   const [SESSIONID, setSESSIONID] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   return (
     <>
@@ -34,7 +35,11 @@ const Vehicles = () => {
       />
 
       <Container fluid className="mt-3 orders-list-container order-container">
-        <VehiclesList SESSIONID={SESSIONID} />
+        <VehiclesList
+          SESSIONID={SESSIONID}
+          setLoading={setLoading}
+          loading={loading}
+        />
       </Container>
     </>
   );
