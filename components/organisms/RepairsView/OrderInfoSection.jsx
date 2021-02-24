@@ -31,25 +31,53 @@ const get_types = (callback, SESSIONID) => {
 };
 
 const OrderInfoSection = (props) => {
-  const { order_info, id, SESSIONID, callback, debonceTime, save_date } = props;
+  const {
+    order_info,
+    id,
+    SESSIONID,
+    callback,
+    debonceTime,
+    save_date,
+    save_state,
+    setSaveState,
+  } = props;
   const status = order_info["ORDER_STATUS_ID"];
 
   const [types, setTypes] = useState([]);
   const [order_info_section, SetOrderInfo] = useState(order_info);
   const [isFirstTime, setIsFirstTime] = useState(1);
+  const [isFirstTimeTwo, setIsFirstTimeTwo] = useState(1);
 
   useEffect(() => {
     if (SESSIONID) get_types(setTypes, SESSIONID);
   }, [id, SESSIONID]);
 
+  useEffect(() => {
+    if (isFirstTimeTwo) {
+      setIsFirstTimeTwo(0);
+      return 0;
+    }
+
+    if (!save_state.header)
+      setSaveState({
+        ...save_state,
+        header: true,
+      });
+  }, [order_info_section]);
+
   const debouncedSearchTerm = useDebounce(order_info_section, debonceTime);
 
   useEffect(() => {
+    console.log(save_state);
     if (isFirstTime) {
       setIsFirstTime(0);
       return 0;
     }
     callback(order_info_section);
+    setSaveState({
+      ...save_state,
+      header: false,
+    });
   }, [debouncedSearchTerm, save_date]);
 
   return (

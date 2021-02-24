@@ -9,6 +9,7 @@ import StatusesSelect from "../atoms/FilterInput/StatusesSelect";
 import useDebounce from "../atoms/FilterInput/useDebounce";
 import FlexBlock from "../atoms/FlexBlock";
 import { formatDate } from "./data";
+import { t } from "../translation/data";
 
 const Filter = memo((props) => {
   const {
@@ -120,7 +121,7 @@ const Filter = memo((props) => {
                 <Form.Control
                   required
                   type="text"
-                  placeholder="ALL"
+                  placeholder={t("all")}
                   onChange={(e) => {
                     setCurrentPage(0);
                     saveFilterValues({
@@ -160,7 +161,7 @@ const Filter = memo((props) => {
                 <DataInput
                   short
                   clear
-                  placeholder="FROM"
+                  placeholder={t("from")}
                   className="dateFrom"
                   callback={(e) => {
                     // console.log(e);
@@ -181,7 +182,7 @@ const Filter = memo((props) => {
                 <DataInput
                   short
                   clear
-                  placeholder="TO"
+                  placeholder={t("to")}
                   className="dateTo"
                   callback={(e) => {
                     // console.log(e);
@@ -236,7 +237,7 @@ const Filter = memo((props) => {
                 saveFilterValues({});
               }}
             >
-              Clear
+              {t("clear")}
             </div>
           </FlexBlock>
         </td>

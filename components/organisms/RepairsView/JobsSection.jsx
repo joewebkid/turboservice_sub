@@ -259,6 +259,8 @@ const JobsSection = (props) => {
     setTotal,
     debonceTime,
     save_date,
+    save_state,
+    setSaveState,
   } = props;
   const router = useRouter();
 
@@ -272,20 +274,21 @@ const JobsSection = (props) => {
   const popover = (e) => {
     return (
       <Popover id="popover-basic" {...e}>
-        <Popover.Title as="h3">Load from file</Popover.Title>
+        <Popover.Title as="h3">{t("load_from_file")}</Popover.Title>
         <Popover.Content>
-          You can load{" "}
-          <CustomLink
-            href="/data.xml"
-            target="_blank"
-            download="template.xml"
-            onClick={() => {
-              console.log(popoverRef);
-              popoverRef.current.click();
-            }}
-          >
-            template
-          </CustomLink>
+          {t("you_can_load_template")}
+          <Block>
+            <CustomLink
+              href="/data.xml"
+              target="_blank"
+              download="template.xml"
+              onClick={() => {
+                popoverRef.current.click();
+              }}
+            >
+              {t("download_template")}
+            </CustomLink>
+          </Block>
         </Popover.Content>
       </Popover>
     );
@@ -310,26 +313,33 @@ const JobsSection = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
-      if (jobs[changedStringId]) {
-        let changedJobs = jobs[changedStringId];
-        Object.keys(changedJobs).map((e) => {
-          if (
-            !changedJobs[e] &&
-            (e == "JOB_NORM_HOUR" || e == "JOB_AMOUNT" || e == "JOB_PRICE")
-          ) {
-            changedJobs[e] = "0.00";
-          }
-        });
+      if (save_state.job) {
+        if (jobs[changedStringId]) {
+          let changedJobs = jobs[changedStringId];
+          Object.keys(changedJobs).map((e) => {
+            if (
+              !changedJobs[e] &&
+              (e == "JOB_NORM_HOUR" || e == "JOB_AMOUNT" || e == "JOB_PRICE")
+            ) {
+              changedJobs[e] = "0.00";
+            }
+          });
 
-        set_job(
-          setJobs,
-          router.query.id,
-          SESSIONID,
-          changedJobs,
-          setMessage,
-          jobs,
-          setLoadDebounce
-        );
+          set_job(
+            setJobs,
+            router.query.id,
+            SESSIONID,
+            changedJobs,
+            setMessage,
+            jobs,
+            setLoadDebounce
+          );
+
+          setSaveState({
+            ...save_state,
+            job: false,
+          });
+        }
       }
     }
   }, [debouncedSearchTerm, save_date]);
@@ -360,7 +370,7 @@ const JobsSection = (props) => {
                   className="btn btn-secondary mr-1"
                   style={{ width: 215, height: 38 }}
                 >
-                  Load from file
+                  {t("load_from_file")}
                   <input
                     id="xmlFile"
                     type="file"
@@ -489,6 +499,11 @@ const JobsSection = (props) => {
                                         setJobs([...tempArr]);
                                         setTempJobs([...tempArr]);
                                         setChangedStringId(key);
+
+                                        setSaveState({
+                                          ...save_state,
+                                          job: true,
+                                        });
                                       }
                                     }}
                                   />
@@ -506,6 +521,11 @@ const JobsSection = (props) => {
                                         setJobs([...tempArr]);
                                         setTempJobs([...tempArr]);
                                         setChangedStringId(key);
+
+                                        setSaveState({
+                                          ...save_state,
+                                          job: true,
+                                        });
                                       }
                                     }}
                                   />

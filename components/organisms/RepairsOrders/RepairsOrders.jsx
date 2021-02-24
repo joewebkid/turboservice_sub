@@ -316,7 +316,7 @@ const RepairsOrders = (props) => {
               <></>
             )} */}
             <Block>
-              Show
+              {t("show")}
               <Block className="selectCont">
                 <select
                   className="form-control"
@@ -331,7 +331,7 @@ const RepairsOrders = (props) => {
                   ))}
                 </select>
               </Block>
-              Total records: {total}
+              {t("total_records")} {total}
             </Block>
           </FlexBlock>
 

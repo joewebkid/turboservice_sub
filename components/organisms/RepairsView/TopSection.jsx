@@ -29,7 +29,7 @@ const TopSection = (props) => {
             <FlexBlock justify="flex-start">
               <span>
                 {" "}
-                {t("manufacture_year")} {order_info["VEHICLE_MANUFACTURE_YEAR"]}
+                {t("registration")} {order_info["VEHICLE_REGISTRATION_DATE"]}
               </span>
             </FlexBlock>
             <FlexBlock justify="flex-start">

@@ -196,7 +196,15 @@ const addNew = (recomendations, setRecomendations, recomendations_struct) => {
 };
 
 const Recomendation = (props) => {
-  const { SESSIONID, refresh, status, debonceTime, save_date } = props;
+  const {
+    SESSIONID,
+    refresh,
+    status,
+    debonceTime,
+    save_date,
+    save_state,
+    setSaveState,
+  } = props;
   const router = useRouter();
 
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
@@ -219,27 +227,34 @@ const Recomendation = (props) => {
       //   return;
       // }
 
-      if (recomendations[changedStringId]) {
-        let changedRecomendations = recomendations[changedStringId];
-        const date = new Date();
-        date.setMonth(date.getMonth() + 1);
-        changedRecomendations["ADVICE_FIX_BEFORE"] = changedRecomendations[
-          "ADVICE_FIX_BEFORE"
-        ]
-          ? changedRecomendations["ADVICE_FIX_BEFORE"]
-          : formatDateForPost(date);
+      if (save_state.recomendation) {
+        if (recomendations[changedStringId]) {
+          let changedRecomendations = recomendations[changedStringId];
+          const date = new Date();
+          date.setMonth(date.getMonth() + 1);
+          changedRecomendations["ADVICE_FIX_BEFORE"] = changedRecomendations[
+            "ADVICE_FIX_BEFORE"
+          ]
+            ? changedRecomendations["ADVICE_FIX_BEFORE"]
+            : formatDateForPost(date);
 
-        if (changedRecomendations["ADVICE_TEXT"])
-          set_recomendations(
-            setRecomendations,
-            router.query.id,
-            SESSIONID,
-            changedRecomendations,
-            setMessage,
-            recomendations,
-            changedStringId,
-            setLoadDebounce
-          );
+          if (changedRecomendations["ADVICE_TEXT"])
+            set_recomendations(
+              setRecomendations,
+              router.query.id,
+              SESSIONID,
+              changedRecomendations,
+              setMessage,
+              recomendations,
+              changedStringId,
+              setLoadDebounce
+            );
+
+          setSaveState({
+            ...save_state,
+            recomendation: false,
+          });
+        }
       }
     }
   }, [debouncedSearchTerm, save_date]);
@@ -315,6 +330,11 @@ const Recomendation = (props) => {
 
                                       setTempRecomendations([...tempArr]);
                                       setChangedStringId(key);
+
+                                      setSaveState({
+                                        ...save_state,
+                                        recomendation: true,
+                                      });
                                     }
                                   }}
                                   noreload
@@ -334,6 +354,11 @@ const Recomendation = (props) => {
 
                                     setTempRecomendations([...tempArr]);
                                     setChangedStringId(key);
+
+                                    setSaveState({
+                                      ...save_state,
+                                      recomendation: true,
+                                    });
                                   }
                                 }}
                               />

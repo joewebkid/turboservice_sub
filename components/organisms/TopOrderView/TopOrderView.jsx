@@ -25,6 +25,7 @@ const TopOrderView = (props) => {
     router,
     saveData,
     order_status,
+    save_state,
   } = props;
 
   return (
@@ -52,7 +53,14 @@ const TopOrderView = (props) => {
                     <Block
                       className="btn btn-link"
                       onClick={() => {
-                        if (order_status != 2) {
+                        if (
+                          (save_state.header ||
+                            save_state.job ||
+                            save_state.material ||
+                            save_state.recomendation) &&
+                          order_status != 2
+                        ) {
+                          // console.log(save_state);
                           saveData();
                           const c = setInterval(() => {
                             clearInterval(c);

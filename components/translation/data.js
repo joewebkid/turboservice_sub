@@ -69,6 +69,24 @@ const en = (a = {}) => {
     wheels_tightening_required: "Wheels tightening required",
     wheels_tightening_error:
       "Select the type of wheels tightening, before finishing order",
+
+    login_placeholder: "Login *",
+    password: "Password",
+    all: "ALL",
+    from: "FROM",
+    to: "TO",
+    clear: "Clear",
+    show: "Show",
+    total_records: "Total records:",
+    contactor: "Contractor",
+    contactor_warranty: "Contractor warranty",
+    new: "NEW",
+    done: "DONE",
+    in_progress: "IN PROGRESS",
+    load_from_file: "Load from file",
+    you_can_load_template:
+      'You can automate and simplify the entry of work, spare parts, materials and recommendations into the work order. Set up your software to export repair orders in files according to the XML template. So you can register repair order in this system by pressing one button "Load from file".',
+    download_template: "Download a sample XML file.",
   };
 };
 
@@ -144,6 +162,23 @@ const ru = (a = {}) => {
     wheels_tightening_required: "Требуется протяжка колес",
     wheels_tightening_error:
       "Выберите тип протяжка колес, прежде чем завершить заказ",
+
+    login_placeholder: "Логин *",
+    password: "Пароль",
+    all: "ВСЕ",
+    from: "ОТ",
+    to: "ДО",
+    clear: "Очистить",
+    show: "Показать",
+    total_records: "Всего записей:",
+    contactor: "Субподрядчик",
+    contactor_warranty: "Гарантия субподрядчика",
+    new: "НОВЫЙ",
+    done: "ГОТОВ",
+    in_progress: "В РАБОТЕ",
+    load_from_file: "Загрузить из файла",
+    you_can_load_template: `Вы можете автоматизировать и упростить внесение работ, запчастей, материалов и рекомендаций в заказ-наряд. Для этого настройте в своей учетной системе выгрузку заказ-наряда в XML файл согласно образцу. Тогда Вы сможете загружать весь список нажатием одной кнопки "Загрузить из файла". `,
+    download_template: "Скачать образец XML файла.",
   };
 };
 
@@ -206,18 +241,36 @@ const et = (a = {}) => {
     logout: "Logi välja",
     tlt_Repair_orders: "TLT remondi töökäsud",
     login: "Logi sisse",
-    restore: "Taastama",
-    to_sign: "Vormi allkirjastamiseks",
+    restore: "Taasta",
+    to_sign: "Tagasi avalehele",
     session_expired: "Teie seansi aeg on lõppenud",
     restore_password: "Taasta parool",
     attention: "Hoiatus",
     contact_support: "Kontakt tugi",
-    sure_cancel_start:
-      "Hoiatus. Kas olete kindel, et tühistate remondi alustamise tellimuse?",
-    sure_finish_order: "Kas olete kindel, et soovite selle tellimuse lõpetada?",
+    sure_cancel_start: "Kas tühistada töökäsu tööde algusaeg?",
+    sure_finish_order: "Kas lõpetada töökäsk?",
     please_select: "Palun vali",
-    wheels_tightening_required: "Vajalik rataste pingutamine",
+    wheels_tightening_required:
+      "Enne töökäsu lõpetamist määra rataste pingutamise vajadus.",
     wheels_tightening_error: "Valige tüüp rataste rattad, enne kui tellimus on",
+
+    login_placeholder: "Kasutajatunnus *",
+    password: "Parool",
+    all: "Kõik",
+    from: "Alates",
+    to: "Kuni",
+    clear: "Tühista",
+    show: "Näita",
+    total_records: "Kokku kirjeid",
+    contactor: "Alltöövõtja",
+    contactor_warranty: "Garantii vahele on lülitatud alltöövõtja",
+    new: "Uus",
+    done: "Teostatud",
+    in_progress: "Töös",
+    load_from_file: "Lae failist",
+    you_can_load_template:
+      "Saate automatiseerida ja lihtsustada tööde, varuosade, materjalide ja soovituste sisestamist eksportides töökäsu andmed XML formaadis vastavalt näidisele.",
+    download_template: "Lae alla XML faili näidis.",
   };
 };
 

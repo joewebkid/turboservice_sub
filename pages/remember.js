@@ -75,7 +75,7 @@ export const RememberPasswordPage = () => {
             <Form.Group controlId="formBasicEmail">
               <Form.Control
                 type="text"
-                placeholder="Login *"
+                placeholder={t("login_placeholder")}
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
               />

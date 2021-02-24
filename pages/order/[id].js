@@ -52,6 +52,12 @@ const OrderView = () => {
   const [loading, setLoading] = useState(false);
   const [save_date, setSaveDate] = useState(false);
   const [order_status, setOrderStatus] = useState(false);
+  const [save_state, setSaveState] = useState({
+    header: false,
+    job: false,
+    material: false,
+    recomendation: false,
+  });
 
   return (
     <>
@@ -63,6 +69,7 @@ const OrderView = () => {
         logout={logout}
         saveData={() => setSaveDate(save_date + 1)}
         order_status={order_status}
+        save_state={save_state}
       />
       <Container fluid className="mt-3 orders-list-container order-container">
         <RepairView
@@ -70,6 +77,8 @@ const OrderView = () => {
           user_info={user_info}
           save_date={save_date}
           setOrderStatus={setOrderStatus}
+          save_state={save_state}
+          setSaveState={setSaveState}
         />
       </Container>
     </>

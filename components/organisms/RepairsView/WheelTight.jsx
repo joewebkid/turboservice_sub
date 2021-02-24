@@ -41,7 +41,7 @@ const WheelTight = (props) => {
   const { id, SESSIONID, order_info_section, SetOrderInfo, order_info } = props;
   const [wheel_tight, setwheel_tight] = useState(false);
   useEffect(() => {
-    console.log(id, SESSIONID);
+    // console.log(id, SESSIONID);
     if (SESSIONID && id) {
       set_wheel_tight(setwheel_tight, id, SESSIONID);
     }

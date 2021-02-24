@@ -194,6 +194,8 @@ const MaterialsSection = (props) => {
     user_info,
     debonceTime,
     save_date,
+    save_state,
+    setSaveState,
   } = props;
   const router = useRouter();
   let material_sum = {};
@@ -229,27 +231,35 @@ const MaterialsSection = (props) => {
       //   return;
       // }
 
-      setIsClearFilter(false);
-      if (materials[changedStringId]) {
-        const changedMaterials = materials[changedStringId];
-        const isFull = !Object.keys(changedMaterials).find(
-          (e) =>
-            e != "PART_ID" &&
-            !changedMaterials[e] &&
-            e != "PART_AMOUNT" &&
-            e != "PART_PRICE"
-        );
-
-        if (isFull)
-          set_materials(
-            setMaterials,
-            router.query.id,
-            SESSIONID,
-            changedMaterials,
-            setMessage,
-            materials,
-            setLoadDebounce
+      if (save_state.material) {
+        setIsClearFilter(false);
+        if (materials[changedStringId]) {
+          const changedMaterials = materials[changedStringId];
+          const isFull = !Object.keys(changedMaterials).find(
+            (e) =>
+              e != "PART_ID" &&
+              !changedMaterials[e] &&
+              e != "PART_AMOUNT" &&
+              e != "PART_PRICE"
           );
+
+          if (isFull) {
+            set_materials(
+              setMaterials,
+              router.query.id,
+              SESSIONID,
+              changedMaterials,
+              setMessage,
+              materials,
+              setLoadDebounce
+            );
+          }
+
+          setSaveState({
+            ...save_state,
+            material: false,
+          });
+        }
       }
     }
   }, [debouncedSearchTerm, save_date]);
@@ -349,6 +359,11 @@ const MaterialsSection = (props) => {
                                       setMaterials([...tempArr]);
                                       setTempMaterials([...tempArr]);
                                       setChangedStringId(key);
+
+                                      setSaveState({
+                                        ...save_state,
+                                        material: true,
+                                      });
                                     }
                                   }}
                                   // onBlur={(e) => {
@@ -372,9 +387,13 @@ const MaterialsSection = (props) => {
                                   onChange={(e) => {
                                     tempArr[key][struct.slug] = e.target.value;
 
-                                    // set_job(console.log, router.query.id, SESSIONID);
+                                    // set_material(console.log, router.query.id, SESSIONID);
                                     setTempMaterials([...tempArr]);
                                     setChangedStringId(key);
+                                    setSaveState({
+                                      ...save_state,
+                                      material: true,
+                                    });
                                   }}
                                   // onBlur={(e) => {
                                   //   if (loadDebounce) {

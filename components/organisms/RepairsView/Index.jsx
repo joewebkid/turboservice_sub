@@ -101,7 +101,14 @@ const get_order_info = (callback, id, router, SESSIONID, setOrderStatus) => {
 };
 
 const Index = (props) => {
-  const { SESSIONID, user_info, save_date, setOrderStatus } = props;
+  const {
+    SESSIONID,
+    user_info,
+    save_date,
+    setOrderStatus,
+    save_state,
+    setSaveState,
+  } = props;
   const debonceTime = process.env.NEXT_PUBLIC_ORDER_DEBONCE
     ? Number(process.env.NEXT_PUBLIC_ORDER_DEBONCE)
     : 1000;
@@ -233,6 +240,8 @@ const Index = (props) => {
                   }}
                   status={order_info["ORDER_STATUS_ID"]}
                   save_date={save_date}
+                  save_state={save_state}
+                  setSaveState={setSaveState}
                 />
                 {/* Start time, Estimated and jobs done time */}
                 <TimeInfoSection
@@ -254,6 +263,8 @@ const Index = (props) => {
                     );
                   }}
                   status={order_info["ORDER_STATUS_ID"]}
+                  save_state={save_state}
+                  setSaveState={setSaveState}
                 />
               </FlexBlock>
             </Block>
@@ -267,6 +278,8 @@ const Index = (props) => {
                 status={order_info["ORDER_STATUS_ID"]}
                 setTotal={setJobsTotal}
                 save_date={save_date}
+                save_state={save_state}
+                setSaveState={setSaveState}
               />
               {/* Spare parts and materials */}
               <MaterialsSection
@@ -279,6 +292,8 @@ const Index = (props) => {
                 setTotal={setTotal}
                 user_info={user_info}
                 save_date={save_date}
+                save_state={save_state}
+                setSaveState={setSaveState}
               />
             </Block>
             {/* Recomendation lists */}
@@ -289,6 +304,8 @@ const Index = (props) => {
                 refresh={refresh}
                 status={order_info["ORDER_STATUS_ID"]}
                 save_date={save_date}
+                save_state={save_state}
+                setSaveState={setSaveState}
               />
             </Block>
             {/* Attached files list */}
