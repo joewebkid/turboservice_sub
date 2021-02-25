@@ -80,7 +80,7 @@ const auth_login = (
 export const LoginPage = () => {
   const router = useRouter();
 
-  const [login, setLogin] = useState("RID_vol");
+  const [login, setLogin] = useState("SCA_zel");
   const [password, setPassword] = useState("1");
 
   const [error, setError] = useState(false);
@@ -114,7 +114,7 @@ export const LoginPage = () => {
             <Form.Group controlId="formBasicEmail">
               <Form.Control
                 type="text"
-                placeholder={t("login_placeholder")}
+                placeholder="Login *"
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
               />
@@ -123,7 +123,7 @@ export const LoginPage = () => {
             <Form.Group controlId="formBasicPassword">
               <Form.Control
                 type="password"
-                placeholder={t("password") + " *"}
+                placeholder="Password *"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

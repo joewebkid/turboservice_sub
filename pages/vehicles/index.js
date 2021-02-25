@@ -14,6 +14,31 @@ const get_user_data = (callback, router) => {
 
   return SESSIONID;
 };
+const logout = (SESSIONID, router) => {
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "/api-v2/auth/logout/" +
+        "?SESSIONID=" +
+        SESSIONID
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Message, Status } = result;
+
+      localStorage.removeItem("filter_values");
+      localStorage.removeItem("filter_status");
+      localStorage.removeItem("current_page");
+
+      router.push("/login");
+      // console.log(result);
+    })
+    .catch(function (error) {
+      console.log(error);
+      // router.push("/login");
+    });
+};
 
 const Vehicles = () => {
   const router = useRouter();
@@ -31,7 +56,7 @@ const Vehicles = () => {
         user_info={user_info}
         SESSIONID={SESSIONID}
         router={router}
-        // logout={logout}
+        logout={logout}
       />
 
       <Container fluid className="mt-3 orders-list-container order-container">

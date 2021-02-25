@@ -34,7 +34,7 @@ const DataInput = (props) => {
 
   return (
     <DatePicker
-      date={date ? new Date(date) : new Date()}
+      date={date ? new Date(date) : null}
       onDateChange={(date) => {
         // console.log(date);
         setDate(formatDateForPost(date));
