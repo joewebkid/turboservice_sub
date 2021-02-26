@@ -68,7 +68,7 @@ const logout = (SESSIONID, router) => {
     });
 };
 
-export default function Home() {
+export default function Index() {
   const router = useRouter();
   useEffect(() => {
     setSESSIONID(

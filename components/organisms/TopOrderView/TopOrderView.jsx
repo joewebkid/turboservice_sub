@@ -12,7 +12,18 @@ import { useRouter } from "next/router";
 const TopOrderView = (props) => {
   if (typeof window !== "undefined")
     window.onbeforeunload = function () {
-      return "Данные не сохранены. Точно перейти?";
+      // console.log(save_state);
+      if (
+        save_state.header ||
+        save_state.job ||
+        save_state.material ||
+        save_state.recomendation
+      ) {
+        saveData();
+        return "  ";
+      } else {
+        return null;
+      }
     };
 
   const {

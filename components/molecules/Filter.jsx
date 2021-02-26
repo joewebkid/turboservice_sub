@@ -54,7 +54,7 @@ const Filter = memo((props) => {
         })
         .join("&");
 
-      if (selectStatus) {
+      if (selectStatus != undefined) {
         localStorage.setItem("filter_status", selectStatus);
         stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
       }

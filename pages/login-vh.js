@@ -63,7 +63,7 @@ const auth_login = (
           localStorage.removeItem("current_page");
 
           localStorage.setItem("shown_modal", MODAL_SHOWN);
-          router.push(router.query.redirectto || "/");
+          router.push(router.query.redirectto || "/vehicles");
           return SESSIONID;
         }
       } else {
