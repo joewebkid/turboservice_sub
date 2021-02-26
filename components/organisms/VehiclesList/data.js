@@ -1,61 +1,66 @@
 export const headers = [
-  {
-    title: "TLT REQUEST #",
-    type: "text",
-    slug: "REQUEST_NUMBER",
-    filter: "RequestNumber",
-  },
-  {
-    title: "Repair order #",
-    type: "text",
-    slug: "WORKORDER_NUMBER",
-    filter: "RepairOrderNumber",
-  },
-  {
-    title: "Request date",
-    type: "date",
-    slug: "REQUEST_DATE",
-    filterTo: "RequestDateTo",
-    filterFrom: "RequestDateFrom",
-  },
-  {
-    title: "Jobs started",
-    type: "date",
-    slug: "JOB_STARTED_DATE",
-    filterTo: "JobStartedTo",
-    filterFrom: "JobStartedFrom",
-  },
-  {
-    title: "Expected issue",
-    type: "date",
-    slug: "EXPECTED_ISSUE_DATE",
-    filterTo: "JobStartedTo",
-    filterFrom: "JobStartedFrom",
-  },
-  {
-    title: "Vehicle",
-    type: "text",
-    slug: "VEHICLE",
-    style: { minWidth: 150 },
-    filter: "VehicleContains",
-  },
+  //   VEHICLE_ID	Идентификатор
+  // VEHICLE	Марка и модель ТС
+  // VIN	Идентификационный номер ТС
+  // PLATE_NUMBER	Регистрационный знак ТС
+  // VEHICLE_CATEGORY_ID	Идентификатор категории ТС
+  // VEHICLE_CATEGORY_NAME	Категория ТС
+  // VEHICLE_REGISTRATION_DATE	Дата регистрации ТС
+  // VEHICLE_LAST_REPAIR_DATE	Дата последнего ремонта ТС
+  // VEHICLE_MILEAGE	Пробег ТС
+  // VEHICLE_LAST_TO1	Последнее проведенное ТО1
+  // VIN, Plate, VehicleContains, VehicleCategoryID, VehicleRegistrationDateFrom, VehicleRegistrationDateTo, VehicleLastRepairDateFrom, VehicleLastRepairDateTo, LastTO1Contains
+  // {
+  //   title: "VEHICLE ID #",
+  //   type: "text",
+  //   slug: "VEHICLE_ID",
+  //   filter: false,
+  //   t: "VEHICLE_ID",
+  // },
   {
     title: "VIN",
     type: "text",
     slug: "VIN",
     filter: "VIN",
+    t: "VIN",
   },
   {
-    title: "Plate#",
+    title: "PLATE NUMBER",
     type: "text",
     slug: "PLATE_NUMBER",
-    filter: "Plate",
+    filter: "PLATE_NUMBER",
+    t: "PLATE_NUMBER",
   },
   {
-    title: "Status",
-    type: "select",
-    slug: "ORDER_STATUS_NAME",
-    filter: "OrderStatusID",
+    title: "Vehicle",
+    type: "text",
+    slug: "VEHICLE",
+    filter: "VehicleContains",
+    t: "VEHICLE",
+  },
+  {
+    title: "VEHICLE REGISTRATION DATE",
+    type: "date",
+    slug: "VEHICLE_REGISTRATION_DATE",
+    filterTo: "VehicleRegistrationDateTo",
+    filterFrom: "VehicleRegistrationDateFrom",
+    t: "VEHICLE_REGISTRATION_DATE",
+  },
+  {
+    title: "VEHICLE LAST REPAIR DATE",
+    type: "date",
+    slug: "VEHICLE_LAST_REPAIR_DATE",
+    filterTo: "VehicleLastRepairDateTo",
+    filterFrom: "VehicleLastRepairDateFrom",
+    t: "VEHICLE_LAST_REPAIR_DATE",
+  },
+  {
+    title: "VEHICLE LAST TO1",
+    type: "text",
+    slug: "VEHICLE_LAST_TO1",
+    filter: "LastTO1Contains",
+    // style: { minWidth: 150 },
+    t: "VEHICLE_LAST_TO1",
   },
 ];
 

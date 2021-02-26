@@ -297,5 +297,5 @@ export const t = (slug, a = {}, l = "et") => {
     typeof window !== "undefined" ? localStorage.getItem("lang") : "en";
   const language = from_store ? from_store : l;
 
-  return tMap(language, a)[slug];
+  return tMap(language, a)[slug] || slug;
 };

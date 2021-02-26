@@ -25,6 +25,7 @@ const Filter = memo((props) => {
     selectStatus,
     setDataLoading,
     filter_values_saved,
+    router,
   } = props;
 
   const debonceTime = process.env.NEXT_PUBLIC_FILTER_DEBONCE
@@ -47,14 +48,17 @@ const Filter = memo((props) => {
   useEffect(() => {
     if (!isSearching) {
       localStorage.setItem("filter_values", JSON.stringify(filter_values));
-      localStorage.setItem("filter_status", selectStatus);
       let stringInput = Object.keys(filter_values)
         .map(function (i) {
           return [i, filter_values[i]].join("=");
         })
         .join("&");
 
-      stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
+      if (selectStatus) {
+        localStorage.setItem("filter_status", selectStatus);
+        stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
+      }
+
       setSearchString(stringInput);
     }
   }, [filter_values, selectStatus]);
@@ -80,7 +84,8 @@ const Filter = memo((props) => {
         () => {
           setIsSearching(false);
           setDataLoading(false);
-        }
+        },
+        router
       );
       setTimeout(() => {}, 10);
     }

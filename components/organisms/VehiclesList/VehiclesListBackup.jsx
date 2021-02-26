@@ -76,7 +76,7 @@ const get_vehicles = (callback, SESSIONID, auth_data) => {
     });
 };
 
-const VehiclesList = (props) => {
+const VehiclesListBackup = (props) => {
   const { SESSIONID, auth_data } = props;
   return (
     <div
@@ -89,4 +89,4 @@ const VehiclesList = (props) => {
   );
 };
 
-export default VehiclesList;
+export default VehiclesListBackup;

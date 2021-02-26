@@ -59,7 +59,8 @@ const get_orders = (
   setTotal,
   offset,
   limit,
-  onResponse
+  onResponse,
+  router
 ) => {
   // console.log("Я иду на запрос", offset);
   if (SESSIONID)
@@ -85,7 +86,6 @@ const get_orders = (
         return response;
       })
       .catch(function (error) {
-        const router = useRouter();
         if (error.response && error.response.status == 401) {
           router.push("/login?session&&redirectto=order/" + id);
         }
@@ -219,6 +219,7 @@ const RepairsOrders = (props) => {
               limit={limit}
               offset={offset}
               filter_values_saved={filter_values}
+              router={router}
             />
             <tr>
               {headers.map((e, key) => (

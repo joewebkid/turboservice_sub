@@ -14,43 +14,43 @@ import PaginationPart from "../../atoms/PaginationPart";
 import { t } from "../../translation/data";
 
 // Contractors/OrderStatusesList
-const get_statuses = (callback, router, SESSIONID, setLoading) => {
-  if (SESSIONID)
-    axios
-      .get(
-        process.env.NEXT_PUBLIC_URL +
-          "/api-v2/Contractors/OrderStatusesList?SESSIONID=" +
-          SESSIONID
-      )
-      .then(function (response) {
-        const { data } = response;
-        const { result } = data;
-        const { Response, Message, Status } = result;
-        // console.log(response);
-        if (Status == 0) {
-          const { OrderStatusesList } = Response;
-          callback(OrderStatusesList.data);
-          setLoading(true);
-        } else {
-          if (Message) {
-            router.push("/login?message=" + Message);
-          }
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        if (
-          error.response &&
-          (error.response.status == 401 || error.response.status == 404)
-        ) {
-          router.push("/login?session");
-        } else {
-          // const { data } = response;
-          // const { result } = data;
-          // const { Message } = result;
-        }
-      });
-};
+// const get_statuses = (callback, router, SESSIONID, setLoading) => {
+//   if (SESSIONID)
+//     axios
+//       .get(
+//         process.env.NEXT_PUBLIC_URL +
+//           "/api-v2/Contractors/OrderStatusesList?SESSIONID=" +
+//           SESSIONID
+//       )
+//       .then(function (response) {
+//         const { data } = response;
+//         const { result } = data;
+//         const { Response, Message, Status } = result;
+//         // console.log(response);
+//         if (Status == 0) {
+//           const { OrderStatusesList } = Response;
+//           callback(OrderStatusesList.data);
+//           setLoading(true);
+//         } else {
+//           if (Message) {
+//             router.push("/login?message=" + Message);
+//           }
+//         }
+//       })
+//       .catch(function (error) {
+//         console.log(error);
+//         if (
+//           error.response &&
+//           (error.response.status == 401 || error.response.status == 404)
+//         ) {
+//           router.push("/login?session");
+//         } else {
+//           // const { data } = response;
+//           // const { result } = data;
+//           // const { Message } = result;
+//         }
+//       });
+// };
 const get_orders = (
   callback,
   SESSIONID,
@@ -59,13 +59,14 @@ const get_orders = (
   setTotal,
   offset,
   limit,
-  onResponse
+  onResponse,
+  router
 ) => {
   // console.log("Я иду на запрос", offset);
   if (SESSIONID)
     return axios
       .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/VehiclesList?Total=1?SESSIONID=" +
+        "https://zenon.basgroup.ru:55723/api-v2/Contractors/VehiclesList?SESSIONID=" +
           SESSIONID +
           "&Total=1" +
           (offset ? "&Offset=" + offset : "") +
@@ -76,16 +77,15 @@ const get_orders = (
         const { data } = response;
         const { result } = data;
         const { Response } = result;
-        const { WorkorderList } = Response;
+        const { VehiclesList } = Response;
 
-        callback(WorkorderList.data);
+        callback(VehiclesList.data);
         setIsSearching(false);
-        setTotal(WorkorderList.totalRecords);
+        setTotal(VehiclesList.totalRecords);
         onResponse();
         return response;
       })
       .catch(function (error) {
-        const router = useRouter();
         if (error.response && error.response.status == 401) {
           router.push("/login?session&&redirectto=order/" + id);
         }
@@ -161,7 +161,7 @@ const VehiclesList = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router) {
-      get_statuses(setStatuses, router, SESSIONID, setLoading);
+      setLoading(true);
       setCurrentPage(total > elems_count ? saved_current_page : 0);
       // setCurrentPage(saved_current_page);
     }
@@ -207,7 +207,7 @@ const VehiclesList = (props) => {
                 </th>
               ))}
             </tr>
-            {/* <Filter
+            <Filter
               setDataLoading={setDataLoading}
               headers={headers}
               selectStatus={selectStatus}
@@ -219,7 +219,8 @@ const VehiclesList = (props) => {
               limit={limit}
               offset={offset}
               filter_values_saved={filter_values}
-            /> */}
+              router={router}
+            />
             <tr>
               {headers.map((e, key) => (
                 <th scope="col" style={e.style ? e.style : {}} key={key}>
