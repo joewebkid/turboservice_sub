@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { enUS } from "date-fns/locale";
+import { et, ru, enAU } from "date-fns/locale";
 import { DatePicker } from "react-nice-dates";
 import "react-nice-dates/build/style.css";
 import {
@@ -10,10 +10,18 @@ import {
 } from "../molecules/data";
 import FlexBlock from "./FlexBlock";
 
+import { language } from "../translation/data";
+
 const DataInput = (props) => {
   const { defaultDate, value, short, clear, placeholder, noreload } = props;
   const [date, setDate] = useState(value || defaultDate || new Date());
   const [isFirstTime, setIsFirstTime] = useState(1);
+
+  const lang_map = {
+    en: enAU,
+    ru: ru,
+    et: et,
+  };
 
   useEffect(() => {
     if (!noreload) {
@@ -39,7 +47,7 @@ const DataInput = (props) => {
         // console.log(date);
         setDate(formatDateForPost(date));
       }}
-      locale={enUS}
+      locale={lang_map[language()] || enAU}
     >
       {({ inputProps, focused }) => (
         <FlexBlock>
