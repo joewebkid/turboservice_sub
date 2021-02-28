@@ -287,7 +287,7 @@ const MaterialsSection = (props) => {
             <Block
               className="text-left btn btn-link delAllLink"
               onClick={() => {
-                if (confirm("Are you sure want to delete all records?")) {
+                if (confirm(t("delete_all_confirm"))) {
                   delete_materials(
                     setMaterials,
                     router.query.id,

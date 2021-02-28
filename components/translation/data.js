@@ -87,6 +87,10 @@ const en = (a = {}) => {
     you_can_load_template:
       'You can automate and simplify the entry of work, spare parts, materials and recommendations into the work order. Set up your software to export repair orders in files according to the XML template. So you can register repair order in this system by pressing one button "Load from file".',
     download_template: "Download a sample XML file.",
+
+    delete_all_confirm: "Are you sure want to delete all records?",
+    please_fill_all: "Please fill in all required fields.",
+    please_add_job: "Please add at least one job.",
   };
 };
 
@@ -179,6 +183,10 @@ const ru = (a = {}) => {
     load_from_file: "Загрузить из файла",
     you_can_load_template: `Вы можете автоматизировать и упростить внесение работ, запчастей, материалов и рекомендаций в заказ-наряд. Для этого настройте в своей учетной системе выгрузку заказ-наряда в XML файл согласно образцу. Тогда Вы сможете загружать весь список нажатием одной кнопки "Загрузить из файла". `,
     download_template: "Скачать образец XML файла.",
+
+    delete_all_confirm: "Вы уверены, что хотите удалить все записи?",
+    please_fill_all: "Пожалуйста, заполните все обязательные поля.",
+    please_add_job: "Пожалуйста, добавьте хотя бы одну работу.",
   };
 };
 
@@ -271,6 +279,10 @@ const et = (a = {}) => {
     you_can_load_template:
       "Saate automatiseerida ja lihtsustada tööde, varuosade, materjalide ja soovituste sisestamist eksportides töökäsu andmed XML formaadis vastavalt näidisele.",
     download_template: "Lae alla XML faili näidis.",
+
+    delete_all_confirm: "Kas tõesti kustutada kõik kirjed?",
+    please_fill_all: "Palun täitke kõik kohustuslikud väljad.",
+    please_add_job: "Palun lisa vähemalt üks töö.",
   };
 };
 

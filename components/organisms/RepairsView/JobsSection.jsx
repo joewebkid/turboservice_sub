@@ -17,7 +17,7 @@ import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import Fade from "react-reveal/Fade";
 import { t } from "../../translation/data";
 
-const get_jobs = (callback, id, SESSIONID) => {
+const get_jobs = (callback, id, SESSIONID, setJobsNum) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_URL +
@@ -34,13 +34,14 @@ const get_jobs = (callback, id, SESSIONID) => {
       const WorkorderJobs = Response["WorkorderContractJobs"];
       // console.log(WorkorderJobs);
       callback(WorkorderJobs.data);
+      setJobsNum(WorkorderJobs.data.length);
     })
     .catch(function (error) {
       console.log(error);
     });
 };
 
-const delete_jobs = (callback, id, SESSIONID, setMessage) => {
+const delete_jobs = (callback, id, SESSIONID, setMessage, setJobsNum) => {
   axios
     .delete(
       process.env.NEXT_PUBLIC_URL +
@@ -64,6 +65,7 @@ const delete_jobs = (callback, id, SESSIONID, setMessage) => {
           setMessage({});
         }, 2500);
         callback([]);
+        setJobsNum(0);
       }
     })
     .catch(function (error) {
@@ -81,7 +83,8 @@ const set_job = (
   changedJobs,
   setMessage,
   jobs,
-  setLoadDebounce
+  setLoadDebounce,
+  setJobsNum
 ) => {
   const JOB_ID = changedJobs.JOB_ID;
   // delete changedJobs["JOB_ID"];
@@ -121,6 +124,7 @@ const set_job = (
               : e;
           })
         );
+        setJobsNum(jobs.length);
       } else {
         setMessage({ type: "error", text: "error", show: true });
         setTimeout(() => {
@@ -139,7 +143,7 @@ const set_job = (
     });
 };
 
-const delete_job = (callback, id, SESSIONID, JOB_ID, jobs) => {
+const delete_job = (callback, id, SESSIONID, JOB_ID, jobs, setJobsNum) => {
   axios
     .delete(
       process.env.NEXT_PUBLIC_URL +
@@ -160,7 +164,9 @@ const delete_job = (callback, id, SESSIONID, JOB_ID, jobs) => {
       const { result } = data;
       const { Message } = result;
 
-      if (Message == "Ok") callback(jobs.filter((f) => f.JOB_ID != JOB_ID));
+      const newJobs = jobs.filter((f) => f.JOB_ID != JOB_ID);
+      if (Message == "Ok") callback(newJobs);
+      setJobsNum(newJobs.lenght);
       return response;
     })
     .catch(function (error) {
@@ -261,6 +267,7 @@ const JobsSection = (props) => {
     save_date,
     save_state,
     setSaveState,
+    setJobsNum,
   } = props;
   const router = useRouter();
 
@@ -332,7 +339,8 @@ const JobsSection = (props) => {
             changedJobs,
             setMessage,
             jobs,
-            setLoadDebounce
+            setLoadDebounce,
+            setJobsNum
           );
 
           setSaveState({
@@ -346,7 +354,7 @@ const JobsSection = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)
-      get_jobs(setJobs, router.query.id, SESSIONID, setMessage);
+      get_jobs(setJobs, router.query.id, SESSIONID, setMessage, setJobsNum);
   }, [router, refresh]);
 
   return (
@@ -422,8 +430,14 @@ const JobsSection = (props) => {
             <Block
               className="text-left btn btn-link delAllLink"
               onClick={() => {
-                if (confirm("Are you sure want to delete all records?")) {
-                  delete_jobs(setJobs, router.query.id, SESSIONID, setMessage);
+                if (confirm(t("delete_all_confirm"))) {
+                  delete_jobs(
+                    setJobs,
+                    router.query.id,
+                    SESSIONID,
+                    setMessage,
+                    setJobsNum
+                  );
                 }
               }}
             >
@@ -580,7 +594,8 @@ const JobsSection = (props) => {
                                     router.query.id,
                                     SESSIONID,
                                     job["JOB_ID"],
-                                    jobs
+                                    jobs,
+                                    setJobsNum
                                   );
                                 else {
                                   setJobs(jobs.filter((f, k) => k != key));

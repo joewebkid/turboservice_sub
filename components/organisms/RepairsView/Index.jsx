@@ -116,10 +116,11 @@ const Index = (props) => {
 
   const [order_info, setOrderInfo] = useState(false);
   const [jobsTotal, setJobsTotal] = useState(0);
+  const [jobsNum, setJobsNum] = useState(0);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(0);
   const [message, setMessage] = useState({});
-  // console.log(jobsTotal);
+  // console.log(jobsNum);
   // const [order_info, setOrderInfo] = useState([]);
 
   useEffect(() => {
@@ -189,6 +190,10 @@ const Index = (props) => {
                     order_info["WHEEL_TIGHTENING_TASK_ID"] == null
                   ) {
                     alert(t("wheels_tightening_error"));
+                    return;
+                  }
+                  if (jobsNum != 0) {
+                    alert(t("please_add_job"));
                     return;
                   }
                   if (confirm(t("sure_finish_order"))) {
@@ -280,6 +285,7 @@ const Index = (props) => {
                 save_date={save_date}
                 save_state={save_state}
                 setSaveState={setSaveState}
+                setJobsNum={setJobsNum}
               />
               {/* Spare parts and materials */}
               <MaterialsSection
