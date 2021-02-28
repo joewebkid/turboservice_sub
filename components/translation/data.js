@@ -91,6 +91,7 @@ const en = (a = {}) => {
     delete_all_confirm: "Are you sure want to delete all records?",
     please_fill_all: "Please fill in all required fields.",
     please_add_job: "Please add at least one job.",
+    sure_finish_order_wheel_tight_no: `Attention! The option of wheels tightening  was set to "Not required". If you want to change this value, then click on the "Cancel" button, select the required wheels tightening option and again select «Repair order done». If everything is correct, then click on the button "OK".`,
   };
 };
 
@@ -187,6 +188,7 @@ const ru = (a = {}) => {
     delete_all_confirm: "Вы уверены, что хотите удалить все записи?",
     please_fill_all: "Пожалуйста, заполните все обязательные поля.",
     please_add_job: "Пожалуйста, добавьте хотя бы одну работу.",
+    sure_finish_order_wheel_tight_no: `Внимание! Выбран вариант протяжки колес "Не требуется". Если Вы хотите изменить это значение, то нажмите на кнопку "Отмена", выберите требуемый вариант протяжки и снова установите отметку о выполнении заказ-наряда. Если же всё корректно, то нажмите на кнопку "Ок".`,
   };
 };
 
@@ -283,6 +285,7 @@ const et = (a = {}) => {
     delete_all_confirm: "Kas tõesti kustutada kõik kirjed?",
     please_fill_all: "Palun täitke kõik kohustuslikud väljad.",
     please_add_job: "Palun lisa vähemalt üks töö.",
+    sure_finish_order_wheel_tight_no: `Tähelepanu! Rataste pingutamise võimalus oli seatud "ei nõuta". Kui soovite seda väärtust muuta, siis klõpsake nuppu "Tühista", valige vajalik rataste pingutamise valik ja valige uuesti "Remonditellimus tehtud". Kui kõik on õige, siis klõpsa nupule "OK".`,
   };
 };
 

@@ -196,7 +196,11 @@ const Index = (props) => {
                     alert(t("please_add_job"));
                     return;
                   }
-                  if (confirm(t("sure_finish_order"))) {
+                  if (
+                    order_info["WHEEL_TIGHTENING_TASK_ID"] == 10
+                      ? confirm(t("sure_finish_order_wheel_tight_no"))
+                      : confirm(t("sure_finish_order"))
+                  ) {
                     set_order_info(
                       setOrderInfo,
                       router.query.id,
