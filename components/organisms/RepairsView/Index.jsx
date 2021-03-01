@@ -192,7 +192,7 @@ const Index = (props) => {
                     alert(t("wheels_tightening_error"));
                     return;
                   }
-                  if (jobsNum != 0) {
+                  if (jobsNum == 0) {
                     alert(t("please_add_job"));
                     return;
                   }
