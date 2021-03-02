@@ -462,3 +462,9 @@ input[type="number"] {
 .divider_lang {
   @extend .lang_symb;
 }
+
+.required {
+  border-color: #ffc107;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem #ffc10769;
+}

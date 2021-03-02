@@ -220,7 +220,10 @@ const Recomendation = (props) => {
 
   const lastAdded = useRef(null);
   useEffect(() => {
-    if (lastAdded.current) lastAdded.current.focus();
+    if (lastAdded.current && addNewStringFlag == 1) {
+      lastAdded.current.focus();
+      setAddNewStringFlag(0);
+    }
   }, [recomendations]);
 
   const debouncedSearchTerm = useDebounce(temp_recomendations, debonceTime);
@@ -359,7 +362,13 @@ const Recomendation = (props) => {
                             ) : (
                               <input
                                 value={recomendation[struct.slug]}
-                                className="form-control"
+                                className={
+                                  "form-control " +
+                                  (struct.required &&
+                                  recomendation[struct.slug] === ""
+                                    ? "required"
+                                    : "")
+                                }
                                 placehorder="repair order"
                                 readOnly={!loadDebounce ? true : false}
                                 onChange={(e) => {

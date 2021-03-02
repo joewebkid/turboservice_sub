@@ -277,6 +277,7 @@ const JobsSection = (props) => {
   const [errorText, setErrorText] = useState("");
   const [addNewStringFlag, setAddNewStringFlag] = useState(1);
   const [changedStringId, setChangedStringId] = useState(0);
+  const [validate, setValidate] = useState(false);
 
   const popoverRef = useRef(null);
   const popover = (e) => {
@@ -321,7 +322,10 @@ const JobsSection = (props) => {
 
   const lastAdded = useRef(null);
   useEffect(() => {
-    if (lastAdded.current) lastAdded.current.focus();
+    if (lastAdded.current && addNewStringFlag == 1) {
+      lastAdded.current.focus();
+      setAddNewStringFlag(0);
+    }
   }, [jobs]);
 
   useEffect(() => {
@@ -511,7 +515,12 @@ const JobsSection = (props) => {
                                   <MaskedInput
                                     mask={numberMask}
                                     value={value}
-                                    className={"form-control"}
+                                    className={
+                                      "form-control " +
+                                      (struct.required && value === ""
+                                        ? "required"
+                                        : "")
+                                    }
                                     placehorder="repair order"
                                     style={struct.style}
                                     readOnly={!loadDebounce ? true : false}
@@ -538,7 +547,12 @@ const JobsSection = (props) => {
                                 ) : (
                                   <input
                                     value={value}
-                                    className={"form-control"}
+                                    className={
+                                      "form-control " +
+                                      (struct.required && value === ""
+                                        ? "required"
+                                        : "")
+                                    }
                                     placehorder="repair order"
                                     style={struct.style}
                                     readOnly={!loadDebounce ? true : false}

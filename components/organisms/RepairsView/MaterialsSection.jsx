@@ -227,7 +227,10 @@ const MaterialsSection = (props) => {
 
   const lastAdded = useRef(null);
   useEffect(() => {
-    if (lastAdded.current) lastAdded.current.focus();
+    if (lastAdded.current && addNewStringFlag == 1) {
+      lastAdded.current.focus();
+      setAddNewStringFlag(0);
+    }
   }, [materials]);
 
   useEffect(() => {
@@ -353,7 +356,12 @@ const MaterialsSection = (props) => {
                                 <MaskedInput
                                   mask={numberMask}
                                   value={value}
-                                  className={"form-control"}
+                                  className={
+                                    "form-control " +
+                                    (struct.required && value === ""
+                                      ? "required"
+                                      : "")
+                                  }
                                   placehorder="repair order"
                                   style={struct.style}
                                   readOnly={!loadDebounce ? true : false}
@@ -381,7 +389,12 @@ const MaterialsSection = (props) => {
                               ) : (
                                 <input
                                   value={value}
-                                  className="form-control"
+                                  className={
+                                    "form-control " +
+                                    (struct.required && value === ""
+                                      ? "required"
+                                      : "")
+                                  }
                                   placehorder="repair order"
                                   style={struct.style}
                                   readOnly={!loadDebounce ? true : false}
