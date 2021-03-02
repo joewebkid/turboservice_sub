@@ -8,6 +8,7 @@ export const statistic = [
     slug: "SERVICED_VEHICLES",
     t: "serviced_vehicles",
     title: "Serviced vehicles",
+    type: "int",
   },
   {
     slug: "AVERAGE_NORM_HOURS",

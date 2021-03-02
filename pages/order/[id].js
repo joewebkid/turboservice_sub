@@ -79,6 +79,10 @@ const OrderView = () => {
           setOrderStatus={setOrderStatus}
           save_state={save_state}
           setSaveState={setSaveState}
+          saveData={(e) => {
+            setSaveDate(save_date + 1);
+            if (e) e();
+          }}
         />
       </Container>
     </>

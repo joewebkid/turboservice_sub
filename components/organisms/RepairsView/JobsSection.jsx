@@ -268,6 +268,7 @@ const JobsSection = (props) => {
     save_state,
     setSaveState,
     setJobsNum,
+    setJobsNumNotSaved,
   } = props;
   const router = useRouter();
 
@@ -318,6 +319,11 @@ const JobsSection = (props) => {
     decimalLimit: 2,
   });
 
+  const lastAdded = useRef(null);
+  useEffect(() => {
+    if (lastAdded.current) lastAdded.current.focus();
+  }, [jobs]);
+
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
       if (save_state.job) {
@@ -331,6 +337,7 @@ const JobsSection = (props) => {
               changedJobs[e] = "0.00";
             }
           });
+          setJobsNumNotSaved(changedJobs.lenght);
 
           set_job(
             setJobs,
@@ -356,6 +363,8 @@ const JobsSection = (props) => {
     if (SESSIONID && router && router.query && router.query.id)
       get_jobs(setJobs, router.query.id, SESSIONID, setMessage, setJobsNum);
   }, [router, refresh]);
+
+  // console.log(lastAdded);
 
   return (
     <>
@@ -520,6 +529,11 @@ const JobsSection = (props) => {
                                         });
                                       }
                                     }}
+                                    ref={
+                                      k == 0 && key == jobs.length - 1
+                                        ? lastAdded
+                                        : null
+                                    }
                                   />
                                 ) : (
                                   <input
@@ -542,6 +556,11 @@ const JobsSection = (props) => {
                                         });
                                       }
                                     }}
+                                    ref={
+                                      k == 0 && key == jobs.length - 1
+                                        ? lastAdded
+                                        : null
+                                    }
                                   />
                                 )
                               ) : (

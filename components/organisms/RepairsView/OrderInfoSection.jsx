@@ -40,6 +40,7 @@ const OrderInfoSection = (props) => {
     save_date,
     save_state,
     setSaveState,
+    saveData,
   } = props;
   const status = order_info["ORDER_STATUS_ID"];
 
@@ -173,12 +174,14 @@ const OrderInfoSection = (props) => {
                               eventKey={t.ORDER_TYPE_ID}
                               key={k}
                               onClick={(e) => {
-                                console.log(e.target.innerText);
+                                // console.log(e.target.innerText);
                                 SetOrderInfo({
                                   ...order_info,
                                   ORDER_TYPE_ID: t.ORDER_TYPE_ID,
                                   ORDER_TYPE_NAME: e.target.innerText,
                                 });
+
+                                saveData();
                               }}
                               active={
                                 t.ORDER_TYPE_ID ==
@@ -226,6 +229,7 @@ const OrderInfoSection = (props) => {
                       order_info_section={order_info_section}
                       order_info={order_info}
                       SetOrderInfo={SetOrderInfo}
+                      saveData={saveData}
                     />
                   </FlexBlock>
                 ) : (

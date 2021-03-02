@@ -132,7 +132,11 @@ const Statistics = (props) => {
                       </th>
                     ) : (
                       <td key={k}>
-                        {typeof x != "object" ? Number(x).toFixed(2) : x}
+                        {typeof x != "object"
+                          ? e.type == "int"
+                            ? Number(x)
+                            : Number(x).toFixed(2)
+                          : x}
                       </td>
                     )}
                   </>

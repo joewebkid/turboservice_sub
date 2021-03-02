@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { Table, Button } from "react-bootstrap";
@@ -16,6 +16,7 @@ import {
 } from "../../molecules/data";
 import MessageToast from "./MessageToast";
 import { t } from "../../translation/data";
+import { Fade } from "react-reveal";
 
 const get_recomendations = (callback, id, router, SESSIONID) => {
   axios
@@ -155,7 +156,7 @@ const delete_recomendation = (
     });
 };
 
-const delete_recomendations = (callback, id, SESSIONID) => {
+const delete_recomendations = (callback, id, SESSIONID, setMessage) => {
   axios
     .delete(
       process.env.NEXT_PUBLIC_URL +
@@ -168,8 +169,7 @@ const delete_recomendations = (callback, id, SESSIONID) => {
     .then(function (response) {
       const { data } = response;
       const { result } = data;
-      const { Response } = result;
-      const { Message } = Response;
+      const { Message } = result;
       if (Message == "Ok") {
         setMessage({ type: "success", text: "success", show: true });
         setTimeout(() => {
@@ -218,6 +218,11 @@ const Recomendation = (props) => {
   const [loadDebounce, setLoadDebounce] = useState(true);
   let tempArr = recomendations;
 
+  const lastAdded = useRef(null);
+  useEffect(() => {
+    if (lastAdded.current) lastAdded.current.focus();
+  }, [recomendations]);
+
   const debouncedSearchTerm = useDebounce(temp_recomendations, debonceTime);
 
   useEffect(() => {
@@ -263,6 +268,7 @@ const Recomendation = (props) => {
     if (SESSIONID && router && router.query && router.query.id)
       get_recomendations(setRecomendations, router.query.id, router, SESSIONID);
   }, [router, SESSIONID, refresh]);
+
   // console.log("recomendations", recomendations);
   return (
     <>
@@ -273,22 +279,25 @@ const Recomendation = (props) => {
           justify="space-between"
         >
           {t("recommendation")}
-          {status != 2 ? (
-            <Block
-              className="text-left btn btn-link delAllLink"
-              onClick={() => {
-                if (confirm(t("delete_all_confirm"))) {
-                  delete_recomendations(
-                    setRecomendations,
-                    router.query.id,
-                    SESSIONID,
-                    setMessage
-                  );
-                }
-              }}
-            >
-              {t("delete_all")}
-            </Block>
+          {status != 2 && recomendations.length ? (
+            <Fade>
+              <Block
+                className="text-left btn btn-link delAllLink"
+                onClick={() => {
+                  if (recomendations.length)
+                    if (confirm(t("delete_all_confirm"))) {
+                      delete_recomendations(
+                        setRecomendations,
+                        router.query.id,
+                        SESSIONID,
+                        setMessage
+                      );
+                    }
+                }}
+              >
+                {t("delete_all")}
+              </Block>
+            </Fade>
           ) : (
             <></>
           )}
@@ -312,11 +321,11 @@ const Recomendation = (props) => {
             {recomendations.map((recomendation, key) => (
               <>
                 <tr key={key}>
-                  {recomendations_struct.map((struct, ik) => {
+                  {recomendations_struct.map((struct, k) => {
                     const date = new Date();
                     date.setMonth(date.getMonth() + 1);
                     return struct.type != "hidden" ? (
-                      <td scope="col" className="datapicker-top-left" key={ik}>
+                      <td scope="col" className="datapicker-top-left" key={k}>
                         <FlexBlock style={{}}>
                           {status != 2 ? (
                             struct.type == "date" ? (
@@ -340,6 +349,11 @@ const Recomendation = (props) => {
                                   noreload
                                   value={recomendation[struct.slug]}
                                   defaultDate={date}
+                                  ref={
+                                    k == 0 && key == recomendations.length - 1
+                                      ? lastAdded
+                                      : null
+                                  }
                                 />
                               </>
                             ) : (
@@ -361,6 +375,11 @@ const Recomendation = (props) => {
                                     });
                                   }
                                 }}
+                                ref={
+                                  k == 0 && key == recomendations.length - 1
+                                    ? lastAdded
+                                    : null
+                                }
                               />
                             )
                           ) : (

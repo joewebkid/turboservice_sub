@@ -108,6 +108,7 @@ const Index = (props) => {
     setOrderStatus,
     save_state,
     setSaveState,
+    saveData,
   } = props;
   const debonceTime = process.env.NEXT_PUBLIC_ORDER_DEBONCE
     ? Number(process.env.NEXT_PUBLIC_ORDER_DEBONCE)
@@ -117,6 +118,7 @@ const Index = (props) => {
   const [order_info, setOrderInfo] = useState(false);
   const [jobsTotal, setJobsTotal] = useState(0);
   const [jobsNum, setJobsNum] = useState(0);
+  const [jobsNumNotSaved, setJobsNumNotSaved] = useState(0);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(0);
   const [message, setMessage] = useState({});
@@ -192,10 +194,14 @@ const Index = (props) => {
                     alert(t("wheels_tightening_error"));
                     return;
                   }
-                  if (jobsNum == 0) {
+
+                  if (jobsNumNotSaved == 0) {
+                    saveData();
                     alert(t("please_add_job"));
                     return;
                   }
+
+                  // return;
                   if (
                     order_info["WHEEL_TIGHTENING_TASK_ID"] == 10
                       ? confirm(t("sure_finish_order_wheel_tight_no"))
@@ -251,6 +257,7 @@ const Index = (props) => {
                   save_date={save_date}
                   save_state={save_state}
                   setSaveState={setSaveState}
+                  saveData={saveData}
                 />
                 {/* Start time, Estimated and jobs done time */}
                 <TimeInfoSection
@@ -290,6 +297,7 @@ const Index = (props) => {
                 save_state={save_state}
                 setSaveState={setSaveState}
                 setJobsNum={setJobsNum}
+                setJobsNumNotSaved={setJobsNumNotSaved}
               />
               {/* Spare parts and materials */}
               <MaterialsSection

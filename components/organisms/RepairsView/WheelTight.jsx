@@ -38,7 +38,14 @@ const set_wheel_tight = (callback, id, SESSIONID) => {
 };
 
 const WheelTight = (props) => {
-  const { id, SESSIONID, order_info_section, SetOrderInfo, order_info } = props;
+  const {
+    id,
+    SESSIONID,
+    order_info_section,
+    SetOrderInfo,
+    order_info,
+    saveData,
+  } = props;
   const [wheel_tight, setwheel_tight] = useState(false);
   useEffect(() => {
     // console.log(id, SESSIONID);
@@ -75,6 +82,8 @@ const WheelTight = (props) => {
                     WHEEL_TIGHTENING_TASK_ID: t.WHEEL_TIGHTENING_TASK_ID,
                     WHEEL_TIGHTENING_TASK_NAME: e.target.innerText,
                   });
+
+                  saveData();
                 }}
                 active={
                   t.WHEEL_TIGHTENING_TASK_ID ==

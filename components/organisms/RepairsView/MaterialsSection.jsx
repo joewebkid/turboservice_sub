@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { Table, Button } from "react-bootstrap";
@@ -10,6 +10,7 @@ import useDebounce from "../../atoms/FilterInput/useDebounce";
 import MessageToast from "./MessageToast";
 import MaskedInput from "react-text-mask";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
+import Fade from "react-reveal/Fade";
 import { t } from "../../translation/data";
 
 const get_parts = (callback, id, SESSIONID) => {
@@ -224,6 +225,11 @@ const MaterialsSection = (props) => {
     decimalLimit: 2,
   });
 
+  const lastAdded = useRef(null);
+  useEffect(() => {
+    if (lastAdded.current) lastAdded.current.focus();
+  }, [materials]);
+
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
       // if (addNewStringFlag) {
@@ -323,7 +329,7 @@ const MaterialsSection = (props) => {
               return (
                 <>
                   <tr>
-                    {materials_struct.map((struct) => {
+                    {materials_struct.map((struct, k) => {
                       const value = material[struct.slug];
 
                       if (struct.type == "number") {
@@ -340,7 +346,7 @@ const MaterialsSection = (props) => {
                       //   struct.slug == "PART_AMOUNT"
                       // )
                       return struct.type != "hidden" ? (
-                        <td scope="col">
+                        <td scope="col" key={k}>
                           <FlexBlock>
                             {status != 2 ? (
                               struct.type == "number" ? (
@@ -366,16 +372,11 @@ const MaterialsSection = (props) => {
                                       });
                                     }
                                   }}
-                                  // onBlur={(e) => {
-                                  //   if (loadDebounce) {
-                                  //     setIsClearFilter(1000);
-                                  //     tempArr[key][struct.slug] =
-                                  //       e.target.value;
-                                  //     setMaterials([...tempArr]);
-                                  //     setTempMaterials([...tempArr]);
-                                  //     setChangedStringId(key);
-                                  //   }
-                                  // }}
+                                  ref={
+                                    k == 0 && key == materials.length - 1
+                                      ? lastAdded
+                                      : null
+                                  }
                                 />
                               ) : (
                                 <input
@@ -395,16 +396,11 @@ const MaterialsSection = (props) => {
                                       material: true,
                                     });
                                   }}
-                                  // onBlur={(e) => {
-                                  //   if (loadDebounce) {
-                                  //     setIsClearFilter(1000);
-                                  //     tempArr[key][struct.slug] =
-                                  //       e.target.value;
-                                  //     setMaterials([...tempArr]);
-                                  //     setTempMaterials([...tempArr]);
-                                  //     setChangedStringId(key);
-                                  //   }
-                                  // }}
+                                  ref={
+                                    k == 0 && key == materials.length - 1
+                                      ? lastAdded
+                                      : null
+                                  }
                                 />
                               )
                             ) : (

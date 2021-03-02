@@ -1,6 +1,7 @@
 import React from "react";
 import FlexBlock from "../../atoms/FlexBlock";
 import Block from "../../atoms/Block";
+import { t } from "../../translation/data";
 
 function StatusTabs(props) {
   const { statuses, selectStatus, setSelectStatus, setCurrentPage } = props;
@@ -19,7 +20,7 @@ function StatusTabs(props) {
             localStorage.setItem("current_page", 0);
           }}
         >
-          {e.ORDER_STATUS_NAME}
+          {t(e.ORDER_STATUS_NAME)}
         </Block>
       ))}
     </FlexBlock>
