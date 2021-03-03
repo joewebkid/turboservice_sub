@@ -319,7 +319,7 @@ const JobsSection = (props) => {
   let tempArr = jobs;
   let jobsSum = {};
 
-  const debouncedSearchTerm = useDebounce(temp_jobs, 5000); //debonceTime);
+  const debouncedSearchTerm = useDebounce(temp_jobs, debonceTime);
 
   const numberMask = createNumberMask({
     prefix: "",
