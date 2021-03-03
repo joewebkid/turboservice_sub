@@ -255,6 +255,15 @@ const addNew = (jobs, setJobs, jobs_struct) => {
 
   setJobs([...jobs, empty_object]);
 };
+const validation = (data, struct) => {
+  let flag = true;
+  data.map((e) => {
+    struct.map((s) => {
+      if (s.required && !e[s["slug"]]) flag = false;
+    });
+  });
+  return flag;
+};
 
 const JobsSection = (props) => {
   const {
@@ -269,9 +278,10 @@ const JobsSection = (props) => {
     setSaveState,
     setJobsNum,
     setJobsNumNotSaved,
+    setValideState,
   } = props;
   const router = useRouter();
-
+  // jobs_struct
   const [jobs, setJobs] = useState([]);
   const [temp_jobs, setTempJobs] = useState([]);
   const [errorText, setErrorText] = useState("");
@@ -309,7 +319,7 @@ const JobsSection = (props) => {
   let tempArr = jobs;
   let jobsSum = {};
 
-  const debouncedSearchTerm = useDebounce(temp_jobs, debonceTime);
+  const debouncedSearchTerm = useDebounce(temp_jobs, 5000); //debonceTime);
 
   const numberMask = createNumberMask({
     prefix: "",
@@ -322,6 +332,11 @@ const JobsSection = (props) => {
 
   const lastAdded = useRef(null);
   useEffect(() => {
+    if (validation(jobs, jobs_struct)) {
+      setJobsNumNotSaved(jobs.length);
+      setValideState(true);
+    } else setValideState(false);
+
     if (lastAdded.current && addNewStringFlag == 1) {
       lastAdded.current.focus();
       setAddNewStringFlag(0);
@@ -341,7 +356,6 @@ const JobsSection = (props) => {
               changedJobs[e] = "0.00";
             }
           });
-          setJobsNumNotSaved(changedJobs.lenght);
 
           set_job(
             setJobs,
@@ -444,6 +458,7 @@ const JobsSection = (props) => {
               className="text-left btn btn-link delAllLink"
               onClick={() => {
                 if (confirm(t("delete_all_confirm"))) {
+                  // setJobsNumNotSaved(0);
                   delete_jobs(
                     setJobs,
                     router.query.id,

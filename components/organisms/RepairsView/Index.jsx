@@ -109,6 +109,7 @@ const Index = (props) => {
     save_state,
     setSaveState,
     saveData,
+    setValideState,
   } = props;
   const debonceTime = process.env.NEXT_PUBLIC_ORDER_DEBONCE
     ? Number(process.env.NEXT_PUBLIC_ORDER_DEBONCE)
@@ -196,11 +197,11 @@ const Index = (props) => {
                   }
 
                   if (jobsNumNotSaved == 0) {
-                    saveData();
                     alert(t("please_add_job"));
                     return;
                   }
 
+                  saveData();
                   // return;
                   if (
                     order_info["WHEEL_TIGHTENING_TASK_ID"] == 10
@@ -220,8 +221,6 @@ const Index = (props) => {
                       },
                       "done"
                     );
-                  } else {
-                    // alert("Вы нажали кнопку отмена");
                   }
                 }}
                 status={order_info["ORDER_STATUS_ID"]}
@@ -298,6 +297,7 @@ const Index = (props) => {
                 setSaveState={setSaveState}
                 setJobsNum={setJobsNum}
                 setJobsNumNotSaved={setJobsNumNotSaved}
+                setValideState={setValideState}
               />
               {/* Spare parts and materials */}
               <MaterialsSection
@@ -312,6 +312,7 @@ const Index = (props) => {
                 save_date={save_date}
                 save_state={save_state}
                 setSaveState={setSaveState}
+                setValideState={setValideState}
               />
             </Block>
             {/* Recomendation lists */}
@@ -324,6 +325,7 @@ const Index = (props) => {
                 save_date={save_date}
                 save_state={save_state}
                 setSaveState={setSaveState}
+                setValideState={setValideState}
               />
             </Block>
             {/* Attached files list */}

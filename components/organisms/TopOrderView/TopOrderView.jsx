@@ -17,9 +17,10 @@ const TopOrderView = (props) => {
         save_state.header ||
         save_state.job ||
         save_state.material ||
-        save_state.recomendation
+        save_state.recomendation ||
+        !valide_state
       ) {
-        saveData();
+        if (!valide_state) saveData();
         return "  ";
       } else {
         return null;
@@ -37,6 +38,7 @@ const TopOrderView = (props) => {
     saveData,
     order_status,
     save_state,
+    valide_state,
   } = props;
 
   return (
@@ -65,20 +67,24 @@ const TopOrderView = (props) => {
                       className="btn btn-link"
                       onClick={() => {
                         if (
-                          (save_state.header ||
-                            save_state.job ||
-                            save_state.material ||
-                            save_state.recomendation) &&
-                          order_status != 2
+                          valide_state ? true : confirm(t("not_valid_data"))
                         ) {
-                          // console.log(save_state);
-                          saveData();
-                          const c = setInterval(() => {
-                            clearInterval(c);
+                          if (
+                            (save_state.header ||
+                              save_state.job ||
+                              save_state.material ||
+                              save_state.recomendation) &&
+                            order_status != 2
+                          ) {
+                            // console.log(save_state);
+                            saveData();
+                            const c = setInterval(() => {
+                              clearInterval(c);
+                              router.push("/");
+                            }, 2900);
+                          } else {
                             router.push("/");
-                          }, 2900);
-                        } else {
-                          router.push("/");
+                          }
                         }
                       }}
                     >

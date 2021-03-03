@@ -58,6 +58,7 @@ const OrderView = () => {
     material: false,
     recomendation: false,
   });
+  const [valide_state, setValideState] = useState(true);
 
   return (
     <>
@@ -70,6 +71,7 @@ const OrderView = () => {
         saveData={() => setSaveDate(save_date + 1)}
         order_status={order_status}
         save_state={save_state}
+        valide_state={valide_state}
       />
       <Container fluid className="mt-3 orders-list-container order-container">
         <RepairView
@@ -83,6 +85,7 @@ const OrderView = () => {
             setSaveDate(save_date + 1);
             if (e) e();
           }}
+          setValideState={setValideState}
         />
       </Container>
     </>

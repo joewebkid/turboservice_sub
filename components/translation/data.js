@@ -96,6 +96,9 @@ const en = (a = {}) => {
     NEW: "NEW",
     "IN PROGRESS": "IN PROGRESS",
     DONE: "DONE",
+
+    not_valid_data:
+      "The changes you made will not be saved, please fill in all the required fields",
   };
 };
 
@@ -197,6 +200,8 @@ const ru = (a = {}) => {
     NEW: "НОВЫЙ",
     "IN PROGRESS": "В РАБОТЕ",
     DONE: "ГОТОВ",
+    not_valid_data:
+      "Внесенные изменения не сохранятся, пожалуйста, заполните все обязательные поля",
   };
 };
 
@@ -293,11 +298,13 @@ const et = (a = {}) => {
     delete_all_confirm: "Kas tõesti kustutada kõik kirjed?",
     please_fill_all: "Palun täitke kõik kohustuslikud väljad.",
     please_add_job: "Palun lisa vähemalt üks töö.",
-    sure_finish_order_wheel_tight_no: `Tähelepanu! Rataste pingutamise võimalus oli seatud "ei nõuta". Kui soovite seda väärtust muuta, siis klõpsake nuppu "Tühista", valige vajalik rataste pingutamise valik ja valige uuesti "Remonditellimus tehtud". Kui kõik on õige, siis klõpsa nupule "OK".`,
+    sure_finish_order_wheel_tight_no: `Tähelepanu! Rataste pingutamise skeemi määramisel valitud "Mitte nõutav". Kui soovite seda väärtust muuta, siis vajutage "Tühista", valige nõutav variant ja vajutage uuesti nuppule "Teostatud". Juhul kui valik on korrektne, vajutage "OK"`,
 
     NEW: "UUS",
     "IN PROGRESS": "TÖÖS",
     DONE: "TEOSTATUD",
+    not_valid_data:
+      "Tehtud muudatusi ei salvestata, siis palun täitke kõik nõutud väljad",
   };
 };
 

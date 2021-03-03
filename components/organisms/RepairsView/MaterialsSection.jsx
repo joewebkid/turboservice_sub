@@ -184,6 +184,16 @@ const addNew = (materials, setMaterials, materials_struct, user_info) => {
   setMaterials([...materials, empty_object]);
 };
 
+const validation = (data, struct) => {
+  let flag = true;
+  data.map((e) => {
+    struct.map((s) => {
+      if (s.required && !e[s["slug"]]) flag = false;
+    });
+  });
+  return flag;
+};
+
 const MaterialsSection = (props) => {
   const {
     SESSIONID,
@@ -197,6 +207,7 @@ const MaterialsSection = (props) => {
     save_date,
     save_state,
     setSaveState,
+    setValideState,
   } = props;
   const router = useRouter();
   let material_sum = {};
@@ -226,7 +237,12 @@ const MaterialsSection = (props) => {
   });
 
   const lastAdded = useRef(null);
+
   useEffect(() => {
+    if (validation(materials, materials_struct)) {
+      setValideState(true);
+    } else setValideState(false);
+
     if (lastAdded.current && addNewStringFlag == 1) {
       lastAdded.current.focus();
       setAddNewStringFlag(0);
