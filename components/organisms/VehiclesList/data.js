@@ -29,14 +29,21 @@ export const headers = [
     type: "text",
     slug: "PLATE_NUMBER",
     filter: "PLATE_NUMBER",
-    t: "PLATE_NUMBER",
+    t: "plate",
   },
   {
     title: "Vehicle",
     type: "text",
     slug: "VEHICLE",
     filter: "VehicleContains",
-    t: "VEHICLE",
+    t: "vehicle",
+  },
+  {
+    title: "Category",
+    type: "text",
+    slug: "VEHICLE_CATEGORY_NAME",
+    filter: "VehicleCategoryID",
+    t: "Category",
   },
   {
     title: "VEHICLE REGISTRATION DATE",
@@ -44,7 +51,7 @@ export const headers = [
     slug: "VEHICLE_REGISTRATION_DATE",
     filterTo: "VehicleRegistrationDateTo",
     filterFrom: "VehicleRegistrationDateFrom",
-    t: "VEHICLE_REGISTRATION_DATE",
+    t: "Vehicle reg. date",
   },
   {
     title: "VEHICLE LAST REPAIR DATE",
@@ -52,7 +59,8 @@ export const headers = [
     slug: "VEHICLE_LAST_REPAIR_DATE",
     filterTo: "VehicleLastRepairDateTo",
     filterFrom: "VehicleLastRepairDateFrom",
-    t: "VEHICLE_LAST_REPAIR_DATE",
+    // t: "VEHICLE_LAST_REPAIR_DATE",
+    t: "Vehicle last repair date",
   },
   {
     title: "VEHICLE LAST TO1",

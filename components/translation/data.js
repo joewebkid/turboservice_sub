@@ -99,6 +99,10 @@ const en = (a = {}) => {
 
     not_valid_data:
       "The changes you made will not be saved, please fill in all the required fields",
+
+    sure_delete_record: "Are you sure want to delete record?",
+
+    VEHICLE_LAST_TO1: "Last TO",
   };
 };
 
@@ -129,13 +133,12 @@ const ru = (a = {}) => {
     plate: "Гос.№",
     garage: "Гаражный №",
     repair_request: "Заявка на ремонт",
-    start_jobs: "Начать работы",
     cancel_start: "Отменить начало работ",
     repair_order_done: "Выполнен",
     contractor_repair_order: "№ заказ-наряда подрядчика",
     milage: "Пробег",
     order_type: "Тип заказ-наряда",
-    start_jobs: "Начать работы",
+    start_jobs: "Начало работ",
     estimated_time_end_of_jobs: "Планируемое время окончания",
     jobs_done: "Работы выполнены",
     jobs: "Работы",
@@ -202,6 +205,10 @@ const ru = (a = {}) => {
     DONE: "ГОТОВ",
     not_valid_data:
       "Внесенные изменения не сохранятся, пожалуйста, заполните все обязательные поля",
+
+    sure_delete_record: "Вы уверены, что хотите удалить запись?",
+
+    VEHICLE_LAST_TO1: "Последнее проведенное ТО1",
   };
 };
 
@@ -216,26 +223,26 @@ const et = (a = {}) => {
     from: "Alates",
     to: "Kuni",
     status: "Staatus",
-    contractor_order: "Alltöövõtja töökäsu nr",
+    contractor_order: "Töövõtja töökäsu nr",
     repair_order: "TLT töökäsu nr",
-    jobs_started: "Töid alustatud",
+    jobs_started: "Tööd alustatud",
     jobs_done: "Töid teostatud",
     vehicle: "Transpordivahend",
     vin: "VIN",
     plate: "Reg.nr",
     edit: "Redigeeri",
     repair_orders_list: "Töökäskude loetelu",
-    repair_order_for_tlt_reques: `Töökäsk TLT tellimuse nr  ${a.repair_request_order_id} alusel (töökäsk nr ${a.repair_order_id}) alates ${a.date}`,
+    repair_order_for_tlt_reques: `Töökäsk TLT tellimuse nr  ${a.repair_request_order_id} alusel (töökäsk nr ${a.repair_order_id}) ,${a.date}`,
     registration: "Esmane registreerimine:",
     tlt_contact: "TLT kontaktisik",
     manufacture_year: "Väljalaskeaasta:",
     plate: "Reg.nr",
     garage: "Gar.nr",
     repair_request: "Remonditellimus",
-    start_jobs: "Alusta tööd",
+    start_jobs: "Tööd alustatud",
     cancel_start: "Tühista tööde algus",
     repair_order_done: "Teostatud",
-    contractor_repair_order: "Alltöövõtja töökäsu nr",
+    contractor_repair_order: "Töövõtja töökäsu nr",
     milage: "Läbisõit",
     order_type: "Töökäsu tüüp",
     start_jobs: "Alusta tööd",
@@ -260,22 +267,22 @@ const et = (a = {}) => {
     recommendation: "Soovitused",
     fix_before: "Kõrvaldada kuni",
     attached_files: "Lisatud manused",
-    upload_file: "Lae alla fail",
+    upload_file: "Lae üles fail",
     logout: "Logi välja",
     tlt_Repair_orders: "TLT remondi töökäsud",
     login: "Logi sisse",
     restore: "Taasta",
     to_sign: "Tagasi avalehele",
     session_expired: "Teie seansi aeg on lõppenud",
-    restore_password: "Taasta parool",
+    restore_password: "Parooli taastamine",
     attention: "Hoiatus",
-    contact_support: "Kontakt tugi",
+    contact_support: "Tugi",
     sure_cancel_start: "Kas tühistada töökäsu tööde algusaeg?",
     sure_finish_order: "Kas lõpetada töökäsk?",
     please_select: "Palun vali",
-    wheels_tightening_required:
+    wheels_tightening_required: "Rataste pingutamine",
+    wheels_tightening_error:
       "Enne töökäsu lõpetamist määra rataste pingutamise vajadus.",
-    wheels_tightening_error: "Valige tüüp rataste rattad, enne kui tellimus on",
 
     login_placeholder: "Kasutajatunnus *",
     password: "Parool",
@@ -295,7 +302,7 @@ const et = (a = {}) => {
       "Saate automatiseerida ja lihtsustada tööde, varuosade, materjalide ja soovituste sisestamist eksportides töökäsu andmed XML formaadis vastavalt näidisele.",
     download_template: "Lae alla XML faili näidis.",
 
-    delete_all_confirm: "Kas tõesti kustutada kõik kirjed?",
+    delete_all_confirm: "Kas soovite kustutada kõik kirjed jäädavalt?",
     please_fill_all: "Palun täitke kõik kohustuslikud väljad.",
     please_add_job: "Palun lisa vähemalt üks töö.",
     sure_finish_order_wheel_tight_no: `Tähelepanu! Rataste pingutamise skeemi määramisel valitud "Mitte nõutav". Kui soovite seda väärtust muuta, siis vajutage "Tühista", valige nõutav variant ja vajutage uuesti nuppule "Teostatud". Juhul kui valik on korrektne, vajutage "OK"`,
@@ -305,6 +312,10 @@ const et = (a = {}) => {
     DONE: "TEOSTATUD",
     not_valid_data:
       "Tehtud muudatusi ei salvestata, siis palun täitke kõik nõutud väljad",
+
+    sure_delete_record: "Kas soovite kustutada kirje jäädavalt?",
+
+    VEHICLE_LAST_TO1: "Last TO",
   };
 };
 

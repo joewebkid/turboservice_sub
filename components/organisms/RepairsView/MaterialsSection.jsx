@@ -208,6 +208,7 @@ const MaterialsSection = (props) => {
     save_state,
     setSaveState,
     setValideState,
+    valide_state,
   } = props;
   const router = useRouter();
   let material_sum = {};
@@ -240,8 +241,8 @@ const MaterialsSection = (props) => {
 
   useEffect(() => {
     if (validation(materials, materials_struct)) {
-      setValideState(true);
-    } else setValideState(false);
+      setValideState({ ...valide_state, material: true });
+    } else setValideState({ ...valide_state, material: false });
 
     if (lastAdded.current && addNewStringFlag == 1) {
       lastAdded.current.focus();

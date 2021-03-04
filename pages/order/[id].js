@@ -58,7 +58,12 @@ const OrderView = () => {
     material: false,
     recomendation: false,
   });
-  const [valide_state, setValideState] = useState(true);
+  const [valide_state, setValideState] = useState({
+    header: true,
+    job: true,
+    material: true,
+    recomendation: true,
+  });
 
   return (
     <>
@@ -86,6 +91,7 @@ const OrderView = () => {
             if (e) e();
           }}
           setValideState={setValideState}
+          valide_state={valide_state}
         />
       </Container>
     </>

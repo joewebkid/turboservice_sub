@@ -110,6 +110,7 @@ const Index = (props) => {
     setSaveState,
     saveData,
     setValideState,
+    valide_state,
   } = props;
   const debonceTime = process.env.NEXT_PUBLIC_ORDER_DEBONCE
     ? Number(process.env.NEXT_PUBLIC_ORDER_DEBONCE)
@@ -298,6 +299,7 @@ const Index = (props) => {
                 setJobsNum={setJobsNum}
                 setJobsNumNotSaved={setJobsNumNotSaved}
                 setValideState={setValideState}
+                valide_state={valide_state}
               />
               {/* Spare parts and materials */}
               <MaterialsSection
@@ -313,6 +315,7 @@ const Index = (props) => {
                 save_state={save_state}
                 setSaveState={setSaveState}
                 setValideState={setValideState}
+                valide_state={valide_state}
               />
             </Block>
             {/* Recomendation lists */}
@@ -326,6 +329,7 @@ const Index = (props) => {
                 save_state={save_state}
                 setSaveState={setSaveState}
                 setValideState={setValideState}
+                valide_state={valide_state}
               />
             </Block>
             {/* Attached files list */}

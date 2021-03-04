@@ -64,10 +64,17 @@ const TopOrderView = (props) => {
                   </Block>
                   <Block>
                     <Block
+                      style={{ position: "absolute" }}
                       className="btn btn-link"
                       onClick={() => {
+                        console.log(valide_state);
                         if (
-                          valide_state ? true : confirm(t("not_valid_data"))
+                          valide_state.header &&
+                          valide_state.job &&
+                          valide_state.material &&
+                          valide_state.recomendation
+                            ? true
+                            : confirm(t("not_valid_data"))
                         ) {
                           if (
                             (save_state.header ||

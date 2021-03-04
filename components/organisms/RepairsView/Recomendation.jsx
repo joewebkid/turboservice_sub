@@ -194,6 +194,15 @@ const addNew = (recomendations, setRecomendations, recomendations_struct) => {
 
   setRecomendations([...recomendations, empty_object]);
 };
+const validation = (data, struct) => {
+  let flag = true;
+  data.map((e) => {
+    struct.map((s) => {
+      if (s.required && !e[s["slug"]]) flag = false;
+    });
+  });
+  return flag;
+};
 
 const Recomendation = (props) => {
   const {
@@ -204,6 +213,8 @@ const Recomendation = (props) => {
     save_date,
     save_state,
     setSaveState,
+    setValideState,
+    valide_state,
   } = props;
   const router = useRouter();
 
@@ -220,6 +231,10 @@ const Recomendation = (props) => {
 
   const lastAdded = useRef(null);
   useEffect(() => {
+    if (validation(recomendations, recomendations_struct)) {
+      setValideState({ ...valide_state, recomendation: true });
+    } else setValideState({ ...valide_state, recomendation: false });
+
     if (lastAdded.current && addNewStringFlag == 1) {
       lastAdded.current.focus();
       setAddNewStringFlag(0);

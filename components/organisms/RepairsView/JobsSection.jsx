@@ -279,6 +279,7 @@ const JobsSection = (props) => {
     setJobsNum,
     setJobsNumNotSaved,
     setValideState,
+    valide_state,
   } = props;
   const router = useRouter();
   // jobs_struct
@@ -334,8 +335,8 @@ const JobsSection = (props) => {
   useEffect(() => {
     if (validation(jobs, jobs_struct)) {
       setJobsNumNotSaved(jobs.length);
-      setValideState(true);
-    } else setValideState(false);
+      setValideState({ ...valide_state, job: true });
+    } else setValideState({ ...valide_state, job: false });
 
     if (lastAdded.current && addNewStringFlag == 1) {
       lastAdded.current.focus();
