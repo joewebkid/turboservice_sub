@@ -75,7 +75,7 @@ const TopSection = (props) => {
                     : "text-secondary"
                 }
               >
-                {order_info["ORDER_STATUS_NAME"]}
+                {t(order_info["ORDER_STATUS_NAME"])}
               </b>
             </FlexBlock>
           </Block>

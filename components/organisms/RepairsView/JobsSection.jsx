@@ -499,7 +499,7 @@ const JobsSection = (props) => {
               if (!jobsSum["sum"]) jobsSum["sum"] = 0;
               jobsSum["sum"] =
                 jobsSum["sum"] +
-                Number(job["JOB_AMOUNT"]) * Number(job["JOB_PRICE"]);
+                Number(job["JOB_AMOUNT"] || 0) * Number(job["JOB_PRICE"] || 0);
 
               setTotal(jobsSum["sum"]);
               return (
@@ -517,7 +517,7 @@ const JobsSection = (props) => {
 
                         jobsSum[struct.slug] =
                           Number(jobsSum[struct.slug]) +
-                          Number(job[struct.slug]);
+                          (job[struct.slug] ? Number(job[struct.slug]) : 0);
                       }
 
                       // if (jobsSum && struct.slug == "JOB_AMOUNT")
@@ -600,7 +600,9 @@ const JobsSection = (props) => {
                                   }}
                                 >
                                   {struct.type == "number"
-                                    ? Number(job[struct.slug]).toFixed(2)
+                                    ? job[struct.slug]
+                                      ? Number(job[struct.slug]).toFixed(2)
+                                      : "0.00"
                                     : job[struct.slug]}
                                 </FlexBlock>
                               )}
@@ -615,9 +617,9 @@ const JobsSection = (props) => {
                     })}
                     <td scope="col">
                       <FlexBlock style={{ paddingTop: status != 2 ? 7 : 0 }}>
-                        {Number(job["JOB_AMOUNT"] * job["JOB_PRICE"]).toFixed(
-                          2
-                        )}
+                        {Number(
+                          (job["JOB_AMOUNT"] || 0) * (job["JOB_PRICE"] || 0)
+                        ).toFixed(2)}
                       </FlexBlock>
                     </td>
                   </tr>
@@ -633,9 +635,7 @@ const JobsSection = (props) => {
                             (!loadDebounce ? "loadDebounce" : "")
                           }
                           onClick={() => {
-                            if (
-                              confirm(" Are you sure want to delete record?")
-                            ) {
+                            if (confirm(t("sure_delete_record"))) {
                               if (loadDebounce) {
                                 if (job["JOB_ID"])
                                   delete_job(

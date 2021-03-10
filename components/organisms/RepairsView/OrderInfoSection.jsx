@@ -41,8 +41,8 @@ const OrderInfoSection = (props) => {
     save_state,
     setSaveState,
     saveData,
+    status,
   } = props;
-  const status = order_info["ORDER_STATUS_ID"];
 
   const [types, setTypes] = useState([]);
   const [order_info_section, SetOrderInfo] = useState(order_info);

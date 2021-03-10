@@ -474,9 +474,7 @@ const MaterialsSection = (props) => {
                           onClick={() => {
                             // console.log("er");
 
-                            if (
-                              confirm(" Are you sure want to delete record?")
-                            ) {
+                            if (confirm(t("sure_delete_record"))) {
                               if (loadDebounce) {
                                 if (material["PART_ID"])
                                   delete_material(

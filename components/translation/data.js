@@ -3,6 +3,8 @@ const en = (a = {}) => {
     stat_30: "Statistics for 30 days",
     total_repair_orders_done: "Total repair orders done",
     serviced_vehicles: "Serviced vehicles",
+    vehicles: "Vehicles",
+    viewer: "Viewer",
     average_norm_hours: "Average norm hours",
     average_vehicle_repair_time: "Average vehicle repair time",
     repair_orders: "Repair orders",
@@ -104,6 +106,7 @@ const en = (a = {}) => {
     sure_delete_record: "Are you sure want to delete record?",
 
     VEHICLE_LAST_TO1: "Last TO",
+    download_parts_and_job_csv: "Download jobs and parts list",
   };
 };
 
@@ -112,6 +115,8 @@ const ru = (a = {}) => {
     stat_30: "Статистика за 30 дней",
     total_repair_orders_done: "Всего выполнено заказ-нарядов",
     serviced_vehicles: "Обслужено транспортных средств",
+    vehicles: "Транспортные средства",
+    viewer: "Просмоторшик",
     average_norm_hours: "Среднее кол. нормочасов",
     average_vehicle_repair_time: "Среднее время ремонта",
     repair_orders: "Заказ-наряды",
@@ -211,6 +216,7 @@ const ru = (a = {}) => {
     sure_delete_record: "Вы уверены, что хотите удалить запись?",
 
     VEHICLE_LAST_TO1: "Последнее проведенное ТО1",
+    download_parts_and_job_csv: "Скачать список работ и запчастей",
   };
 };
 
@@ -219,6 +225,8 @@ const et = (a = {}) => {
     stat_30: "30 päeva statistika",
     total_repair_orders_done: "Kokku teostatud töökäskusid",
     serviced_vehicles: "Teenindatud transpordivahendeid",
+    vehicles: "Sõiduk",
+    viewer: "Vaataja",
     average_norm_hours: "Keskimine normtundide arv",
     average_vehicle_repair_time: "Keskmine remondi aeg",
     repair_orders: "Töökäsud",
@@ -319,6 +327,7 @@ const et = (a = {}) => {
     sure_delete_record: "Kas soovite kustutada kirje jäädavalt?",
 
     VEHICLE_LAST_TO1: "Last TO",
+    download_parts_and_job_csv: "Töökohtade ja osade loendi allalaadimine",
   };
 };
 

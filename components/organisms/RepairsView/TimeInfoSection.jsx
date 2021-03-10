@@ -7,8 +7,7 @@ import { formatDateForPost, formatDateForView } from "../../molecules/data";
 import { t } from "../../translation/data";
 
 const TimeInfoSection = (props) => {
-  const { order_info } = props;
-  const status = order_info["ORDER_STATUS_ID"];
+  const { order_info, status } = props;
   return (
     <Table style={{ maxWidth: 500 }}>
       <tbody>

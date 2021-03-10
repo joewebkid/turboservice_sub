@@ -437,7 +437,7 @@ const Recomendation = (props) => {
                           (!loadDebounce ? "loadDebounce" : "")
                         }
                         onClick={() => {
-                          if (confirm(" Are you sure want to delete record?")) {
+                          if (confirm(t("sure_delete_record"))) {
                             if (recomendation["ADVICE_ID"])
                               delete_recomendation(
                                 setRecomendations,

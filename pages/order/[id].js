@@ -7,9 +7,11 @@ import FlexBlock from "../../components/atoms/FlexBlock";
 import RepairView from "../../components/organisms/RepairsView/Index";
 import TopOrderView from "../../components/organisms/TopOrderView/TopOrderView";
 
-const get_user_data = (callback, router) => {
+const get_user_data = (callback, router, setTypeCab) => {
   const user_info = localStorage.getItem("user_info");
   const SESSIONID = localStorage.getItem("SESSIONID");
+  const type_cab = localStorage.getItem("type_cab");
+  if (type_cab) setTypeCab(type_cab);
   if (SESSIONID) {
     if (user_info) callback(JSON.parse(user_info));
   } else router.push("/login");
@@ -44,13 +46,14 @@ const logout = (SESSIONID, router) => {
 const OrderView = () => {
   const router = useRouter();
   useEffect(() => {
-    setSESSIONID(get_user_data(setUserInfo, router));
+    setSESSIONID(get_user_data(setUserInfo, router, setTypeCab));
   }, []);
 
   const [user_info, setUserInfo] = useState(false);
   const [SESSIONID, setSESSIONID] = useState(false);
   const [loading, setLoading] = useState(false);
   const [save_date, setSaveDate] = useState(false);
+  const [type_cab, setTypeCab] = useState(false);
   const [order_status, setOrderStatus] = useState(false);
   const [save_state, setSaveState] = useState({
     header: false,
@@ -88,10 +91,11 @@ const OrderView = () => {
           setSaveState={setSaveState}
           saveData={(e) => {
             setSaveDate(save_date + 1);
-            if (e) e();
+            // if (e) e();
           }}
           setValideState={setValideState}
           valide_state={valide_state}
+          type_cab={type_cab}
         />
       </Container>
     </>

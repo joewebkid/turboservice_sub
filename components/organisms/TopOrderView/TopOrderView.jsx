@@ -10,7 +10,21 @@ import LangChooser from "../../atoms/LangChooser";
 import { useRouter } from "next/router";
 
 const TopOrderView = (props) => {
-  if (typeof window !== "undefined")
+  const {
+    repair_order_list,
+    user_info,
+    SESSIONID,
+    loading,
+    shownModal,
+    logout,
+    router,
+    saveData,
+    order_status,
+    save_state,
+    valide_state,
+  } = props;
+
+  if (typeof window !== "undefined" && router.route == "/order/[id]")
     window.onbeforeunload = function () {
       // console.log(save_state);
       if (
@@ -26,20 +40,6 @@ const TopOrderView = (props) => {
         return null;
       }
     };
-
-  const {
-    repair_order_list,
-    user_info,
-    SESSIONID,
-    loading,
-    shownModal,
-    logout,
-    router,
-    saveData,
-    order_status,
-    save_state,
-    valide_state,
-  } = props;
 
   return (
     <>
@@ -69,10 +69,11 @@ const TopOrderView = (props) => {
                       onClick={() => {
                         console.log(valide_state);
                         if (
-                          valide_state.header &&
-                          valide_state.job &&
-                          valide_state.material &&
-                          valide_state.recomendation
+                          (valide_state.header &&
+                            valide_state.job &&
+                            valide_state.material &&
+                            valide_state.recomendation) ||
+                          router.route != "/order/[i]"
                             ? true
                             : confirm(t("not_valid_data"))
                         ) {

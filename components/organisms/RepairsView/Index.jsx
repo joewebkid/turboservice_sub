@@ -111,6 +111,7 @@ const Index = (props) => {
     saveData,
     setValideState,
     valide_state,
+    type_cab,
   } = props;
   const debonceTime = process.env.NEXT_PUBLIC_ORDER_DEBONCE
     ? Number(process.env.NEXT_PUBLIC_ORDER_DEBONCE)
@@ -145,6 +146,9 @@ const Index = (props) => {
         <Spinner animation="grow" />
       </Section>
     );
+  // console.log(type_cab == "vehicles" ? 2 : order_info["ORDER_STATUS_ID"]);
+  // console.log(order_info["ORDER_STATUS_ID"]);
+  const STATUS = type_cab == "vehicles" ? 2 : order_info["ORDER_STATUS_ID"];
 
   return (
     <>
@@ -224,7 +228,7 @@ const Index = (props) => {
                     );
                   }
                 }}
-                status={order_info["ORDER_STATUS_ID"]}
+                status={STATUS}
               />
             </Block>
 
@@ -253,7 +257,7 @@ const Index = (props) => {
                       setMessage
                     );
                   }}
-                  status={order_info["ORDER_STATUS_ID"]}
+                  status={STATUS}
                   save_date={save_date}
                   save_state={save_state}
                   setSaveState={setSaveState}
@@ -278,7 +282,7 @@ const Index = (props) => {
                       setMessage
                     );
                   }}
-                  status={order_info["ORDER_STATUS_ID"]}
+                  status={STATUS}
                   save_state={save_state}
                   setSaveState={setSaveState}
                 />
@@ -291,7 +295,7 @@ const Index = (props) => {
                 SESSIONID={SESSIONID}
                 refreshPage={() => setRefresh(refresh + 1)}
                 refresh={refresh}
-                status={order_info["ORDER_STATUS_ID"]}
+                status={STATUS}
                 setTotal={setJobsTotal}
                 save_date={save_date}
                 save_state={save_state}
@@ -306,7 +310,7 @@ const Index = (props) => {
                 debonceTime={debonceTime}
                 SESSIONID={SESSIONID}
                 refresh={refresh}
-                status={order_info["ORDER_STATUS_ID"]}
+                status={STATUS}
                 total={total}
                 jobsTotal={jobsTotal}
                 setTotal={setTotal}
@@ -324,7 +328,7 @@ const Index = (props) => {
                 debonceTime={debonceTime}
                 SESSIONID={SESSIONID}
                 refresh={refresh}
-                status={order_info["ORDER_STATUS_ID"]}
+                status={STATUS}
                 save_date={save_date}
                 save_state={save_state}
                 setSaveState={setSaveState}
@@ -339,7 +343,7 @@ const Index = (props) => {
                 debonceTime={debonceTime}
                 SESSIONID={SESSIONID}
                 refresh={refresh}
-                status={order_info["ORDER_STATUS_ID"]}
+                status={STATUS}
               />
             </Block>
           </Block>

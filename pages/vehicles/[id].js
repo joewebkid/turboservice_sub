@@ -6,6 +6,7 @@ import { Container, Spinner } from "react-bootstrap";
 import FlexBlock from "../../components/atoms/FlexBlock";
 import RepairView from "../../components/organisms/RepairsView/Index";
 import TopOrderView from "../../components/organisms/TopOrderView/TopOrderView";
+import TSHistory from "../../components/organisms/TSHistory/TSHistory";
 
 const get_user_data = (callback, router) => {
   const user_info = localStorage.getItem("user_info");
@@ -74,7 +75,11 @@ const OrderView = () => {
         valide_state={valide_state}
       />
       <Container fluid className="mt-3 orders-list-container order-container">
-        {router.query.id}
+        <TSHistory
+          SESSIONID={SESSIONID}
+          user_info={user_info}
+          vehiclesId={router.query.id}
+        />
         {/* <RepairView
           SESSIONID={SESSIONID}
           user_info={user_info}

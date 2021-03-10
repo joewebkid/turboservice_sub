@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 
 import axios from "axios";
 import FlexBlock from "../components/atoms/FlexBlock";
+import Block from "../components/atoms/Block";
 import { t } from "../components/translation/data";
 import LangChooser from "../components/atoms/LangChooser";
 import { langCode } from "../components/atoms/data";
@@ -62,8 +63,11 @@ const auth_login = (
           localStorage.removeItem("filter_status");
           localStorage.removeItem("current_page");
 
+          localStorage.removeItem("type_cab");
+          localStorage.setItem("type_cab", "vehicles");
+
           localStorage.setItem("shown_modal", MODAL_SHOWN);
-          router.push(router.query.redirectto || "/vehicles");
+          router.push(router.query.redirectto || "/");
           return SESSIONID;
         }
       } else {
@@ -96,13 +100,24 @@ export const LoginPage = () => {
               height="64"
             />
           </FlexBlock>
-          <h3>{t("tlt_Repair_orders")}</h3>
+          <h3>{t("viewer")}</h3>
+          <FlexBlock justify="center" className="mb-4 radioLogin">
+            <Block
+              className={"indexTab "}
+              onClick={() => {
+                router.push("/login");
+              }}
+            >
+              {t("tlt_Repair_orders")}
+            </Block>
+            <Block className={"indexTab active"}>{t("viewer")}</Block>
+          </FlexBlock>
           <FlexBlock justify="center">
             <LangChooser />
           </FlexBlock>
           <Form>
             {router.query.session != undefined ? (
-              <Alert variant="warning">Your session time is expired</Alert>
+              <Alert variant="warning">{t("session_expired")}</Alert>
             ) : (
               <></>
             )}
@@ -148,7 +163,7 @@ export const LoginPage = () => {
               className="formGroupCenter"
             >
               <a href="/remember" className="ForgetPwd">
-                {t("restore_password")}
+                {t("restore_password_to")}
               </a>
             </Form.Group>
           </Form>

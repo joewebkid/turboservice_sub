@@ -8,7 +8,13 @@ import Fade from "react-reveal/Fade";
 import { t } from "../../translation/data";
 
 const RequestSection = (props) => {
-  const { order_info, callback_start, callback_cancel, callback_done } = props;
+  const {
+    order_info,
+    callback_start,
+    callback_cancel,
+    callback_done,
+    status,
+  } = props;
   return (
     <>
       <Section className="text-center">
@@ -23,7 +29,7 @@ const RequestSection = (props) => {
             className="p-1 mb-2 text-right"
             style={{ whiteSpace: "nowrap", marginLeft: 40 }}
           >
-            {order_info["ORDER_STATUS_ID"] == 0 ? (
+            {status == 0 ? (
               <Fade>
                 <Button
                   variant="warning"
@@ -33,7 +39,7 @@ const RequestSection = (props) => {
                   {t("start_jobs")}
                 </Button>
               </Fade>
-            ) : order_info["ORDER_STATUS_ID"] == 1 ? (
+            ) : status == 1 ? (
               <Fade>
                 <Button
                   variant="danger"

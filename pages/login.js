@@ -71,6 +71,9 @@ const auth_login = (
           localStorage.removeItem("filter_status");
           localStorage.removeItem("current_page");
 
+          localStorage.removeItem("type_cab");
+          localStorage.setItem("type_cab", "orders");
+
           localStorage.setItem("shown_modal", MODAL_SHOWN);
           router.push(router.query.redirectto || "/");
           return SESSIONID;
@@ -107,16 +110,25 @@ export const LoginPage = () => {
           </FlexBlock>
 
           <h3>{t("tlt_Repair_orders")}</h3>
-          <FlexBlock justify="center" className="mb-4 dateRangeFilter">
-            <Block className={"mr-3 indexTab active"}>Tlt orders</Block>
-            <Block className={"mr-3 indexTab"}>Viewer</Block>
+          <FlexBlock justify="center" className="mb-4 radioLogin">
+            <Block className={"indexTab active"}>
+              {t("tlt_Repair_orders")}
+            </Block>
+            <Block
+              className={"indexTab"}
+              onClick={() => {
+                router.push("/login-vh");
+              }}
+            >
+              {t("viewer")}
+            </Block>
           </FlexBlock>
           <FlexBlock justify="center">
             <LangChooser />
           </FlexBlock>
           <Form>
             {router.query.session != undefined ? (
-              <Alert variant="warning">Your session time is expired</Alert>
+              <Alert variant="warning">{t("session_expired")}</Alert>
             ) : (
               <></>
             )}
