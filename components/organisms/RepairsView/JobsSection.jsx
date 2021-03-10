@@ -286,7 +286,7 @@ const JobsSection = (props) => {
   const [jobs, setJobs] = useState([]);
   const [temp_jobs, setTempJobs] = useState([]);
   const [errorText, setErrorText] = useState("");
-  const [addNewStringFlag, setAddNewStringFlag] = useState(1);
+  const [addNewStringFlag, setAddNewStringFlag] = useState(0);
   const [changedStringId, setChangedStringId] = useState(0);
   const [validate, setValidate] = useState(false);
 

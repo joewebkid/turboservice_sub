@@ -218,7 +218,7 @@ const Recomendation = (props) => {
   } = props;
   const router = useRouter();
 
-  const [addNewStringFlag, setAddNewStringFlag] = useState(1);
+  const [addNewStringFlag, setAddNewStringFlag] = useState(0);
   const [changedStringId, setChangedStringId] = useState(0);
 
   const [recomendations, setRecomendations] = useState([]);

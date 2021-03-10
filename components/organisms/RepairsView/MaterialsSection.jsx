@@ -213,7 +213,7 @@ const MaterialsSection = (props) => {
   const router = useRouter();
   let material_sum = {};
 
-  const [addNewStringFlag, setAddNewStringFlag] = useState(1);
+  const [addNewStringFlag, setAddNewStringFlag] = useState(0);
   const [changedStringId, setChangedStringId] = useState(0);
   const [message, setMessage] = useState({});
   const [materials, setMaterials] = useState([]);
