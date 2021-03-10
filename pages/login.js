@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Alert,
+  ButtonGroup,
+} from "react-bootstrap";
 import { useRouter } from "next/router";
 
 import axios from "axios";
@@ -7,6 +15,7 @@ import FlexBlock from "../components/atoms/FlexBlock";
 import { t } from "../components/translation/data";
 import LangChooser from "../components/atoms/LangChooser";
 import { langCode } from "../components/atoms/data";
+import Block from "../components/atoms/Block";
 
 const MODAL_SHOWN = 0;
 
@@ -98,6 +107,10 @@ export const LoginPage = () => {
           </FlexBlock>
 
           <h3>{t("tlt_Repair_orders")}</h3>
+          <FlexBlock justify="center" className="mb-4 dateRangeFilter">
+            <Block className={"mr-3 indexTab active"}>Tlt orders</Block>
+            <Block className={"mr-3 indexTab"}>Viewer</Block>
+          </FlexBlock>
           <FlexBlock justify="center">
             <LangChooser />
           </FlexBlock>
@@ -149,7 +162,7 @@ export const LoginPage = () => {
               className="formGroupCenter"
             >
               <a href="/remember" className="ForgetPwd">
-                {t("restore_password")}
+                {t("restore_password_to")}
               </a>
             </Form.Group>
           </Form>

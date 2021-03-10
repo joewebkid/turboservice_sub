@@ -96,30 +96,6 @@ const get_orders = (
     });
 };
 
-// const get_orders = (callback, SESSIONID) => {
-//   if (SESSIONID)
-//     axios
-//       .get(
-//         process.env.NEXT_PUBLIC_URL +
-//           "/api-v2/Contractors/WorkorderList?SESSIONID=" +
-//           SESSIONID +
-//           // ""
-//           "&Total=1"
-//       )
-//       .then(function (response) {
-//         const { data } = response;
-//         const { result } = data;
-//         const { Response } = result;
-//         const { WorkorderList } = Response;
-
-//         console.log(WorkorderList.data);
-//         // callback(WorkorderList.data);
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//       });
-// };
-
 const VehiclesList = (props) => {
   const {
     SESSIONID,

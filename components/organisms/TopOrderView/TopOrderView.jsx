@@ -64,7 +64,6 @@ const TopOrderView = (props) => {
                   </Block>
                   <Block>
                     <Block
-                      style={{ position: "absolute" }}
                       className="btn btn-link"
                       onClick={() => {
                         console.log(valide_state);

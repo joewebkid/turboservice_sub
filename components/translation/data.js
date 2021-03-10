@@ -61,6 +61,7 @@ const en = (a = {}) => {
     to_sign: "To sign in form",
     session_expired: "Your session time is expired",
     restore_password: "Restore password",
+    restore_password_to: "Restore password",
     attention: "Attention",
     contact_support: "Contact support",
     sure_cancel_start: "Warning. Are you sure cancel start repair order?",
@@ -168,6 +169,7 @@ const ru = (a = {}) => {
     to_sign: "К форме входа",
     session_expired: "Ваша сессия истекла",
     restore_password: "Восстановить пароль",
+    restore_password_to: "Восстановить пароль",
     attention: "Внимание",
     contact_support: "Служба поддержки",
     sure_cancel_start:
@@ -275,6 +277,7 @@ const et = (a = {}) => {
     to_sign: "Tagasi avalehele",
     session_expired: "Teie seansi aeg on lõppenud",
     restore_password: "Parooli taastamine",
+    restore_password_to: "Taasta parool",
     attention: "Hoiatus",
     contact_support: "Tugi",
     sure_cancel_start: "Kas tühistada töökäsu tööde algusaeg?",

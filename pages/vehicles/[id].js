@@ -1,9 +1,10 @@
+import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { Container } from "react-bootstrap";
-import VehiclesList from "../../components/organisms/VehiclesList/VehiclesList";
-import VehiclesListBackup from "../../components/organisms/VehiclesList/VehiclesListBackup";
+import { Container, Spinner } from "react-bootstrap";
+import FlexBlock from "../../components/atoms/FlexBlock";
+import RepairView from "../../components/organisms/RepairsView/Index";
 import TopOrderView from "../../components/organisms/TopOrderView/TopOrderView";
 
 const get_user_data = (callback, router) => {
@@ -15,6 +16,7 @@ const get_user_data = (callback, router) => {
 
   return SESSIONID;
 };
+
 const logout = (SESSIONID, router) => {
   axios
     .get(
@@ -27,11 +29,9 @@ const logout = (SESSIONID, router) => {
       const { data } = response;
       const { result } = data;
       const { Message, Status } = result;
-
       localStorage.removeItem("filter_values");
       localStorage.removeItem("filter_status");
       localStorage.removeItem("current_page");
-
       router.push("/login");
       // console.log(result);
     })
@@ -41,14 +41,24 @@ const logout = (SESSIONID, router) => {
     });
 };
 
-const Vehicles = () => {
+const OrderView = () => {
   const router = useRouter();
   useEffect(() => {
     setSESSIONID(get_user_data(setUserInfo, router));
   }, []);
+
   const [user_info, setUserInfo] = useState(false);
   const [SESSIONID, setSESSIONID] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [save_date, setSaveDate] = useState(false);
+  const [order_status, setOrderStatus] = useState(false);
+  const [save_state, setSaveState] = useState({
+    header: false,
+    job: false,
+    material: false,
+    recomendation: false,
+  });
+  const [valide_state, setValideState] = useState(true);
 
   return (
     <>
@@ -58,24 +68,29 @@ const Vehicles = () => {
         SESSIONID={SESSIONID}
         router={router}
         logout={logout}
+        saveData={() => setSaveDate(save_date + 1)}
+        order_status={order_status}
+        save_state={save_state}
+        valide_state={valide_state}
       />
-
       <Container fluid className="mt-3 orders-list-container order-container">
-        <VehiclesList
+        {router.query.id}
+        {/* <RepairView
           SESSIONID={SESSIONID}
-          setLoading={setLoading}
-          loading={loading}
-          filter_values={{}}
-        />
-        <VehiclesListBackup
-          SESSIONID={SESSIONID}
-          setLoading={setLoading}
-          loading={loading}
-          filter_values={{}}
-        />
+          user_info={user_info}
+          save_date={save_date}
+          setOrderStatus={setOrderStatus}
+          save_state={save_state}
+          setSaveState={setSaveState}
+          saveData={(e) => {
+            setSaveDate(save_date + 1);
+            if (e) e();
+          }}
+          setValideState={setValideState}
+        /> */}
       </Container>
     </>
   );
 };
 
-export default Vehicles;
+export default OrderView;
