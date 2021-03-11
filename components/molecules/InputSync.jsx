@@ -18,8 +18,8 @@ const filter_callback = (
   if ((SESSIONID, auth_data))
     return axios
       .get(
-process.env.NEXT_PUBLIC_URL +
-        "/api-v2/Contractors/WorkorderList?SESSIONID=" +
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/Contractors/WorkorderList?SESSIONID=" +
           SESSIONID +
           (search_string ? "&" + search_string : ""),
         {

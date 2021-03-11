@@ -66,8 +66,8 @@ const get_orders = (
   if (SESSIONID)
     return axios
       .get(
-process.env.NEXT_PUBLIC_URL +
-        "/api-v2/Contractors/WorkorderList?SESSIONID=" +
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/Contractors/WorkorderList?SESSIONID=" +
           SESSIONID +
           "&Total=1" +
           (offset ? "&Offset=" + offset : "") +
