@@ -65,8 +65,8 @@ const get_orders = (
   // console.log("Я иду на запрос", offset);
   if (SESSIONID)
     return axios
-      .get(
-        "https://zenon.basgroup.ru:55723/api-v2/Contractors/VehiclesList?SESSIONID=" +
+      .get(process.env.NEXT_PUBLIC_URL +
+        "/api-v2/Contractors/VehiclesList?SESSIONID=" +
           SESSIONID +
           "&Total=1" +
           (offset ? "&Offset=" + offset : "") +
