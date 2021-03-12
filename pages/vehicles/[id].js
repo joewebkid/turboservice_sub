@@ -60,7 +60,7 @@ const OrderView = () => {
     recomendation: false,
   });
   const [valide_state, setValideState] = useState(true);
-
+  console.log(router);
   return (
     <>
       <TopOrderView
@@ -76,11 +76,15 @@ const OrderView = () => {
         type_cab={"vehicles"}
       />
       <Container fluid className="mt-3 orders-list-container order-container">
-        <TSHistory
-          SESSIONID={SESSIONID}
-          user_info={user_info}
-          vehiclesId={router.query.id}
-        />
+        {router.query.id ? (
+          <TSHistory
+            SESSIONID={SESSIONID}
+            user_info={user_info}
+            vehiclesId={router.query.id}
+          />
+        ) : (
+          <></>
+        )}
         {/* <RepairView
           SESSIONID={SESSIONID}
           user_info={user_info}

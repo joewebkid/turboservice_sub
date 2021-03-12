@@ -74,11 +74,13 @@ const OrderInfoSection = (props) => {
       setIsFirstTime(0);
       return 0;
     }
-    callback(order_info_section);
-    setSaveState({
-      ...save_state,
-      header: false,
-    });
+    if (save_state.header) {
+      setSaveState({
+        ...save_state,
+        header: false,
+      });
+      callback(order_info_section);
+    }
   }, [debouncedSearchTerm, save_date]);
 
   return (

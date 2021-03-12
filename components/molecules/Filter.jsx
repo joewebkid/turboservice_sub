@@ -61,7 +61,50 @@ const Filter = memo((props) => {
 
       setSearchString(stringInput);
     }
-  }, [filter_values, selectStatus]);
+  }, [filter_values]);
+
+  useEffect(() => {
+    if (!isSearching) {
+      localStorage.setItem("filter_values", JSON.stringify(filter_values));
+      let stringInput = Object.keys(filter_values)
+        .map(function (i) {
+          return [i, filter_values[i]].join("=");
+        })
+        .join("&");
+
+      if (selectStatus != undefined) {
+        localStorage.setItem("filter_status", selectStatus);
+        stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
+      }
+
+      if (isFirstTime) {
+        setIsFirstTime(false);
+        return;
+      }
+
+      setIsClearFilter(false);
+
+      if (!isSearching) {
+        setIsSearching(true);
+        setDataLoading(true);
+        filter_callback(
+          saveData,
+          SESSIONID,
+          stringInput,
+          setIsSearching,
+          setTotal,
+          offset,
+          limit,
+          () => {
+            setIsSearching(false);
+            setDataLoading(false);
+          },
+          router
+        );
+        setTimeout(() => {}, 10);
+      }
+    }
+  }, [selectStatus]);
 
   useEffect(() => {
     if (isFirstTime) {

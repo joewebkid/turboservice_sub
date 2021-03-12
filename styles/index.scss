@@ -478,3 +478,10 @@ input[type="number"] {
     border-radius: 0 4px 4px 0;
   }
 }
+
+.tsHistory {
+  & .table td,
+  & .table th {
+    padding: 0.35rem 0.36rem;
+  }
+}

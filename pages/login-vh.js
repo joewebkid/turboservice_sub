@@ -77,8 +77,10 @@ const auth_login = (
       console.log(response.data);
     })
     .catch(function (error) {
-      if (typeof error) callback_error(error);
-      return false;
+      console.log(error);
+      callback_error("Server error");
+      // if (typeof error) callback_error(error);
+      // return false;
     });
 };
 export const LoginPage = () => {

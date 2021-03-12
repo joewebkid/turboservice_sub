@@ -334,6 +334,7 @@ const et = (a = {}) => {
     VEHICLE_LAST_TO1: "Last TO",
     download_parts_and_job_csv: "Lae kõik remont ajalugu",
     required_field_login: `Väli "Logi sisse" ja "parool" on vajalikud`,
+    wrong_field_login: `Väli "Logi sisse" ja "parool" on vajalikud`,
   };
 };
 
