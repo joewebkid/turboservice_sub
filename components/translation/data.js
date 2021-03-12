@@ -4,7 +4,8 @@ const en = (a = {}) => {
     total_repair_orders_done: "Total repair orders done",
     serviced_vehicles: "Serviced vehicles",
     vehicles: "Vehicles",
-    viewer: "Viewer",
+    viewer: "Automaker",
+    contractor: "Contractor",
     average_norm_hours: "Average norm hours",
     average_vehicle_repair_time: "Average vehicle repair time",
     repair_orders: "Repair orders",
@@ -106,7 +107,7 @@ const en = (a = {}) => {
     sure_delete_record: "Are you sure want to delete record?",
 
     VEHICLE_LAST_TO1: "Last TO",
-    download_parts_and_job_csv: "Download jobs and parts list",
+    download_parts_and_job_csv: "Download all repair history",
   };
 };
 
@@ -116,7 +117,8 @@ const ru = (a = {}) => {
     total_repair_orders_done: "Всего выполнено заказ-нарядов",
     serviced_vehicles: "Обслужено транспортных средств",
     vehicles: "Транспортные средства",
-    viewer: "Просмоторшик",
+    viewer: "Автопроизводитель",
+    contractor: "Субподрядчик",
     average_norm_hours: "Среднее кол. нормочасов",
     average_vehicle_repair_time: "Среднее время ремонта",
     repair_orders: "Заказ-наряды",
@@ -216,7 +218,7 @@ const ru = (a = {}) => {
     sure_delete_record: "Вы уверены, что хотите удалить запись?",
 
     VEHICLE_LAST_TO1: "Последнее проведенное ТО1",
-    download_parts_and_job_csv: "Скачать список работ и запчастей",
+    download_parts_and_job_csv: "Скачать всю историю обслуживания",
   };
 };
 
@@ -226,7 +228,8 @@ const et = (a = {}) => {
     total_repair_orders_done: "Kokku teostatud töökäskusid",
     serviced_vehicles: "Teenindatud transpordivahendeid",
     vehicles: "Sõiduk",
-    viewer: "Vaataja",
+    viewer: "Autotootja",
+    contractor: "Töövõtja",
     average_norm_hours: "Keskimine normtundide arv",
     average_vehicle_repair_time: "Keskmine remondi aeg",
     repair_orders: "Töökäsud",
@@ -327,7 +330,7 @@ const et = (a = {}) => {
     sure_delete_record: "Kas soovite kustutada kirje jäädavalt?",
 
     VEHICLE_LAST_TO1: "Last TO",
-    download_parts_and_job_csv: "Töökohtade ja osade loendi allalaadimine",
+    download_parts_and_job_csv: "Lae kõik remont ajalugu",
   };
 };
 

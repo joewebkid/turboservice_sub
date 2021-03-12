@@ -113,6 +113,7 @@ export default function Index() {
         shownModal={shownModal}
         router={router}
         logout={logout}
+        tab={tab}
       />
       <Block fluid className="">
         <Block className="indexBlock">
@@ -156,7 +157,7 @@ export default function Index() {
                   </Block>
                   <CustomLink
                     className={"mb-3 btn btn-link "}
-                    download
+                    download="TLT all repair history.csv"
                     href={
                       process.env.NEXT_PUBLIC_URL +
                       "/api-v2/Contractors/JobsAndPartsListCSV?SESSIONID=" +

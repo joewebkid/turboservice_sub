@@ -31,7 +31,11 @@ const LangChooser = (props) => {
     if (choosed_lang) {
       localStorage.setItem("lang", choosed_lang);
 
-      if (router.route != "/remember" && router.route != "/login") {
+      if (
+        router.route != "/remember" &&
+        router.route != "/login" &&
+        router.route != "/login-vh"
+      ) {
         if (isNotFirstTime) set_lang(router.reload, langCode[choosed_lang]);
         else setIsNotFirstTime(1);
       } else {

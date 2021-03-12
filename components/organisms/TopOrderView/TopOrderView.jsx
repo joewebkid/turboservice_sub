@@ -22,6 +22,7 @@ const TopOrderView = (props) => {
     order_status,
     save_state,
     valide_state,
+    tab,
   } = props;
 
   if (typeof window !== "undefined" && router.route == "/order/[id]")
@@ -67,13 +68,11 @@ const TopOrderView = (props) => {
                     <Block
                       className="btn btn-link"
                       onClick={() => {
-                        console.log(valide_state);
                         if (
-                          (valide_state.header &&
-                            valide_state.job &&
-                            valide_state.material &&
-                            valide_state.recomendation) ||
-                          router.route != "/order/[i]"
+                          valide_state.header &&
+                          valide_state.job &&
+                          valide_state.material &&
+                          valide_state.recomendation
                             ? true
                             : confirm(t("not_valid_data"))
                         ) {
@@ -117,7 +116,7 @@ const TopOrderView = (props) => {
                 </>
               ) : (
                 <FlexBlock align="center" style={{ height: "100%" }}>
-                  <h4>{t("repair_orders")}</h4>
+                  <h4>{tab == 2 ? t("vehicles") : t("repair_orders")}</h4>
                 </FlexBlock>
               )}
             </Block>
