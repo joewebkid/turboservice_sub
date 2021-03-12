@@ -23,17 +23,19 @@ const TopOrderView = (props) => {
     save_state,
     valide_state,
     tab,
+    type_cab,
   } = props;
 
   if (typeof window !== "undefined" && router.route == "/order/[id]")
     window.onbeforeunload = function () {
       // console.log(save_state);
       if (
-        save_state.header ||
-        save_state.job ||
-        save_state.material ||
-        save_state.recomendation ||
-        !valide_state
+        (save_state.header ||
+          save_state.job ||
+          save_state.material ||
+          save_state.recomendation ||
+          !valide_state) &&
+        type_cab == "orders"
       ) {
         if (!valide_state) saveData();
         return "  ";
@@ -69,10 +71,11 @@ const TopOrderView = (props) => {
                       className="btn btn-link"
                       onClick={() => {
                         if (
-                          valide_state.header &&
-                          valide_state.job &&
-                          valide_state.material &&
-                          valide_state.recomendation
+                          (valide_state.header &&
+                            valide_state.job &&
+                            valide_state.material &&
+                            valide_state.recomendation) ||
+                          type_cab != "orders"
                             ? true
                             : confirm(t("not_valid_data"))
                         ) {
@@ -81,7 +84,8 @@ const TopOrderView = (props) => {
                               save_state.job ||
                               save_state.material ||
                               save_state.recomendation) &&
-                            order_status != 2
+                            order_status != 2 &&
+                            type_cab == "orders"
                           ) {
                             // console.log(save_state);
                             saveData();

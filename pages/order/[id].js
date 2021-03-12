@@ -80,6 +80,7 @@ const OrderView = () => {
         order_status={order_status}
         save_state={save_state}
         valide_state={valide_state}
+        type_cab={type_cab}
       />
       <Container fluid className="mt-3 orders-list-container order-container">
         <RepairView

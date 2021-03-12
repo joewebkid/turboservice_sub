@@ -41,7 +41,10 @@ const get_user_data = (
   if (SESSIONID) {
     if (user_info) callback(JSON.parse(user_info));
   } else router.push("/login");
-  if (active_tab) setactive_tab(active_tab);
+  if (active_tab)
+    type_cab == "orders" && active_tab == 2
+      ? setactive_tab(0)
+      : setactive_tab(active_tab);
   if (type_cab) settype_cab(type_cab);
 
   return SESSIONID;

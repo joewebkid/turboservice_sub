@@ -104,7 +104,7 @@ export const LoginPage = () => {
               height="64"
             />
           </FlexBlock>
-          <h3>{t("viewer")}</h3>
+          <h3>{t("tlt_Repair_orders")}</h3>
           <FlexBlock justify="center" className="mb-4 radioLogin">
             <Block
               className={"indexTab "}
@@ -112,7 +112,7 @@ export const LoginPage = () => {
                 router.push("/login");
               }}
             >
-              {t("tlt_Repair_orders")}
+              {t("contractor")}
             </Block>
             <Block className={"indexTab active"}>{t("viewer")}</Block>
           </FlexBlock>
@@ -155,9 +155,17 @@ export const LoginPage = () => {
               <Button
                 variant="primary"
                 className="btnSubmit"
-                onClick={() =>
-                  auth_login(login, password, setError, save_user_data, router)
-                }
+                onClick={() => {
+                  if (login && password)
+                    auth_login(
+                      login,
+                      password,
+                      setError,
+                      save_user_data,
+                      router
+                    );
+                  else setError(t("required_field_login"));
+                }}
               >
                 {t("login")}
               </Button>

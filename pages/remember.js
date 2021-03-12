@@ -90,7 +90,9 @@ export const RememberPasswordPage = () => {
               <Button
                 variant="primary"
                 className="btnSubmit"
-                onClick={() => auth_login(login, setError, setSuccess, router)}
+                onClick={() => {
+                  if (login) auth_login(login, setError, setSuccess, router);
+                }}
               >
                 {t("restore")}
               </Button>
