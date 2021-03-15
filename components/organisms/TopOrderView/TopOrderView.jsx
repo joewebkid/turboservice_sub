@@ -77,7 +77,7 @@ const TopOrderView = (props) => {
                             valide_state.recomendation) ||
                           type_cab != "orders"
                             ? true
-                            : confirm(t("not_valid_data"))
+                            : false
                         ) {
                           if (
                             (save_state.header ||
@@ -96,6 +96,8 @@ const TopOrderView = (props) => {
                           } else {
                             router.push("/");
                           }
+                        } else {
+                          alert(t("not_valid_data"));
                         }
                       }}
                     >
