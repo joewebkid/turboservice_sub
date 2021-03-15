@@ -21,14 +21,14 @@ export const headers = [
     title: "VIN",
     type: "text",
     slug: "VIN",
-    filter: "VIN",
+    filter: "VINContains",
     t: "VIN",
   },
   {
     title: "PLATE NUMBER",
     type: "text",
     slug: "PLATE_NUMBER",
-    filter: "PLATE_NUMBER",
+    filter: "PlateContains",
     t: "plate",
   },
   {
