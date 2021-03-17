@@ -269,8 +269,10 @@ const Index = (props) => {
                   save_state={save_state}
                   setSaveState={setSaveState}
                   saveData={saveData}
+                  type_cab={type_cab}
                 />
                 {/* Start time, Estimated and jobs done time */}
+
                 <TimeInfoSection
                   debonceTime={debonceTime}
                   order_info={order_info}
@@ -292,6 +294,7 @@ const Index = (props) => {
                   status={STATUS}
                   save_state={save_state}
                   setSaveState={setSaveState}
+                  type_cab={type_cab}
                 />
               </FlexBlock>
             </Block>
@@ -330,29 +333,37 @@ const Index = (props) => {
               />
             </Block>
             {/* Recomendation lists */}
-            <Block className="box p-5 mb-3">
-              <Recomendation
-                debonceTime={debonceTime}
-                SESSIONID={SESSIONID}
-                refresh={refresh}
-                status={STATUS}
-                save_date={save_date}
-                save_state={save_state}
-                setSaveState={setSaveState}
-                setValideState={setValideState}
-                valide_state={valide_state}
-              />
-            </Block>
+            {type_cab == "orders" ? (
+              <Block className="box p-5 mb-3">
+                <Recomendation
+                  debonceTime={debonceTime}
+                  SESSIONID={SESSIONID}
+                  refresh={refresh}
+                  status={STATUS}
+                  save_date={save_date}
+                  save_state={save_state}
+                  setSaveState={setSaveState}
+                  setValideState={setValideState}
+                  valide_state={valide_state}
+                />
+              </Block>
+            ) : (
+              <></>
+            )}
             {/* Attached files list */}
 
-            <Block className="box p-5 mb-3">
-              <Attached
-                debonceTime={debonceTime}
-                SESSIONID={SESSIONID}
-                refresh={refresh}
-                status={STATUS}
-              />
-            </Block>
+            {type_cab == "orders" ? (
+              <Block className="box p-5 mb-3">
+                <Attached
+                  debonceTime={debonceTime}
+                  SESSIONID={SESSIONID}
+                  refresh={refresh}
+                  status={STATUS}
+                />
+              </Block>
+            ) : (
+              <></>
+            )}
           </Block>
         </>
       ) : (

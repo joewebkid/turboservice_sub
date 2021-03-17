@@ -66,6 +66,7 @@ const Vehicles = () => {
           setLoading={setLoading}
           loading={loading}
           filter_values={{}}
+          type_cab={"vehicles"}
         />
         <VehiclesListBackup
           SESSIONID={SESSIONID}

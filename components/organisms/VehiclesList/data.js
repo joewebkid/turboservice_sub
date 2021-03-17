@@ -40,7 +40,8 @@ export const headers = [
   },
   {
     title: "Category",
-    type: "text",
+    type: "select",
+    style: { width: 70 },
     slug: "VEHICLE_CATEGORY_NAME",
     filter: "VehicleCategoryID",
     t: "Category",
@@ -64,10 +65,10 @@ export const headers = [
   },
   {
     title: "VEHICLE LAST TO1",
-    type: "text",
+    type: "select",
     slug: "VEHICLE_LAST_TO1",
     filter: "LastTO1Contains",
-    // style: { minWidth: 150 },
+    style: { width: 200 },
     t: "VEHICLE_LAST_TO1",
   },
 ];

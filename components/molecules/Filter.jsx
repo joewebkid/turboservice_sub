@@ -5,7 +5,7 @@ import Block from "../atoms/Block";
 import DataInput from "../atoms/DataInput";
 import FilterData from "../atoms/FilterInput/FilterData";
 import FilterInput from "../atoms/FilterInput/FilterInput";
-import StatusesSelect from "../atoms/FilterInput/StatusesSelect";
+import SelectInput from "../atoms/FilterInput/SelectInput";
 import useDebounce from "../atoms/FilterInput/useDebounce";
 import FlexBlock from "../atoms/FlexBlock";
 import { formatDate } from "./data";
@@ -26,6 +26,7 @@ const Filter = memo((props) => {
     setDataLoading,
     filter_values_saved,
     router,
+    type_cab,
   } = props;
 
   const debonceTime = process.env.NEXT_PUBLIC_FILTER_DEBONCE
@@ -206,7 +207,12 @@ const Filter = memo((props) => {
                   )}
                 </FlexBlock>
               ) : h.type == "date" ? (
-                <FlexBlock className="dateRangeFilter">
+                <FlexBlock
+                  className={
+                    "dateRangeFilter" +
+                    (type_cab == "vehicles" ? " datapicker-top-left" : "")
+                  }
+                >
                   <DataInput
                     short
                     clear
@@ -251,14 +257,20 @@ const Filter = memo((props) => {
                   />
                 </FlexBlock>
               ) : h.type == "select" ? (
-                <></>
+                <SelectInput
+                  {...props}
+                  style={h.style ? h.style : {}}
+                  header={t(h.t)}
+                  options={h.options}
+                  saveFilterValues={(values) => {
+                    saveFilterValues({
+                      ...filter_values,
+                      [h.filter]: values,
+                    });
+                  }}
+                />
               ) : (
-                // <StatusesSelect
-                //   {...props}
-                //   saveFilterValues={(values) => {
-                //     setSelectedStatuses(values);
-                //   }}
-                // />
+                //
                 <></>
               )}
             </th>

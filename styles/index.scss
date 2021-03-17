@@ -485,3 +485,22 @@ input[type="number"] {
     padding: 0.35rem 0.36rem;
   }
 }
+
+.selectInput {
+  & .btn-primary, & .btn-primary:hover, & .btn-primary:focus, & .btn-primary:active {
+    color: #5a5a5a!important;
+    background-color: #ffffff!important;
+    border-color: #cecece!important;  
+    width: 100%;  
+    min-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+}
+.selectTitleContainer { 
+  display: inline-flex;
+
+  overflow-x: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+}

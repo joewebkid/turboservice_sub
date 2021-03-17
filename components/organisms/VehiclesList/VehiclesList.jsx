@@ -13,44 +13,70 @@ import Fade from "react-reveal/Fade";
 import PaginationPart from "../../atoms/PaginationPart";
 import { t } from "../../translation/data";
 
-// Contractors/OrderStatusesList
-// const get_statuses = (callback, router, SESSIONID, setLoading) => {
-//   if (SESSIONID)
-//     axios
-//       .get(
-//         process.env.NEXT_PUBLIC_URL +
-//           "/api-v2/Contractors/OrderStatusesList?SESSIONID=" +
-//           SESSIONID
-//       )
-//       .then(function (response) {
-//         const { data } = response;
-//         const { result } = data;
-//         const { Response, Message, Status } = result;
-//         // console.log(response);
-//         if (Status == 0) {
-//           const { OrderStatusesList } = Response;
-//           callback(OrderStatusesList.data);
-//           setLoading(true);
-//         } else {
-//           if (Message) {
-//             router.push("/login?message=" + Message);
-//           }
-//         }
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//         if (
-//           error.response &&
-//           (error.response.status == 401 || error.response.status == 404)
-//         ) {
-//           router.push("/login?session");
-//         } else {
-//           // const { data } = response;
-//           // const { result } = data;
-//           // const { Message } = result;
-//         }
-//       });
-// };
+// Contractors/VehicleCategoriesList
+// Contractors/VehicleLastTO1List
+const get_options = (callback, router, SESSIONID, headers) => {
+  let headersWithOption = headers;
+  if (SESSIONID) {
+    axios
+      .get(
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/Contractors/VehicleCategoriesList?SESSIONID=" +
+          SESSIONID
+      )
+      .then(function (response) {
+        const { data } = response;
+        const { result } = data;
+        const { Response, Message, Status } = result;
+        const { VehicleCategoriesList } = Response;
+        // callback(VehicleCategoriesList.data);
+        // console.log(response);
+        headersWithOption = headersWithOption.map((e) =>
+          e.slug == "VEHICLE_CATEGORY_NAME"
+            ? {
+                ...e,
+                options: VehicleCategoriesList.data.map((e) => {
+                  return {
+                    [e.VEHICLE_CATEGORY_ID]: e.VEHICLE_CATEGORY_NAME,
+                  };
+                }),
+              }
+            : e
+        );
+        axios
+          .get(
+            process.env.NEXT_PUBLIC_URL +
+              "/api-v2/Contractors/VehicleLastTO1List?SESSIONID=" +
+              SESSIONID
+          )
+          .then(function (response) {
+            const { data } = response;
+            const { result } = data;
+            const { Response, Message, Status } = result;
+            const { VehicleLastTO1List } = Response;
+            headersWithOption = headersWithOption.map((e) =>
+              e.slug == "VEHICLE_LAST_TO1"
+                ? {
+                    ...e,
+                    options: VehicleLastTO1List.data.map(
+                      (e) => e.VEHICLE_LAST_TO1_NAME
+                    ),
+                  }
+                : e
+            );
+            callback(headersWithOption);
+            // callback(VehicleLastTO1List.data);
+            // console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+};
 const get_orders = (
   callback,
   SESSIONID,
@@ -88,7 +114,7 @@ const get_orders = (
       })
       .catch(function (error) {
         if (error.response && error.response.status == 401) {
-          router.push("/login?session&&redirectto=order/" + id);
+          router && router.push("/login?session&&redirectto=order/" + id);
         }
       });
   else
@@ -105,6 +131,7 @@ const VehiclesList = (props) => {
     filter_values,
     filter_status,
     saved_current_page,
+    type_cab,
   } = props;
   const router = useRouter();
 
@@ -126,6 +153,8 @@ const VehiclesList = (props) => {
 
   const [dataLoading, setDataLoading] = useState(false);
 
+  const [headersWithOptions, setHeadersWithOptions] = useState(headers);
+
   useEffect(() => {
     // console.log(total > elems_count);
     if (saved_current_page && total > elems_count)
@@ -140,6 +169,7 @@ const VehiclesList = (props) => {
     if (SESSIONID && router) {
       setLoading(true);
       setCurrentPage(total > elems_count ? saved_current_page : 0);
+      get_options(setHeadersWithOptions, router, SESSIONID, headers);
       // setCurrentPage(saved_current_page);
     }
   }, [SESSIONID]);
@@ -186,7 +216,7 @@ const VehiclesList = (props) => {
             </tr>
             <Filter
               setDataLoading={setDataLoading}
-              headers={headers}
+              headers={headersWithOptions}
               selectStatus={selectStatus}
               saveData={setOrders}
               SESSIONID={SESSIONID}
@@ -197,6 +227,7 @@ const VehiclesList = (props) => {
               offset={offset}
               filter_values_saved={filter_values}
               router={router}
+              type_cab={type_cab}
             />
             <tr>
               {headers.map((e, key) => (

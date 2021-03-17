@@ -42,6 +42,7 @@ const OrderInfoSection = (props) => {
     setSaveState,
     saveData,
     status,
+    type_cab,
   } = props;
 
   const [types, setTypes] = useState([]);
@@ -88,37 +89,45 @@ const OrderInfoSection = (props) => {
       {order_info_section ? (
         <Table style={{ maxWidth: 500 }} className="text-left">
           <tbody>
-            <tr>
-              <th scope="row">{t("contractor_repair_order")}</th>
+            {/* WORKORDER NUMBER */}
+            {type_cab == "orders" ? (
+              <tr>
+                <th scope="row">{t("contractor_repair_order")}</th>
 
-              <td>
-                <FlexBlock justify="flex-end" style={{ position: "relative" }}>
-                  {status != 2 ? (
-                    <input
-                      value={order_info_section["CONTRACTOR_WORKORDER"] || ""}
-                      className="form-control"
-                      placehorder="repair order"
-                      onChange={(e) => {
-                        SetOrderInfo({
-                          ...order_info,
-                          CONTRACTOR_WORKORDER: e.target.value,
-                        });
-                      }}
-                    />
-                  ) : (
-                    <FlexBlock
-                      style={{
-                        width: 198,
-                        float: "left",
-                        paddingLeft: 10,
-                      }}
-                    >
-                      {order_info_section["CONTRACTOR_WORKORDER"] || ""}
-                    </FlexBlock>
-                  )}
-                </FlexBlock>
-              </td>
-            </tr>
+                <td>
+                  <FlexBlock
+                    justify="flex-end"
+                    style={{ position: "relative" }}
+                  >
+                    {status != 2 ? (
+                      <input
+                        value={order_info_section["CONTRACTOR_WORKORDER"] || ""}
+                        className="form-control"
+                        placehorder="repair order"
+                        onChange={(e) => {
+                          SetOrderInfo({
+                            ...order_info,
+                            CONTRACTOR_WORKORDER: e.target.value,
+                          });
+                        }}
+                      />
+                    ) : (
+                      <FlexBlock
+                        style={{
+                          width: 198,
+                          float: "left",
+                          paddingLeft: 10,
+                        }}
+                      >
+                        {order_info_section["CONTRACTOR_WORKORDER"] || ""}
+                      </FlexBlock>
+                    )}
+                  </FlexBlock>
+                </td>
+              </tr>
+            ) : (
+              <></>
+            )}
             <tr>
               <th scope="row">{t("milage")}</th>
 
@@ -217,41 +226,47 @@ const OrderInfoSection = (props) => {
                 )}
               </td>
             </tr>
-            <tr>
-              <th scope="row">{t("wheels_tightening_required")}</th>
-              <td>
-                {status != 2 ? (
-                  <FlexBlock
-                    justify="flex-end"
-                    style={{ position: "relative" }}
-                  >
-                    <WheelTight
-                      id={id}
-                      SESSIONID={SESSIONID}
-                      order_info_section={order_info_section}
-                      order_info={order_info}
-                      SetOrderInfo={SetOrderInfo}
-                      saveData={saveData}
-                    />
-                  </FlexBlock>
-                ) : (
-                  <FlexBlock
-                    justify="flex-end"
-                    style={{ position: "relative" }}
-                  >
+
+            {/* WHEEL TIGHTENING TYPE */}
+            {type_cab == "orders" ? (
+              <tr>
+                <th scope="row">{t("wheels_tightening_required")}</th>
+                <td>
+                  {status != 2 ? (
                     <FlexBlock
-                      style={{
-                        width: 198,
-                        float: "left",
-                        paddingLeft: 10,
-                      }}
+                      justify="flex-end"
+                      style={{ position: "relative" }}
                     >
-                      {order_info_section["WHEEL_TIGHTENING_TASK_NAME"]}
+                      <WheelTight
+                        id={id}
+                        SESSIONID={SESSIONID}
+                        order_info_section={order_info_section}
+                        order_info={order_info}
+                        SetOrderInfo={SetOrderInfo}
+                        saveData={saveData}
+                      />
                     </FlexBlock>
-                  </FlexBlock>
-                )}
-              </td>
-            </tr>
+                  ) : (
+                    <FlexBlock
+                      justify="flex-end"
+                      style={{ position: "relative" }}
+                    >
+                      <FlexBlock
+                        style={{
+                          width: 198,
+                          float: "left",
+                          paddingLeft: 10,
+                        }}
+                      >
+                        {order_info_section["WHEEL_TIGHTENING_TASK_NAME"]}
+                      </FlexBlock>
+                    </FlexBlock>
+                  )}
+                </td>
+              </tr>
+            ) : (
+              <></>
+            )}
           </tbody>
         </Table>
       ) : (

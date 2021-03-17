@@ -24,6 +24,7 @@ const TopOrderView = (props) => {
     valide_state,
     tab,
     type_cab,
+    vehicles,
   } = props;
 
   if (typeof window !== "undefined" && router.route == "/order/[id]")
@@ -77,7 +78,7 @@ const TopOrderView = (props) => {
                             valide_state.recomendation) ||
                           type_cab != "orders"
                             ? true
-                            : false
+                            : alert(t("not_valid_data")) && false
                         ) {
                           if (
                             (save_state.header ||
@@ -96,9 +97,10 @@ const TopOrderView = (props) => {
                           } else {
                             router.push("/");
                           }
-                        } else {
-                          alert(t("not_valid_data"));
                         }
+                        // else {
+                        //   alert(t("not_valid_data"));
+                        // }
                       }}
                     >
                       <svg
@@ -116,7 +118,7 @@ const TopOrderView = (props) => {
                           d="M25.1 247.5l117.8-116c4.7-4.7 12.3-4.7 17 0l7.1 7.1c4.7 4.7 4.7 12.3 0 17L64.7 256l102.2 100.4c4.7 4.7 4.7 12.3 0 17l-7.1 7.1c-4.7 4.7-12.3 4.7-17 0L25 264.5c-4.6-4.7-4.6-12.3.1-17z"
                         ></path>
                       </svg>{" "}
-                      {t("repair_orders_list")}
+                      {vehicles ? t("vehicles") : t("repair_orders_list")}
                     </Block>
                   </Block>
                 </>

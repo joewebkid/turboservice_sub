@@ -65,6 +65,7 @@ const OrderView = () => {
     <>
       <TopOrderView
         repair_order_list
+        vehicles
         user_info={user_info}
         SESSIONID={SESSIONID}
         router={router}
