@@ -334,6 +334,7 @@ const JobsSection = (props) => {
   });
 
   const lastAdded = useRef(null);
+  
   useEffect(() => {
     if (validation(jobs, jobs_struct)) {
       setJobsNumNotSaved(jobs.length);

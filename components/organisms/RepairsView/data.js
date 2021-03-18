@@ -130,7 +130,6 @@ export const recomendation = [
     slug: "ADVICE_FIX_BEFORE",
     type: "date",
     style: { width: 132 },
-    required: 1,
     t: "fix_before",
   },
   {

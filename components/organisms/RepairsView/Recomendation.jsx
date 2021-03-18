@@ -233,25 +233,43 @@ const Recomendation = (props) => {
 
   const lastAdded = useRef(null);
 
+  // useEffect(() => {
+  //   // console.log(validation(temp_recomendations, recomendations_struct));
+  //   if (validation(temp_recomendations, recomendations_struct)) {
+  //     setValideState({ ...valide_state, recomendation: true });
+  //   } else setValideState({ ...valide_state, recomendation: false });
+  // }, [temp_recomendations]);
+
   useEffect(() => {
+    // console.log("temp_recomendations", temp_recomendations);
+    // console.log("recomendations", recomendations);
+    let data_for_valid = temp_recomendations;
+    if (!data_for_valid.length) {
+      data_for_valid = recomendations;
+    }
+    // console.log("data_for_valid", recomendations);
+
+    if (validation(data_for_valid, recomendations_struct)) {
+      setValideState({ ...valide_state, recomendation: true });
+    } else setValideState({ ...valide_state, recomendation: false });
+
+    // console.log(
+    //   "validation",
+    //   validation(data_for_valid, recomendations_struct)
+    // );
+
+    if (lastAdded.current && addNewStringFlag == 1) {
+      lastAdded.current.focus();
+      setAddNewStringFlag(0);
+    }
+
     if (changedStringId !== false)
       setChangedIds(
         [...changedIds, changedStringId].filter((value, index, self) => {
           return self.indexOf(value) === index;
         })
       );
-  }, [temp_recomendations]);
-
-  useEffect(() => {
-    if (validation(recomendations, recomendations_struct)) {
-      setValideState({ ...valide_state, recomendation: true });
-    } else setValideState({ ...valide_state, recomendation: false });
-
-    if (lastAdded.current && addNewStringFlag == 1) {
-      lastAdded.current.focus();
-      setAddNewStringFlag(0);
-    }
-  }, [recomendations]);
+  }, [recomendations, changedStringId]);
 
   const debouncedSearchTerm = useDebounce(temp_recomendations, debonceTime);
 

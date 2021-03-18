@@ -70,7 +70,7 @@ const OrderInfoSection = (props) => {
   const debouncedSearchTerm = useDebounce(order_info_section, debonceTime);
 
   useEffect(() => {
-    console.log(save_state);
+    // console.log(save_state);
     if (isFirstTime) {
       setIsFirstTime(0);
       return 0;

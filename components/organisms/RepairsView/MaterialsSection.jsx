@@ -241,17 +241,17 @@ const MaterialsSection = (props) => {
 
   const lastAdded = useRef(null);
 
-  useEffect(() => {
-    if (changedStringId !== false)
-      setChangedIds(
-        [...changedIds, changedStringId].filter((value, index, self) => {
-          return self.indexOf(value) === index;
-        })
-      );
-  }, [temp_materials]);
+  // useEffect(() => {
+  //   console.log(temp_materials);
+  // }, [temp_materials]);
 
   useEffect(() => {
-    if (validation(materials, materials_struct)) {
+    let data_for_valid = temp_materials;
+    if (!data_for_valid.length) {
+      data_for_valid = materials;
+    }
+
+    if (validation(data_for_valid, materials_struct)) {
       setValideState({ ...valide_state, material: true });
     } else setValideState({ ...valide_state, material: false });
 
@@ -259,7 +259,14 @@ const MaterialsSection = (props) => {
       lastAdded.current.focus();
       setAddNewStringFlag(0);
     }
-  }, [materials]);
+
+    if (changedStringId !== false)
+      setChangedIds(
+        [...changedIds, changedStringId].filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        })
+      );
+  }, [materials, changedStringId]);
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
