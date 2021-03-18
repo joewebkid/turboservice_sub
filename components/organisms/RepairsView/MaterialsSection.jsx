@@ -214,12 +214,14 @@ const MaterialsSection = (props) => {
   let material_sum = {};
 
   const [addNewStringFlag, setAddNewStringFlag] = useState(0);
-  const [changedStringId, setChangedStringId] = useState(0);
+  const [changedStringId, setChangedStringId] = useState(false);
   const [message, setMessage] = useState({});
   const [materials, setMaterials] = useState([]);
   const [temp_materials, setTempMaterials] = useState([]);
   const [loadDebounce, setLoadDebounce] = useState(true);
   const [isClearFilter, setIsClearFilter] = useState(true);
+
+  const [changedIds, setChangedIds] = useState([]);
 
   let tempArr = materials;
 
@@ -238,6 +240,15 @@ const MaterialsSection = (props) => {
   });
 
   const lastAdded = useRef(null);
+
+  useEffect(() => {
+    if (changedStringId !== false)
+      setChangedIds(
+        [...changedIds, changedStringId].filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        })
+      );
+  }, [temp_materials]);
 
   useEffect(() => {
     if (validation(materials, materials_struct)) {
@@ -260,31 +271,35 @@ const MaterialsSection = (props) => {
       if (save_state.material) {
         setIsClearFilter(false);
         if (materials[changedStringId]) {
-          const changedMaterials = materials[changedStringId];
-          const isFull = !Object.keys(changedMaterials).find(
-            (e) =>
-              e != "PART_ID" &&
-              !changedMaterials[e] &&
-              e != "PART_AMOUNT" &&
-              e != "PART_PRICE"
-          );
-
-          if (isFull) {
-            set_materials(
-              setMaterials,
-              router.query.id,
-              SESSIONID,
-              changedMaterials,
-              setMessage,
-              materials,
-              setLoadDebounce
+          changedIds.map((changedId) => {
+            const changedMaterials = materials[changedId];
+            const isFull = !Object.keys(changedMaterials).find(
+              (e) =>
+                e != "PART_ID" &&
+                !changedMaterials[e] &&
+                e != "PART_AMOUNT" &&
+                e != "PART_PRICE"
             );
-          }
 
-          setSaveState({
-            ...save_state,
-            material: false,
+            if (isFull) {
+              set_materials(
+                setMaterials,
+                router.query.id,
+                SESSIONID,
+                changedMaterials,
+                setMessage,
+                materials,
+                setLoadDebounce
+              );
+            }
+
+            setSaveState({
+              ...save_state,
+              material: false,
+            });
           });
+          setChangedIds([]);
+          setChangedStringId(false);
         }
       }
     }
@@ -320,6 +335,8 @@ const MaterialsSection = (props) => {
                     SESSIONID,
                     setMessage
                   );
+
+                  setChangedIds([]);
                 }
               }}
             >
@@ -489,6 +506,10 @@ const MaterialsSection = (props) => {
                                     materials.filter((f, k) => k != key)
                                   );
                                 }
+
+                                setChangedIds([
+                                  ...changedIds.filter((id) => id != key),
+                                ]);
                               }
                             }
                           }}

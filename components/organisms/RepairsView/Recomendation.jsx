@@ -229,7 +229,19 @@ const Recomendation = (props) => {
   const [loadDebounce, setLoadDebounce] = useState(true);
   let tempArr = recomendations;
 
+  const [changedIds, setChangedIds] = useState([]);
+
   const lastAdded = useRef(null);
+
+  useEffect(() => {
+    if (changedStringId !== false)
+      setChangedIds(
+        [...changedIds, changedStringId].filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        })
+      );
+  }, [temp_recomendations]);
+
   useEffect(() => {
     if (validation(recomendations, recomendations_struct)) {
       setValideState({ ...valide_state, recomendation: true });
@@ -252,31 +264,35 @@ const Recomendation = (props) => {
 
       if (save_state.recomendation) {
         if (recomendations[changedStringId]) {
-          let changedRecomendations = recomendations[changedStringId];
-          const date = new Date();
-          date.setMonth(date.getMonth() + 1);
-          changedRecomendations["ADVICE_FIX_BEFORE"] = changedRecomendations[
-            "ADVICE_FIX_BEFORE"
-          ]
-            ? changedRecomendations["ADVICE_FIX_BEFORE"]
-            : formatDateForPost(date);
+          changedIds.map((changedId) => {
+            let changedRecomendations = recomendations[changedId];
+            const date = new Date();
+            date.setMonth(date.getMonth() + 1);
+            changedRecomendations["ADVICE_FIX_BEFORE"] = changedRecomendations[
+              "ADVICE_FIX_BEFORE"
+            ]
+              ? changedRecomendations["ADVICE_FIX_BEFORE"]
+              : formatDateForPost(date);
 
-          if (changedRecomendations["ADVICE_TEXT"])
-            set_recomendations(
-              setRecomendations,
-              router.query.id,
-              SESSIONID,
-              changedRecomendations,
-              setMessage,
-              recomendations,
-              changedStringId,
-              setLoadDebounce
-            );
+            if (changedRecomendations["ADVICE_TEXT"])
+              set_recomendations(
+                setRecomendations,
+                router.query.id,
+                SESSIONID,
+                changedRecomendations,
+                setMessage,
+                recomendations,
+                changedStringId,
+                setLoadDebounce
+              );
 
-          setSaveState({
-            ...save_state,
-            recomendation: false,
+            setSaveState({
+              ...save_state,
+              recomendation: false,
+            });
           });
+          setChangedIds([]);
+          setChangedStringId(false);
         }
       }
     }
@@ -302,15 +318,16 @@ const Recomendation = (props) => {
               <Block
                 className="text-left btn btn-link delAllLink"
                 onClick={() => {
-                  if (recomendations.length)
-                    if (confirm(t("delete_all_confirm"))) {
-                      delete_recomendations(
-                        setRecomendations,
-                        router.query.id,
-                        SESSIONID,
-                        setMessage
-                      );
-                    }
+                  if (confirm(t("delete_all_confirm"))) {
+                    delete_recomendations(
+                      setRecomendations,
+                      router.query.id,
+                      SESSIONID,
+                      setMessage
+                    );
+
+                    setChangedIds([]);
+                  }
                 }}
               >
                 {t("delete_all")}
@@ -451,6 +468,10 @@ const Recomendation = (props) => {
                                 recomendations.filter((f, k) => k != key)
                               );
                             }
+
+                            setChangedIds([
+                              ...changedIds.filter((id) => id != key),
+                            ]);
                           }
                         }}
                       >

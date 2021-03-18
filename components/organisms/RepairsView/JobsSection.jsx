@@ -287,8 +287,10 @@ const JobsSection = (props) => {
   const [temp_jobs, setTempJobs] = useState([]);
   const [errorText, setErrorText] = useState("");
   const [addNewStringFlag, setAddNewStringFlag] = useState(0);
-  const [changedStringId, setChangedStringId] = useState(0);
+  const [changedStringId, setChangedStringId] = useState(false);
   const [validate, setValidate] = useState(false);
+
+  const [changedIds, setChangedIds] = useState([]);
 
   const popoverRef = useRef(null);
   const popover = (e) => {
@@ -342,37 +344,48 @@ const JobsSection = (props) => {
       lastAdded.current.focus();
       setAddNewStringFlag(0);
     }
+
+    if (changedStringId !== false)
+      setChangedIds(
+        [...changedIds, changedStringId].filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        })
+      );
   }, [jobs]);
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
       if (save_state.job) {
         if (jobs[changedStringId]) {
-          let changedJobs = jobs[changedStringId];
-          Object.keys(changedJobs).map((e) => {
-            if (
-              !changedJobs[e] &&
-              (e == "JOB_NORM_HOUR" || e == "JOB_AMOUNT" || e == "JOB_PRICE")
-            ) {
-              changedJobs[e] = "0.00";
-            }
-          });
+          changedIds.map((changedId) => {
+            let changedJobs = jobs[changedId];
+            Object.keys(changedJobs).map((e) => {
+              if (
+                !changedJobs[e] &&
+                (e == "JOB_NORM_HOUR" || e == "JOB_AMOUNT" || e == "JOB_PRICE")
+              ) {
+                changedJobs[e] = "0.00";
+              }
+            });
 
-          set_job(
-            setJobs,
-            router.query.id,
-            SESSIONID,
-            changedJobs,
-            setMessage,
-            jobs,
-            setLoadDebounce,
-            setJobsNum
-          );
+            set_job(
+              setJobs,
+              router.query.id,
+              SESSIONID,
+              changedJobs,
+              setMessage,
+              jobs,
+              setLoadDebounce,
+              setJobsNum
+            );
 
-          setSaveState({
-            ...save_state,
-            job: false,
+            setSaveState({
+              ...save_state,
+              job: false,
+            });
           });
+          setChangedIds([]);
+          setChangedStringId(false);
         }
       }
     }
@@ -467,6 +480,8 @@ const JobsSection = (props) => {
                     setMessage,
                     setJobsNum
                   );
+
+                  setChangedIds([]);
                 }
               }}
             >
@@ -649,6 +664,10 @@ const JobsSection = (props) => {
                                 else {
                                   setJobs(jobs.filter((f, k) => k != key));
                                 }
+
+                                setChangedIds([
+                                  ...changedIds.filter((id) => id != key),
+                                ]);
                               }
                             }
                           }}

@@ -101,7 +101,7 @@ const TSHistory = (props) => {
                           jobsAndPartsListFiltred.map((job) => (
                             <tr>
                               <td>{job.POS_TYPE_NAME}</td>
-                              <td>{job.NAME}</td>
+                              <td style={{ width: "80%" }}>{job.NAME}</td>
                               <td>{Number(job.AMOUNT).toFixed(2)}</td>
                             </tr>
                           ))
