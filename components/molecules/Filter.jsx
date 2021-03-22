@@ -114,6 +114,7 @@ const Filter = memo((props) => {
     }
     setIsClearFilter(false);
 
+    console.log(router);
     if (!isSearching) {
       setIsSearching(true);
       setDataLoading(true);
@@ -141,6 +142,7 @@ const Filter = memo((props) => {
       return;
     }
 
+    console.log(router);
     if (!isSearching && offset >= 0) {
       setIsSearching(true);
       setDataLoading(true);
@@ -151,7 +153,8 @@ const Filter = memo((props) => {
         setIsSearching,
         setTotal,
         offset,
-        limit
+        limit,
+        router
       );
       setTimeout(() => {
         setIsSearching(false);

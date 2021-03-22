@@ -44,6 +44,7 @@ export const headers = [
     style: { width: 70 },
     slug: "VEHICLE_CATEGORY_NAME",
     filter: "VehicleCategoryID",
+    // filter: "VehicleCategoryNameContains",
     t: "Category",
   },
   {

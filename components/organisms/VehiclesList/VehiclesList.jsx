@@ -88,6 +88,7 @@ const get_orders = (
   onResponse,
   router
 ) => {
+  console.log(router);
   // console.log("Я иду на запрос", offset);
   if (SESSIONID)
     return axios
@@ -103,7 +104,16 @@ const get_orders = (
       .then(function (response) {
         const { data } = response;
         const { result } = data;
-        const { Response } = result;
+        const { Response, Status, Message } = result;
+        console.log(result.Status);
+        console.log(result.Status == 2);
+        if (Status == 2) {
+          router &&
+            router.push(`/login?message="${Message}"&&redirectto=order/` + id);
+          console.log(router);
+          return;
+        }
+
         const { VehiclesList } = Response;
 
         callback(VehiclesList.data);
