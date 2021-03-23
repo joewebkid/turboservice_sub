@@ -224,12 +224,16 @@ export default function Index() {
               <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
             </Block>
             <Block className={tab == 2 ? "m-3 mw" : "m-3 mw hide"}>
-              <VehiclesList
-                SESSIONID={SESSIONID}
-                setLoading={setLoading}
-                loading={loading}
-                filter_values={{}}
-              />
+              {type_cab == "vehicles" ? (
+                <VehiclesList
+                  SESSIONID={SESSIONID}
+                  setLoading={setLoading}
+                  loading={loading}
+                  filter_values={{}}
+                />
+              ) : (
+                <></>
+              )}
             </Block>
           </FlexBlock>
         </Block>

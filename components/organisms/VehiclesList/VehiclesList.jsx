@@ -105,12 +105,12 @@ const get_orders = (
         const { data } = response;
         const { result } = data;
         const { Response, Status, Message } = result;
-        console.log(result.Status);
+        console.log("router", router);
+        console.log(Status);
         console.log(result.Status == 2);
         if (Status == 2) {
-          router &&
-            router.push(`/login?message="${Message}"&&redirectto=order/` + id);
-          console.log(router);
+          router && router.push(`/login?message=${Message}`);
+          // console.log(router);
           return;
         }
 
