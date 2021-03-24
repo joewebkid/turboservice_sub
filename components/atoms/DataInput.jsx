@@ -13,7 +13,15 @@ import FlexBlock from "./FlexBlock";
 import { language } from "../translation/data";
 
 const DataInput = (props) => {
-  const { defaultDate, value, short, clear, placeholder, noreload } = props;
+  const {
+    defaultDate,
+    value,
+    short,
+    clear,
+    placeholder,
+    noreload,
+    readOnly,
+  } = props;
   const [date, setDate] = useState(value || defaultDate || new Date());
   const [isFirstTime, setIsFirstTime] = useState(1);
 
@@ -62,6 +70,7 @@ const DataInput = (props) => {
                 : ""
             }
             placeholder={placeholder}
+            readOnly={readOnly}
           />
           {date && clear ? (
             <FlexBlock className="deleteBlockRight">

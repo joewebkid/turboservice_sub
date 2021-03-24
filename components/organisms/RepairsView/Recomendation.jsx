@@ -52,7 +52,8 @@ const set_recomendations = (
   setMessage,
   recomendations,
   currentKey,
-  setLoadDebounce
+  setLoadDebounce,
+  setSavedComplete
 ) => {
   const ADVICE_ID = changedRecomendations.ADVICE_ID;
 
@@ -96,6 +97,8 @@ const set_recomendations = (
               : e
           )
         );
+
+        setSavedComplete();
         // callback([]);
       } else {
         console.log("error ok status", result);
@@ -183,7 +186,12 @@ const delete_recomendations = (callback, id, SESSIONID, setMessage) => {
     });
 };
 
-const addNew = (recomendations, setRecomendations, recomendations_struct) => {
+const addNew = (
+  recomendations,
+  setRecomendations,
+  recomendations_struct,
+  setTempRecomendations
+) => {
   const titles = recomendations_struct.map((s) => {
     return s.slug;
   });
@@ -193,6 +201,7 @@ const addNew = (recomendations, setRecomendations, recomendations_struct) => {
   });
 
   setRecomendations([...recomendations, empty_object]);
+  setTempRecomendations([...recomendations, empty_object]);
 };
 const validation = (data, struct) => {
   let flag = true;
@@ -233,25 +242,20 @@ const Recomendation = (props) => {
 
   const lastAdded = useRef(null);
 
-  // useEffect(() => {
-  //   // console.log(validation(temp_recomendations, recomendations_struct));
-  //   if (validation(temp_recomendations, recomendations_struct)) {
-  //     setValideState({ ...valide_state, recomendation: true });
-  //   } else setValideState({ ...valide_state, recomendation: false });
-  // }, [temp_recomendations]);
+  const [savedIds, setSavedIds] = useState([]);
+  const debouncedValidate = useDebounce(temp_recomendations, 300);
 
   useEffect(() => {
-    // console.log("temp_recomendations", temp_recomendations);
-    // console.log("recomendations", recomendations);
     let data_for_valid = temp_recomendations;
-    if (!data_for_valid.length) {
-      data_for_valid = recomendations;
-    }
-    // console.log("data_for_valid", recomendations);
 
     if (validation(data_for_valid, recomendations_struct)) {
       setValideState({ ...valide_state, recomendation: true });
     } else setValideState({ ...valide_state, recomendation: false });
+  }, [debouncedValidate]);
+
+  useEffect(() => {
+    // console.log("temp_recomendations", temp_recomendations);
+    // console.log("recomendations", recomendations);
 
     // console.log(
     //   "validation",
@@ -263,12 +267,12 @@ const Recomendation = (props) => {
       setAddNewStringFlag(0);
     }
 
-    if (changedStringId !== false)
-      setChangedIds(
-        [...changedIds, changedStringId].filter((value, index, self) => {
-          return self.indexOf(value) === index;
-        })
-      );
+    // if (changedStringId !== false)
+    //   setChangedIds(
+    //     [...changedIds, changedStringId].filter((value, index, self) => {
+    //       return self.indexOf(value) === index;
+    //     })
+    //   );
   }, [recomendations, changedStringId]);
 
   const debouncedSearchTerm = useDebounce(temp_recomendations, debonceTime);
@@ -282,34 +286,37 @@ const Recomendation = (props) => {
 
       if (save_state.recomendation) {
         if (recomendations[changedStringId]) {
-          changedIds.map((changedId) => {
-            let changedRecomendations = recomendations[changedId];
-            const date = new Date();
-            date.setMonth(date.getMonth() + 1);
-            changedRecomendations["ADVICE_FIX_BEFORE"] = changedRecomendations[
-              "ADVICE_FIX_BEFORE"
-            ]
-              ? changedRecomendations["ADVICE_FIX_BEFORE"]
-              : formatDateForPost(date);
+          let changedRecomendations = recomendations[changedStringId];
+          const date = new Date();
+          date.setMonth(date.getMonth() + 1);
+          changedRecomendations["ADVICE_FIX_BEFORE"] = changedRecomendations[
+            "ADVICE_FIX_BEFORE"
+          ]
+            ? changedRecomendations["ADVICE_FIX_BEFORE"]
+            : formatDateForPost(date);
 
-            if (changedRecomendations["ADVICE_TEXT"])
-              set_recomendations(
-                setRecomendations,
-                router.query.id,
-                SESSIONID,
-                changedRecomendations,
-                setMessage,
-                recomendations,
-                changedStringId,
-                setLoadDebounce
-              );
+          setSavedIds({ ...savedIds, [changedStringId]: true });
+          if (changedRecomendations["ADVICE_TEXT"])
+            set_recomendations(
+              setRecomendations,
+              router.query.id,
+              SESSIONID,
+              changedRecomendations,
+              setMessage,
+              recomendations,
+              changedStringId,
+              setLoadDebounce,
+              () => {
+                setSavedIds({ ...savedIds, [changedStringId]: false });
+              }
+            );
 
-            setSaveState({
-              ...save_state,
-              recomendation: false,
-            });
+          setSaveState({
+            ...save_state,
+            recomendation: false,
           });
-          setChangedIds([]);
+
+          // setChangedIds([]);
           setChangedStringId(false);
         }
       }
@@ -385,7 +392,7 @@ const Recomendation = (props) => {
                               <>
                                 <DataInput
                                   callback={(e) => {
-                                    if (loadDebounce) {
+                                    if (!savedIds[key]) {
                                       tempArr[key][
                                         struct.slug
                                       ] = formatDateForPost(e);
@@ -407,6 +414,11 @@ const Recomendation = (props) => {
                                       ? lastAdded
                                       : null
                                   }
+                                  readOnly={
+                                    !loadDebounce && savedIds[key]
+                                      ? true
+                                      : false
+                                  }
                                 />
                               </>
                             ) : (
@@ -420,7 +432,9 @@ const Recomendation = (props) => {
                                     : "")
                                 }
                                 placehorder="repair order"
-                                readOnly={!loadDebounce ? true : false}
+                                readOnly={
+                                  !loadDebounce && savedIds[key] ? true : false
+                                }
                                 onChange={(e) => {
                                   if (loadDebounce) {
                                     tempArr[key][struct.slug] = e.target.value;
@@ -481,15 +495,21 @@ const Recomendation = (props) => {
                                 recomendation["ADVICE_ID"],
                                 recomendations
                               );
-                            else {
-                              setRecomendations(
-                                recomendations.filter((f, k) => k != key)
-                              );
-                            }
+                            // else {
+                            //   setRecomendations(
+                            //     recomendations.filter((f, k) => k != key)
+                            //   );
+                            // }
+                            setRecomendations(
+                              recomendations.filter((f, k) => k != key)
+                            );
+                            setTempRecomendations(
+                              recomendations.filter((f, k) => k != key)
+                            );
 
-                            setChangedIds([
-                              ...changedIds.filter((id) => id != key),
-                            ]);
+                            // setChangedIds([
+                            //   ...changedIds.filter((id) => id != key),
+                            // ]);
                           }
                         }}
                       >
@@ -514,7 +534,7 @@ const Recomendation = (props) => {
               )}
             </tr>
           </tbody>
-          {status != 2 ? (
+          {status != 2 && validation(recomendations, recomendations_struct) ? (
             <Button
               size="sm"
               variant="success"
@@ -528,7 +548,8 @@ const Recomendation = (props) => {
                   addNew(
                     recomendations,
                     setRecomendations,
-                    recomendations_struct
+                    recomendations_struct,
+                    setTempRecomendations
                   );
                 }
               }}

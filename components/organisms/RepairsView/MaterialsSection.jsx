@@ -79,7 +79,8 @@ const set_materials = (
   changedMaterials,
   setMessage,
   materials,
-  setLoadDebounce
+  setLoadDebounce,
+  setSavedComplete
 ) => {
   const PART_ID = changedMaterials.PART_ID;
 
@@ -117,6 +118,7 @@ const set_materials = (
               : e
           )
         );
+        setSavedComplete();
         // callback([]);
       } else {
         setMessage({ type: "error", text: "error", show: true });
@@ -169,7 +171,13 @@ const delete_material = (callback, id, SESSIONID, PART_ID, materials) => {
     });
 };
 
-const addNew = (materials, setMaterials, materials_struct, user_info) => {
+const addNew = (
+  materials,
+  setMaterials,
+  materials_struct,
+  user_info,
+  setTempMaterials
+) => {
   const titles = materials_struct.map((s) => {
     return s.slug;
   });
@@ -182,6 +190,7 @@ const addNew = (materials, setMaterials, materials_struct, user_info) => {
   });
 
   setMaterials([...materials, empty_object]);
+  setTempMaterials([...materials, empty_object]);
 };
 
 const validation = (data, struct) => {
@@ -209,6 +218,7 @@ const MaterialsSection = (props) => {
     setSaveState,
     setValideState,
     valide_state,
+    type_cab,
   } = props;
   const router = useRouter();
   let material_sum = {};
@@ -222,6 +232,9 @@ const MaterialsSection = (props) => {
   const [isClearFilter, setIsClearFilter] = useState(true);
 
   const [changedIds, setChangedIds] = useState([]);
+
+  const [savedIds, setSavedIds] = useState([]);
+  const debouncedValidate = useDebounce(temp_materials, 300);
 
   let tempArr = materials;
 
@@ -247,25 +260,24 @@ const MaterialsSection = (props) => {
 
   useEffect(() => {
     let data_for_valid = temp_materials;
-    if (!data_for_valid.length) {
-      data_for_valid = materials;
-    }
 
     if (validation(data_for_valid, materials_struct)) {
       setValideState({ ...valide_state, material: true });
     } else setValideState({ ...valide_state, material: false });
+  }, [debouncedValidate]);
 
+  useEffect(() => {
     if (lastAdded.current && addNewStringFlag == 1) {
       lastAdded.current.focus();
       setAddNewStringFlag(0);
     }
 
-    if (changedStringId !== false)
-      setChangedIds(
-        [...changedIds, changedStringId].filter((value, index, self) => {
-          return self.indexOf(value) === index;
-        })
-      );
+    // if (changedStringId !== false)
+    //   setChangedIds(
+    //     [...changedIds, changedStringId].filter((value, index, self) => {
+    //       return self.indexOf(value) === index;
+    //     })
+    //   );
   }, [materials, changedStringId]);
 
   useEffect(() => {
@@ -278,33 +290,36 @@ const MaterialsSection = (props) => {
       if (save_state.material) {
         setIsClearFilter(false);
         if (materials[changedStringId]) {
-          changedIds.map((changedId) => {
-            const changedMaterials = materials[changedId];
-            const isFull = !Object.keys(changedMaterials).find(
-              (e) =>
-                e != "PART_ID" &&
-                !changedMaterials[e] &&
-                e != "PART_AMOUNT" &&
-                e != "PART_PRICE"
+          const changedMaterials = materials[changedStringId];
+          const isFull = !Object.keys(changedMaterials).find(
+            (e) =>
+              e != "PART_ID" &&
+              !changedMaterials[e] &&
+              e != "PART_AMOUNT" &&
+              e != "PART_PRICE"
+          );
+          setSavedIds({ ...savedIds, [changedStringId]: true });
+
+          if (isFull) {
+            set_materials(
+              setMaterials,
+              router.query.id,
+              SESSIONID,
+              changedMaterials,
+              setMessage,
+              materials,
+              setLoadDebounce,
+              () => {
+                setSavedIds({ ...savedIds, [changedStringId]: false });
+              }
             );
+          }
 
-            if (isFull) {
-              set_materials(
-                setMaterials,
-                router.query.id,
-                SESSIONID,
-                changedMaterials,
-                setMessage,
-                materials,
-                setLoadDebounce
-              );
-            }
-
-            setSaveState({
-              ...save_state,
-              material: false,
-            });
+          setSaveState({
+            ...save_state,
+            material: false,
           });
+
           setChangedIds([]);
           setChangedStringId(false);
         }
@@ -405,10 +420,14 @@ const MaterialsSection = (props) => {
                                   }
                                   placehorder="repair order"
                                   style={struct.style}
-                                  readOnly={!loadDebounce ? true : false}
+                                  readOnly={
+                                    !loadDebounce && savedIds[key]
+                                      ? true
+                                      : false
+                                  }
                                   onChange={(e) => {
                                     console.log(e.target.value);
-                                    if (loadDebounce) {
+                                    if (!savedIds[key]) {
                                       tempArr[key][struct.slug] =
                                         e.target.value;
                                       setMaterials([...tempArr]);
@@ -438,17 +457,23 @@ const MaterialsSection = (props) => {
                                   }
                                   placehorder="repair order"
                                   style={struct.style}
-                                  readOnly={!loadDebounce ? true : false}
+                                  readOnly={
+                                    !loadDebounce && savedIds[key]
+                                      ? true
+                                      : false
+                                  }
                                   onChange={(e) => {
                                     tempArr[key][struct.slug] = e.target.value;
 
-                                    // set_material(console.log, router.query.id, SESSIONID);
-                                    setTempMaterials([...tempArr]);
-                                    setChangedStringId(key);
-                                    setSaveState({
-                                      ...save_state,
-                                      material: true,
-                                    });
+                                    if (!savedIds[key]) {
+                                      // set_material(console.log, router.query.id, SESSIONID);
+                                      setTempMaterials([...tempArr]);
+                                      setChangedStringId(key);
+                                      setSaveState({
+                                        ...save_state,
+                                        material: true,
+                                      });
+                                    }
                                   }}
                                   ref={
                                     k == 0 && key == materials.length - 1
@@ -499,7 +524,7 @@ const MaterialsSection = (props) => {
                             // console.log("er");
 
                             if (confirm(t("sure_delete_record"))) {
-                              if (loadDebounce) {
+                              if (!savedIds[key]) {
                                 if (material["PART_ID"])
                                   delete_material(
                                     setMaterials,
@@ -508,15 +533,21 @@ const MaterialsSection = (props) => {
                                     material["PART_ID"],
                                     materials
                                   );
-                                else {
-                                  setMaterials(
-                                    materials.filter((f, k) => k != key)
-                                  );
-                                }
+                                // else {
+                                //   setMaterials(
+                                //     materials.filter((f, k) => k != key)
+                                //   );
+                                // }
+                                setMaterials(
+                                  materials.filter((f, k) => k != key)
+                                );
+                                setTempMaterials(
+                                  materials.filter((f, k) => k != key)
+                                );
 
-                                setChangedIds([
-                                  ...changedIds.filter((id) => id != key),
-                                ]);
+                                // setChangedIds([
+                                //   ...changedIds.filter((id) => id != key),
+                                // ]);
                               }
                             }
                           }}
@@ -557,7 +588,7 @@ const MaterialsSection = (props) => {
               </td>
             </tr>
           </tbody>
-          {status != 2 ? (
+          {status != 2 && validation(materials, materials_struct) ? (
             <Button
               size="sm"
               variant="success"
@@ -568,7 +599,13 @@ const MaterialsSection = (props) => {
               onClick={() => {
                 if (loadDebounce) {
                   setAddNewStringFlag(1);
-                  addNew(materials, setMaterials, materials_struct, user_info);
+                  addNew(
+                    materials,
+                    setMaterials,
+                    materials_struct,
+                    user_info,
+                    setTempMaterials
+                  );
                 }
               }}
             >
@@ -578,30 +615,34 @@ const MaterialsSection = (props) => {
             <></>
           )}
         </Table>
-        <FlexBlock justify="flex-end">
-          <Table bordered style={{ maxWidth: 230, marginBottom: 0 }}>
-            <thead>
-              <tr>
-                <th scope="col" style={{ width: "40%" }}>
-                  {t("total")}
-                </th>
-                <th scope="col" style={{ width: "40%" }}>
-                  {Number(total).toFixed(2)}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">{t("vat")}</th>
-                <td>{Number(total * 0.2).toFixed(2)}</td>
-              </tr>
-              <tr>
-                <th scope="row">{t("grand_total")}</th>
-                <td>{Number(total + total * 0.2).toFixed(2)}</td>
-              </tr>
-            </tbody>
-          </Table>
-        </FlexBlock>
+        {type_cab == "orders" ? (
+          <FlexBlock justify="flex-end">
+            <Table bordered style={{ maxWidth: 230, marginBottom: 0 }}>
+              <thead>
+                <tr>
+                  <th scope="col" style={{ width: "40%" }}>
+                    {t("total")}
+                  </th>
+                  <th scope="col" style={{ width: "40%" }}>
+                    {Number(total).toFixed(2)}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">{t("vat")}</th>
+                  <td>{Number(total * 0.2).toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <th scope="row">{t("grand_total")}</th>
+                  <td>{Number(total + total * 0.2).toFixed(2)}</td>
+                </tr>
+              </tbody>
+            </Table>
+          </FlexBlock>
+        ) : (
+          <></>
+        )}
       </Section>
     </>
   );

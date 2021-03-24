@@ -487,20 +487,26 @@ input[type="number"] {
 }
 
 .selectInput {
-  & .btn-primary, & .btn-primary:hover, & .btn-primary:focus, & .btn-primary:active {
-    color: #5a5a5a!important;
-    background-color: #ffffff!important;
-    border-color: #cecece!important;  
-    width: 100%;  
+  & .btn-primary,
+  & .btn-primary:hover,
+  & .btn-primary:focus,
+  & .btn-primary:active {
+    color: #5a5a5a !important;
+    background-color: #ffffff !important;
+    border-color: #cecece !important;
+    width: 100%;
     min-width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
 }
-}
-.selectTitleContainer { 
+.selectTitleContainer {
   display: inline-flex;
 
   overflow-x: hidden;
   overflow-y: hidden;
   text-overflow: ellipsis;
+}
+.lower-case {
+  text-transform: lowercase;
 }

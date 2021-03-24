@@ -4,6 +4,7 @@ import axios from "axios";
 import { ListGroup } from "react-bootstrap";
 import { formatDateForView } from "../../molecules/data";
 import Block from "../../atoms/Block";
+import { t } from "../../translation/data";
 
 const getJobsAndPartsList = (id, SESSIONID, callback) => {
   axios
@@ -81,10 +82,12 @@ const TSHistory = (props) => {
                 return (
                   <Block className="text-left box border mb-2">
                     <Block className="headerTableList">
-                      Repair order #{order["WORKORDER_NUMBER"]} from{" "}
+                      {t("repair_order")}
+                      {order["WORKORDER_NUMBER"]}{" "}
+                      <span className="lower-case">{t("from")}</span>{" "}
                       {formatDateForView(order["WORKORDER_END_DATE"], "/")}.
-                      Millage {order["VEHICLE_MILEAGE"]}.{" "}
-                      {order["ORDER_TYPE_NAME"]}
+                      <span className="lower-case">{t("milage")}</span>{" "}
+                      {order["VEHICLE_MILEAGE"]}. {order["ORDER_TYPE_NAME"]}
                     </Block>
                     <Block className="p-2">
                       <table className="table">

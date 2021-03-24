@@ -45,7 +45,7 @@ export const headers = [
     slug: "VEHICLE_CATEGORY_NAME",
     filter: "VehicleCategoryID",
     // filter: "VehicleCategoryNameContains",
-    t: "Category",
+    t: "category",
   },
   {
     title: "VEHICLE REGISTRATION DATE",
@@ -53,7 +53,7 @@ export const headers = [
     slug: "VEHICLE_REGISTRATION_DATE",
     filterTo: "VehicleRegistrationDateTo",
     filterFrom: "VehicleRegistrationDateFrom",
-    t: "Vehicle reg. date",
+    t: "vehicle_reg_date",
   },
   {
     title: "VEHICLE LAST REPAIR DATE",
@@ -62,14 +62,14 @@ export const headers = [
     filterTo: "VehicleLastRepairDateTo",
     filterFrom: "VehicleLastRepairDateFrom",
     // t: "VEHICLE_LAST_REPAIR_DATE",
-    t: "Vehicle last repair date",
+    t: "vehicle_last_repair_date",
   },
   {
     title: "VEHICLE LAST TO1",
     type: "select",
     slug: "VEHICLE_LAST_TO1",
     filter: "LastTO1Contains",
-    style: { width: 200 },
+    style: { width: 222 },
     t: "VEHICLE_LAST_TO1",
   },
 ];

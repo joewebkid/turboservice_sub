@@ -70,7 +70,10 @@ const TopOrderView = (props) => {
                   <Block>
                     <Block
                       className="btn btn-link"
+                      // style={{ position: "absolute" }}
                       onClick={() => {
+                        // console.log(valide_state);
+                        // return;
                         if (
                           (valide_state.header &&
                             valide_state.job &&

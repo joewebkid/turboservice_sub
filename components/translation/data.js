@@ -109,6 +109,9 @@ const en = (a = {}) => {
     VEHICLE_LAST_TO1: "Last TO",
     download_parts_and_job_csv: "Download all repair history",
     required_field_login: `Field "Login" and "password" are required`,
+    category: "Category",
+    vehicle_reg_date: "Vehicle reg. date",
+    vehicle_last_repair_date: "Vehicle last repair date",
   };
 };
 
@@ -221,6 +224,9 @@ const ru = (a = {}) => {
     VEHICLE_LAST_TO1: "Последнее проведенное ТО1",
     download_parts_and_job_csv: "Скачать всю историю обслуживания",
     required_field_login: `Поля "Логин" и "Пароль" обязательны для заполнения`,
+    category: "Категория",
+    vehicle_reg_date: "Дата регистрации ТС",
+    vehicle_last_repair_date: "Дата последнего ремонта ТС",
   };
 };
 
@@ -335,6 +341,9 @@ const et = (a = {}) => {
     download_parts_and_job_csv: "Lae kõik remont ajalugu",
     required_field_login: `Väli "Logi sisse" ja "parool" on vajalikud`,
     wrong_field_login: `Väli "Logi sisse" ja "parool" on vajalikud`,
+    category: "Kategooria",
+    vehicle_reg_date: "Sõiduki reg. kuupäev",
+    vehicle_last_repair_date: "Sõiduki viimane remondikuupäev",
   };
 };
 
