@@ -295,7 +295,7 @@ const JobsSection = (props) => {
 
   const [changedIds, setChangedIds] = useState([]);
   const [savedIds, setSavedIds] = useState([]);
-
+  // console.log(savedIds);
   const popoverRef = useRef(null);
   const popover = (e) => {
     return (
@@ -357,46 +357,54 @@ const JobsSection = (props) => {
   useEffect(() => {
     if (lastAdded.current && addNewStringFlag == 1) {
       lastAdded.current.focus();
-      setValideState({ ...valide_state, job: false });
+      // setValideState({ ...valide_state, job: false });
       setAddNewStringFlag(0);
     }
   }, [jobs]);
 
   useEffect(() => {
+    // console.log(save_date, valide_state);
     if (SESSIONID && router && router.query && router.query.id) {
       if (save_state.job) {
-        if (jobs[changedStringId] && validation(jobs, jobs_struct)) {
-          let changedJobs = jobs[changedStringId];
-          Object.keys(changedJobs).map((e) => {
-            if (
-              !changedJobs[e] &&
-              (e == "JOB_NORM_HOUR" || e == "JOB_AMOUNT" || e == "JOB_PRICE")
-            ) {
-              changedJobs[e] = "0.00";
-            }
+        if (jobs[changedStringId]) {
+          // console.log(changedStringId);
+          let savedIdsTemp = savedIds;
+          changedIds.map((changedId) => {
+            savedIdsTemp = { ...savedIdsTemp, [changedId]: true };
           });
-          setSavedIds({ ...savedIds, [changedStringId]: true });
+          setSavedIds(savedIdsTemp);
 
-          set_job(
-            setJobs,
-            router.query.id,
-            SESSIONID,
-            changedJobs,
-            setMessage,
-            jobs,
-            setLoadDebounce,
-            setJobsNum,
-            () => {
-              setSavedIds({ ...savedIds, [changedStringId]: false });
-            }
-          );
+          changedIds.map((changedId) => {
+            let changedJobs = jobs[changedId];
+            Object.keys(changedJobs).map((e) => {
+              if (
+                !changedJobs[e] &&
+                (e == "JOB_NORM_HOUR" || e == "JOB_AMOUNT" || e == "JOB_PRICE")
+              ) {
+                changedJobs[e] = "0.00";
+              }
+            });
 
+            set_job(
+              setJobs,
+              router.query.id,
+              SESSIONID,
+              changedJobs,
+              setMessage,
+              jobs,
+              setLoadDebounce,
+              setJobsNum,
+              () => {
+                setSavedIds({ ...savedIds, [changedId]: false });
+              }
+            );
+          });
           setSaveState({
             ...save_state,
             job: false,
           });
         }
-        // setChangedIds([]);
+        setChangedIds([]);
         setChangedStringId(false);
       }
     }
@@ -570,18 +578,34 @@ const JobsSection = (props) => {
                                         ? true
                                         : false
                                     }
+                                    // onBlur={(e) => {
+                                    //   console.log(changedStringId, key);
+                                    //   if (changedStringId != key) saveData();
+                                    // }}
                                     onChange={(e) => {
+                                      // if (changedStringId != key) {
+                                      //   saveData();
+                                      // }
                                       if (!savedIds[key]) {
                                         tempArr[key][struct.slug] =
                                           e.target.value;
+                                        setChangedStringId(key);
                                         setJobs([...tempArr]);
                                         setTempJobs([...tempArr]);
-                                        setChangedStringId(key);
 
                                         setSaveState({
                                           ...save_state,
                                           job: true,
                                         });
+                                        setChangedIds(
+                                          [...changedIds, key].filter(
+                                            (value, index, self) => {
+                                              return (
+                                                self.indexOf(value) === index
+                                              );
+                                            }
+                                          )
+                                        );
                                       }
                                     }}
                                     ref={
@@ -606,18 +630,37 @@ const JobsSection = (props) => {
                                         ? true
                                         : false
                                     }
+                                    // onBlur={(e) => {
+                                    //   console.log(changedStringId, key);
+                                    //   if (changedStringId != key) saveData();
+                                    // }}
                                     onChange={(e) => {
+                                      // console.log(changedStringId, key);
+                                      // if (changedStringId != key) saveData();
+                                      // if (changedStringId != key) {
+                                      //
+                                      // }
                                       if (!savedIds[key]) {
                                         tempArr[key][struct.slug] =
                                           e.target.value;
+                                        setChangedStringId(key);
                                         setJobs([...tempArr]);
                                         setTempJobs([...tempArr]);
-                                        setChangedStringId(key);
 
                                         setSaveState({
                                           ...save_state,
                                           job: true,
                                         });
+
+                                        setChangedIds(
+                                          [...changedIds, key].filter(
+                                            (value, index, self) => {
+                                              return (
+                                                self.indexOf(value) === index
+                                              );
+                                            }
+                                          )
+                                        );
                                       }
                                     }}
                                     ref={
@@ -736,6 +779,7 @@ const JobsSection = (props) => {
                 saveData();
                 setAddNewStringFlag(1);
                 addNew(jobs, setJobs, jobs_struct);
+                setValideState({ ...valide_state, job: false });
               }
             }}
           >

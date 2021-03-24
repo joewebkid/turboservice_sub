@@ -332,6 +332,7 @@ const Index = (props) => {
                 setValideState={setValideState}
                 valide_state={valide_state}
                 type_cab={type_cab}
+                saveData={saveData}
               />
             </Block>
             {/* Recomendation lists */}
@@ -347,6 +348,7 @@ const Index = (props) => {
                   setSaveState={setSaveState}
                   setValideState={setValideState}
                   valide_state={valide_state}
+                  saveData={saveData}
                 />
               </Block>
             ) : (

@@ -219,6 +219,7 @@ const MaterialsSection = (props) => {
     setValideState,
     valide_state,
     type_cab,
+    saveData,
   } = props;
   const router = useRouter();
   let material_sum = {};
@@ -233,7 +234,7 @@ const MaterialsSection = (props) => {
 
   const [changedIds, setChangedIds] = useState([]);
 
-  const [savedIds, setSavedIds] = useState([]);
+  const [savedIds, setSavedIds] = useState({});
   const debouncedValidate = useDebounce(temp_materials, 300);
 
   let tempArr = materials;
@@ -280,6 +281,7 @@ const MaterialsSection = (props) => {
     //   );
   }, [materials, changedStringId]);
 
+  // console.log(savedIds);
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id) {
       // if (addNewStringFlag) {
@@ -290,30 +292,46 @@ const MaterialsSection = (props) => {
       if (save_state.material) {
         setIsClearFilter(false);
         if (materials[changedStringId]) {
-          const changedMaterials = materials[changedStringId];
-          const isFull = !Object.keys(changedMaterials).find(
-            (e) =>
-              e != "PART_ID" &&
-              !changedMaterials[e] &&
-              e != "PART_AMOUNT" &&
-              e != "PART_PRICE"
-          );
-          setSavedIds({ ...savedIds, [changedStringId]: true });
-
-          if (isFull) {
-            set_materials(
-              setMaterials,
-              router.query.id,
-              SESSIONID,
-              changedMaterials,
-              setMessage,
-              materials,
-              setLoadDebounce,
-              () => {
-                setSavedIds({ ...savedIds, [changedStringId]: false });
-              }
+          // console.log(112312312323123);
+          let savedIdsTemp = savedIds;
+          changedIds.map((changedId) => {
+            const isFull = !Object.keys(materials[changedId]).find(
+              (e) =>
+                e != "PART_ID" &&
+                !materials[changedId][e] &&
+                e != "PART_AMOUNT" &&
+                e != "PART_PRICE"
             );
-          }
+            if (isFull) savedIdsTemp = { ...savedIdsTemp, [changedId]: true };
+          });
+          setSavedIds(savedIdsTemp);
+
+          changedIds.map((changedId) => {
+            const changedMaterials = materials[changedId];
+            const isFull = !Object.keys(changedMaterials).find(
+              (e) =>
+                e != "PART_ID" &&
+                !changedMaterials[e] &&
+                e != "PART_AMOUNT" &&
+                e != "PART_PRICE"
+            );
+            // if (isFull) setSavedIds({ ...savedIds, [changedStringId]: true });
+
+            if (isFull) {
+              set_materials(
+                setMaterials,
+                router.query.id,
+                SESSIONID,
+                changedMaterials,
+                setMessage,
+                materials,
+                setLoadDebounce,
+                () => {
+                  setSavedIds({ ...savedIds, [changedStringId]: false });
+                }
+              );
+            }
+          });
 
           setSaveState({
             ...save_state,
@@ -426,7 +444,7 @@ const MaterialsSection = (props) => {
                                       : false
                                   }
                                   onChange={(e) => {
-                                    console.log(e.target.value);
+                                    // console.log(e.target.value);
                                     if (!savedIds[key]) {
                                       tempArr[key][struct.slug] =
                                         e.target.value;
@@ -438,6 +456,16 @@ const MaterialsSection = (props) => {
                                         ...save_state,
                                         material: true,
                                       });
+
+                                      setChangedIds(
+                                        [...changedIds, key].filter(
+                                          (value, index, self) => {
+                                            return (
+                                              self.indexOf(value) === index
+                                            );
+                                          }
+                                        )
+                                      );
                                     }
                                   }}
                                   ref={
@@ -463,16 +491,33 @@ const MaterialsSection = (props) => {
                                       : false
                                   }
                                   onChange={(e) => {
-                                    tempArr[key][struct.slug] = e.target.value;
-
+                                    // console.log("-=----");
+                                    // console.log(savedIds);
+                                    // console.log(key);
+                                    // console.log(savedIds[key]);
+                                    // console.log(!savedIds[key]);
                                     if (!savedIds[key]) {
                                       // set_material(console.log, router.query.id, SESSIONID);
-                                      setTempMaterials([...tempArr]);
+                                      tempArr[key][struct.slug] =
+                                        e.target.value;
                                       setChangedStringId(key);
+                                      setMaterials([...tempArr]);
+                                      setTempMaterials([...tempArr]);
+
                                       setSaveState({
                                         ...save_state,
                                         material: true,
                                       });
+
+                                      setChangedIds(
+                                        [...changedIds, key].filter(
+                                          (value, index, self) => {
+                                            return (
+                                              self.indexOf(value) === index
+                                            );
+                                          }
+                                        )
+                                      );
                                     }
                                   }}
                                   ref={
@@ -598,6 +643,7 @@ const MaterialsSection = (props) => {
               }
               onClick={() => {
                 if (loadDebounce) {
+                  saveData();
                   setAddNewStringFlag(1);
                   addNew(
                     materials,
@@ -606,6 +652,7 @@ const MaterialsSection = (props) => {
                     user_info,
                     setTempMaterials
                   );
+                  setValideState({ ...valide_state, material: false });
                 }
               }}
             >
