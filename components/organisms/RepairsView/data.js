@@ -8,6 +8,7 @@ export const jobs_struct = [
     hide: true,
     required: 1,
     t: "jobs_name",
+    type_cab: false,
   },
   {
     title: "Norm hours",
@@ -18,6 +19,7 @@ export const jobs_struct = [
     default: "1.00",
     required: 1,
     t: "norm_hours",
+    type_cab: "orders",
   },
   {
     title: "Amount",
@@ -28,6 +30,7 @@ export const jobs_struct = [
     default: "1.00",
     required: 1,
     t: "amount",
+    type_cab: false,
   },
   {
     title: "Price",
@@ -38,6 +41,7 @@ export const jobs_struct = [
     default: "0.00",
     required: 1,
     t: "price",
+    type_cab: "orders",
   },
   {
     title: "Id",
@@ -66,6 +70,7 @@ export const materials = [
     type: "string",
     required: 1,
     t: "product_code",
+    type_cab: false,
   },
   {
     title: "brand",
@@ -74,6 +79,7 @@ export const materials = [
     slug: "PART_BRAND",
     required: 0,
     t: "brand",
+    type_cab: false,
   },
   {
     title: "Product name",
@@ -83,6 +89,7 @@ export const materials = [
     type: "string",
     required: 1,
     t: "product_name",
+    type_cab: false,
   },
   {
     title: "Amount",
@@ -92,6 +99,7 @@ export const materials = [
     default: "1.00",
     required: 1,
     t: "amount",
+    type_cab: false,
   },
   {
     title: "Price",
@@ -101,11 +109,13 @@ export const materials = [
     default: "0.00",
     required: 1,
     t: "price",
+    type_cab: "orders",
   },
   {
     title: "Id",
     slug: "PART_ID",
     type: "hidden",
+    type_cab: "orders",
   },
 ];
 // PART_ID

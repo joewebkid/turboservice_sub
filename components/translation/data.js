@@ -337,10 +337,10 @@ const et = (a = {}) => {
 
     sure_delete_record: "Kas soovite kustutada kirje jäädavalt?",
 
-    VEHICLE_LAST_TO1: "Last TO",
-    download_parts_and_job_csv: "Lae kõik remont ajalugu",
-    required_field_login: `Väli "Logi sisse" ja "parool" on vajalikud`,
-    wrong_field_login: `Väli "Logi sisse" ja "parool" on vajalikud`,
+    VEHICLE_LAST_TO1: "Viimane teostatud TH",
+    download_parts_and_job_csv: "Lae alla kogu remondiajalugu",
+    required_field_login: `Väljad „Kasutajanimi“ ja „Parool“ peavad olema täidetud.`,
+    wrong_field_login: `Väljad „Kasutajanimi“ ja „Parool“ peavad olema täidetud.`,
     category: "Kategooria",
     vehicle_reg_date: "Sõiduki reg. kuupäev",
     vehicle_last_repair_date: "Sõiduki viimane remondikuupäev",

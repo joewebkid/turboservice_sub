@@ -283,6 +283,7 @@ const JobsSection = (props) => {
     setValideState,
     valide_state,
     saveData,
+    type_cab,
   } = props;
   const router = useRouter();
   // jobs_struct
@@ -520,7 +521,8 @@ const JobsSection = (props) => {
           <thead>
             <tr>
               {jobs_struct.map((struct) =>
-                struct.type != "hidden" ? (
+                struct.type != "hidden" &&
+                (struct.type_cab ? struct.type_cab == type_cab : true) ? (
                   <th
                     scope="col"
                     style={struct.width ? { width: struct.width } : {}}
@@ -562,7 +564,10 @@ const JobsSection = (props) => {
 
                       // if (jobsSum && struct.slug == "JOB_AMOUNT")
 
-                      if (struct.type != "hidden")
+                      if (
+                        struct.type != "hidden" &&
+                        (struct.type_cab ? struct.type_cab == type_cab : true)
+                      )
                         return (
                           <td scope="col" key={k}>
                             <FlexBlock>
@@ -766,7 +771,10 @@ const JobsSection = (props) => {
             <tr>
               {jobs_struct.map((struct, k) => {
                 const num = Number(jobsSum[struct.slug]);
-                if (struct.type != "hidden")
+                if (
+                  struct.type != "hidden" &&
+                  (struct.type_cab ? struct.type_cab == type_cab : true)
+                )
                   return (
                     <td scope="col" key={k}>
                       <Block

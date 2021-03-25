@@ -225,6 +225,7 @@ const Recomendation = (props) => {
     setValideState,
     valide_state,
     saveData,
+    type_cab,
   } = props;
   const router = useRouter();
 
@@ -378,10 +379,15 @@ const Recomendation = (props) => {
         <Table className="relative">
           <thead>
             <tr>
-              {recomendations_struct.map((e, k) =>
-                e.type != "hidden" ? (
-                  <th scope="col" key={k} style={e.style ? e.style : {}}>
-                    {t(e.t)}
+              {recomendations_struct.map((struct, k) =>
+                struct.type != "hidden" &&
+                (struct.type_cab ? struct.type_cab == type_cab : true) ? (
+                  <th
+                    scope="col"
+                    key={k}
+                    style={struct.style ? struct.style : {}}
+                  >
+                    {t(struct.t)}
                   </th>
                 ) : (
                   <></>
@@ -396,7 +402,8 @@ const Recomendation = (props) => {
                   {recomendations_struct.map((struct, k) => {
                     const date = new Date();
                     date.setMonth(date.getMonth() + 1);
-                    return struct.type != "hidden" ? (
+                    return struct.type != "hidden" &&
+                      (struct.type_cab ? struct.type_cab == type_cab : true) ? (
                       <td scope="col" className="datapicker-top-left" key={k}>
                         <FlexBlock style={{}}>
                           {status != 2 ? (

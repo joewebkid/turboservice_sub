@@ -315,6 +315,7 @@ const Index = (props) => {
                 setValideState={setValideState}
                 valide_state={valide_state}
                 saveData={saveData}
+                type_cab={type_cab}
               />
               {/* Spare parts and materials */}
               <MaterialsSection
@@ -349,6 +350,7 @@ const Index = (props) => {
                   setValideState={setValideState}
                   valide_state={valide_state}
                   saveData={saveData}
+                  type_cab={type_cab}
                 />
               </Block>
             ) : (
