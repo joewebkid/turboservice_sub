@@ -80,7 +80,8 @@ const set_materials = (
   setMessage,
   materials,
   setLoadDebounce,
-  setSavedComplete
+  setSavedComplete,
+  changedId
 ) => {
   const PART_ID = changedMaterials.PART_ID;
 
@@ -112,10 +113,8 @@ const set_materials = (
           setMessage({});
         }, 2500);
         callback(
-          materials.map((e) =>
-            changedMaterials.PART_NAME == e.PART_NAME
-              ? WorkorderContractPart.data
-              : e
+          materials.map((e, key) =>
+            changedId == key ? WorkorderContractPart.data : e
           )
         );
         setSavedComplete();
@@ -325,7 +324,8 @@ const MaterialsSection = (props) => {
                 setLoadDebounce,
                 () => {
                   setSavedIds({ ...savedIds, [changedStringId]: false });
-                }
+                },
+                changedId
               );
             }
           });
@@ -518,6 +518,7 @@ const MaterialsSection = (props) => {
                                       // set_material(console.log, router.query.id, SESSIONID);
                                       tempArr[key][struct.slug] =
                                         e.target.value;
+                                      // console.log(tempArr);
                                       setChangedStringId(key);
                                       setMaterials([...tempArr]);
                                       setTempMaterials([...tempArr]);
