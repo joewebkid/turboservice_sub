@@ -85,7 +85,8 @@ const set_job = (
   jobs,
   setLoadDebounce,
   setJobsNum,
-  setSavedComplete
+  setSavedComplete,
+  changedId
 ) => {
   const JOB_ID = changedJobs.JOB_ID;
   // delete changedJobs["JOB_ID"];
@@ -118,9 +119,9 @@ const set_job = (
           setMessage({});
         }, 2500);
         callback(
-          jobs.map((e) => {
+          jobs.map((e, key) => {
             // console.log(changedJobs.JOB_NAME == e.JOB_NAME, e, changedJobs);
-            return changedJobs.JOB_NAME == e.JOB_NAME
+            return key == changedId
               ? { ...e, JOB_ID: WorkorderContractJob.data.JOB_ID }
               : e;
           })
@@ -397,7 +398,8 @@ const JobsSection = (props) => {
               setJobsNum,
               () => {
                 setSavedIds({ ...savedIds, [changedId]: false });
-              }
+              },
+              changedId
             );
           });
           setSaveState({

@@ -141,7 +141,7 @@ const Filter = memo((props) => {
       return;
     }
 
-    console.log(router);
+    // console.log(router);
     if (!isSearching && offset >= 0) {
       setIsSearching(true);
       setDataLoading(true);

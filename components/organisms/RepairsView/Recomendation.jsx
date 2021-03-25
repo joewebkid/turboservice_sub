@@ -91,10 +91,7 @@ const set_recomendations = (
 
         callback(
           recomendations.map((e, key) =>
-            changedRecomendations.ADVICE_TEXT == e.ADVICE_TEXT &&
-            currentKey == key
-              ? WorkorderAdvice.data
-              : e
+            currentKey == key ? WorkorderAdvice.data : e
           )
         );
 
@@ -297,6 +294,7 @@ const Recomendation = (props) => {
           // console.log("savedIdsTemp", savedIdsTemp);
           // console.log("changedIds", changedIds);
           changedIds.map((changedId) => {
+            if (!recomendations[changedId]) return;
             let changedRecomendations = recomendations[changedId];
             const date = new Date();
             date.setMonth(date.getMonth() + 1);
