@@ -45,6 +45,7 @@ const WheelTight = (props) => {
     SetOrderInfo,
     order_info,
     saveData,
+    setSaveStateHeader,
   } = props;
   const [wheel_tight, setwheel_tight] = useState(false);
   useEffect(() => {
@@ -82,7 +83,7 @@ const WheelTight = (props) => {
                     WHEEL_TIGHTENING_TASK_ID: t.WHEEL_TIGHTENING_TASK_ID,
                     WHEEL_TIGHTENING_TASK_NAME: e.target.innerText,
                   });
-
+                  setSaveStateHeader();
                   saveData();
                 }}
                 active={

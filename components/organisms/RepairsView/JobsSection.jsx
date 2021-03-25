@@ -412,7 +412,13 @@ const JobsSection = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)
-      get_jobs(setJobs, router.query.id, SESSIONID, setMessage, setJobsNum);
+      get_jobs(
+        setJobs,
+        router.query.id,
+        SESSIONID,
+        setMessage,
+        setJobsNumNotSaved
+      );
   }, [router, refresh]);
 
   // console.log(lastAdded);

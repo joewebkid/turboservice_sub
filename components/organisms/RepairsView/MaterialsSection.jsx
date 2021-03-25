@@ -230,7 +230,7 @@ const MaterialsSection = (props) => {
   const [materials, setMaterials] = useState([]);
   const [temp_materials, setTempMaterials] = useState([]);
   const [loadDebounce, setLoadDebounce] = useState(true);
-  const [isClearFilter, setIsClearFilter] = useState(true);
+  // const [isClearFilter, setIsClearFilter] = useState(true);
 
   const [changedIds, setChangedIds] = useState([]);
 
@@ -239,10 +239,7 @@ const MaterialsSection = (props) => {
 
   let tempArr = materials;
 
-  const debouncedSearchTerm = useDebounce(
-    temp_materials,
-    isClearFilter ? 10 : debonceTime
-  );
+  const debouncedSearchTerm = useDebounce(temp_materials, debonceTime);
 
   const numberMask = createNumberMask({
     prefix: "",
@@ -290,7 +287,7 @@ const MaterialsSection = (props) => {
       // }
 
       if (save_state.material) {
-        setIsClearFilter(false);
+        // setIsClearFilter(false);
         if (materials[changedStringId]) {
           // console.log(112312312323123);
           let savedIdsTemp = savedIds;

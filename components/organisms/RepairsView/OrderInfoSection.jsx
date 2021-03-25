@@ -54,23 +54,23 @@ const OrderInfoSection = (props) => {
     if (SESSIONID) get_types(setTypes, SESSIONID);
   }, [id, SESSIONID]);
 
-  useEffect(() => {
-    if (isFirstTimeTwo) {
-      setIsFirstTimeTwo(0);
-      return 0;
-    }
-
-    if (!save_state.header)
-      setSaveState({
-        ...save_state,
-        header: true,
-      });
-  }, [order_info_section]);
+  // useEffect(() => {
+  //   // if (isFirstTimeTwo) {
+  //   //   setIsFirstTimeTwo(0);
+  //   //   return 0;
+  //   // }
+  //   console.log(123123);
+  //   if (!save_state.header)
+  //     setSaveState({
+  //       ...save_state,
+  //       header: true,
+  //     });
+  // }, [order_info_section]);
 
   const debouncedSearchTerm = useDebounce(order_info_section, debonceTime);
 
   useEffect(() => {
-    // console.log(save_state);
+    console.log(save_state);
     if (isFirstTime) {
       setIsFirstTime(0);
       return 0;
@@ -191,6 +191,10 @@ const OrderInfoSection = (props) => {
                                   ORDER_TYPE_ID: t.ORDER_TYPE_ID,
                                   ORDER_TYPE_NAME: e.target.innerText,
                                 });
+                                setSaveState({
+                                  ...save_state,
+                                  header: true,
+                                });
 
                                 saveData();
                               }}
@@ -244,6 +248,12 @@ const OrderInfoSection = (props) => {
                         order_info={order_info}
                         SetOrderInfo={SetOrderInfo}
                         saveData={saveData}
+                        setSaveStateHeader={() =>
+                          setSaveState({
+                            ...save_state,
+                            header: true,
+                          })
+                        }
                       />
                     </FlexBlock>
                   ) : (
