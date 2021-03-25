@@ -55,26 +55,27 @@ const OrderInfoSection = (props) => {
   }, [id, SESSIONID]);
 
   // useEffect(() => {
-  //   // if (isFirstTimeTwo) {
-  //   //   setIsFirstTimeTwo(0);
-  //   //   return 0;
-  //   // }
-  //   console.log(123123);
-  //   if (!save_state.header)
-  //     setSaveState({
-  //       ...save_state,
-  //       header: true,
-  //     });
+  //   console.log(order_info_section);
+  // // if (isFirstTimeTwo) {
+  // //   setIsFirstTimeTwo(0);
+  // //   return 0;
+  // // }
+  // console.log(123123);
+  // if (!save_state.header)
+  //   setSaveState({
+  //     ...save_state,
+  //     header: true,
+  //   });
   // }, [order_info_section]);
 
   const debouncedSearchTerm = useDebounce(order_info_section, debonceTime);
 
   useEffect(() => {
-    console.log(save_state);
-    if (isFirstTime) {
-      setIsFirstTime(0);
-      return 0;
-    }
+    // console.log(save_state);
+    // if (isFirstTime) {
+    //   setIsFirstTime(0);
+    //   return 0;
+    // }
     if (save_state.header) {
       setSaveState({
         ...save_state,
@@ -106,8 +107,12 @@ const OrderInfoSection = (props) => {
                         placehorder="repair order"
                         onChange={(e) => {
                           SetOrderInfo({
-                            ...order_info,
+                            ...order_info_section,
                             CONTRACTOR_WORKORDER: e.target.value,
+                          });
+                          setSaveState({
+                            ...save_state,
+                            header: true,
                           });
                         }}
                       />
@@ -140,12 +145,16 @@ const OrderInfoSection = (props) => {
                       }
                       className="form-control"
                       placehorder="repair order"
-                      onChange={(e) =>
+                      onChange={(e) => {
                         SetOrderInfo({
-                          ...order_info,
+                          ...order_info_section,
                           VEHICLE_MILEAGE: Number(e.target.value),
-                        })
-                      }
+                        });
+                        setSaveState({
+                          ...save_state,
+                          header: true,
+                        });
+                      }}
                     />
                   ) : (
                     <FlexBlock
@@ -187,7 +196,7 @@ const OrderInfoSection = (props) => {
                               onClick={(e) => {
                                 // console.log(e.target.innerText);
                                 SetOrderInfo({
-                                  ...order_info,
+                                  ...order_info_section,
                                   ORDER_TYPE_ID: t.ORDER_TYPE_ID,
                                   ORDER_TYPE_NAME: e.target.innerText,
                                 });

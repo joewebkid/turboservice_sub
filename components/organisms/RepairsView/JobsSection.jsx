@@ -636,12 +636,21 @@ const JobsSection = (props) => {
                                         ? true
                                         : false
                                     }
-                                    // onBlur={(e) => {
-                                    //   console.log(changedStringId, key);
-                                    //   if (changedStringId != key) saveData();
-                                    // }}
+                                    onBlur={(e) => {
+                                      if (validation(jobs, jobs_struct)) {
+                                        setJobsNumNotSaved(jobs.length);
+                                        setValideState({
+                                          ...valide_state,
+                                          job: true,
+                                        });
+                                      } else
+                                        setValideState({
+                                          ...valide_state,
+                                          job: false,
+                                        });
+                                    }}
                                     onChange={(e) => {
-                                      // console.log(changedStringId, key);
+                                      // console.log(savedIds, key);
                                       // if (changedStringId != key) saveData();
                                       // if (changedStringId != key) {
                                       //
@@ -730,6 +739,10 @@ const JobsSection = (props) => {
                                     setJobsNum
                                   );
 
+                                setJobsNumNotSaved(
+                                  jobs.filter((f, k) => k != key).length
+                                );
+
                                 setJobs(jobs.filter((f, k) => k != key));
                                 setTempJobs(jobs.filter((f, k) => k != key));
 
@@ -774,7 +787,7 @@ const JobsSection = (props) => {
           </tbody>
         </Table>
 
-        {status != 2 && valide_state.job ? (
+        {status != 2 && (valide_state.job || jobs.length == 0) ? (
           <Button
             size="sm"
             variant="success"
