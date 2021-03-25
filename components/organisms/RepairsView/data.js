@@ -77,7 +77,7 @@ export const materials = [
     hide: true,
     style: { minWidth: 200, width: "100%" },
     slug: "PART_BRAND",
-    required: 0,
+    required: 1,
     t: "brand",
     type_cab: false,
   },
