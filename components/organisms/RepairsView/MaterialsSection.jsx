@@ -386,8 +386,13 @@ const MaterialsSection = (props) => {
         <Table className="relative">
           <thead>
             <tr>
-              {materials_struct.map((e) =>
-                e.type != "hidden" ? <th scope="col">{t(e.t)}</th> : <></>
+              {materials_struct.map((struct) =>
+                struct.type != "hidden" &&
+                (struct.type_cab ? struct.type_cab == type_cab : true) ? (
+                  <th scope="col">{t(struct.t)}</th>
+                ) : (
+                  <></>
+                )
               )}
               <th scope="col">{t("sum")}</th>
             </tr>
@@ -419,7 +424,10 @@ const MaterialsSection = (props) => {
                       //   material_sum != undefined &&
                       //   struct.slug == "PART_AMOUNT"
                       // )
-                      return struct.type != "hidden" ? (
+                      return struct.type != "hidden" &&
+                        (struct.type_cab
+                          ? struct.type_cab == type_cab
+                          : true) ? (
                         <td scope="col" key={k}>
                           <FlexBlock>
                             {status != 2 ? (
@@ -487,6 +495,19 @@ const MaterialsSection = (props) => {
                                       ? true
                                       : false
                                   }
+                                  // onBlur={(e) => {
+                                  //   if (validation(jobs, jobs_struct)) {
+                                  //     setJobsNumNotSaved(jobs.length);
+                                  //     setValideState({
+                                  //       ...valide_state,
+                                  //       job: true,
+                                  //     });
+                                  //   } else
+                                  //     setValideState({
+                                  //       ...valide_state,
+                                  //       job: false,
+                                  //     });
+                                  // }}
                                   onChange={(e) => {
                                     // console.log("-=----");
                                     // console.log(savedIds);
@@ -606,7 +627,8 @@ const MaterialsSection = (props) => {
             })}
             <tr>
               {materials_struct.map((struct) =>
-                struct.type != "hidden" ? (
+                struct.type != "hidden" &&
+                (struct.type_cab ? struct.type_cab == type_cab : true) ? (
                   <td scope="col">
                     <Block
                       className={struct.hide ? "d-none" : "show"}
