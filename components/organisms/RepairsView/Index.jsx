@@ -146,7 +146,6 @@ const Index = (props) => {
         <Spinner animation="grow" />
       </Section>
     );
-  // console.log(type_cab == "vehicles" ? 2 : order_info["ORDER_STATUS_ID"]);
   // console.log(order_info["ORDER_STATUS_ID"]);
   const STATUS = type_cab == "vehicles" ? 2 : order_info["ORDER_STATUS_ID"];
 
