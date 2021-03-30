@@ -55,6 +55,7 @@ const Filter = memo((props) => {
         })
         .join("&");
 
+      // console.log("filter_values", selectStatus);
       if (selectStatus != undefined) {
         localStorage.setItem("filter_status", selectStatus);
         stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
@@ -73,8 +74,9 @@ const Filter = memo((props) => {
         })
         .join("&");
 
+      // console.log("selectStatus", selectStatus);
+
       if (selectStatus != undefined) {
-        localStorage.setItem("filter_status", selectStatus);
         stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
       }
 
@@ -141,14 +143,19 @@ const Filter = memo((props) => {
       return;
     }
 
-    // console.log(router);
+    let stringInput = search_string;
+    if (selectStatus != undefined) {
+      localStorage.setItem("filter_status", selectStatus);
+      stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
+    }
+
     if (!isSearching && offset >= 0) {
       setIsSearching(true);
       setDataLoading(true);
       filter_callback(
         saveData,
         SESSIONID,
-        search_string,
+        stringInput,
         setIsSearching,
         setTotal,
         offset,
