@@ -17,7 +17,7 @@ import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import Fade from "react-reveal/Fade";
 import { t } from "../../translation/data";
 
-const get_jobs = (callback, id, SESSIONID, setJobsNum) => {
+const get_jobs = (callback, id, SESSIONID, setMessage, setJobsNum) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_URL +
@@ -34,6 +34,7 @@ const get_jobs = (callback, id, SESSIONID, setJobsNum) => {
       const WorkorderJobs = Response["WorkorderContractJobs"];
       // console.log(WorkorderJobs);
       callback(WorkorderJobs.data);
+      // console.log("WorkorderJobs.data.length", WorkorderJobs.data.length);
       setJobsNum(WorkorderJobs.data.length);
     })
     .catch(function (error) {
@@ -781,7 +782,7 @@ const JobsSection = (props) => {
                     <td scope="col" key={k}>
                       <Block
                         className={struct.hide ? "d-none" : "show"}
-                        style={{}}
+                        style={status != 2 ? { paddingLeft: 15 } : {}}
                       >
                         {!num ? "0.00" : num.toFixed(2)}
                       </Block>

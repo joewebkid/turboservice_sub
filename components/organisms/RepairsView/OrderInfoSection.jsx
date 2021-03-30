@@ -54,19 +54,20 @@ const OrderInfoSection = (props) => {
     if (SESSIONID) get_types(setTypes, SESSIONID);
   }, [id, SESSIONID]);
 
-  // useEffect(() => {
-  //   console.log(order_info_section);
-  // // if (isFirstTimeTwo) {
-  // //   setIsFirstTimeTwo(0);
-  // //   return 0;
-  // // }
-  // console.log(123123);
-  // if (!save_state.header)
-  //   setSaveState({
-  //     ...save_state,
-  //     header: true,
-  //   });
-  // }, [order_info_section]);
+  useEffect(() => {
+    //   console.log(order_info_section);
+    // // if (isFirstTimeTwo) {
+    // //   setIsFirstTimeTwo(0);
+    // //   return 0;
+    // // }
+    // console.log(123123);
+    // if (!save_state.header)
+    //   setSaveState({
+    //     ...save_state,
+    //     header: true,
+    //   });
+    SetOrderInfo(order_info);
+  }, [order_info]);
 
   const debouncedSearchTerm = useDebounce(order_info_section, debonceTime);
 

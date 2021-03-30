@@ -127,7 +127,13 @@ const TopOrderView = (props) => {
                 </>
               ) : (
                 <FlexBlock align="center" style={{ height: "100%" }}>
-                  <h4>{tab == 2 ? t("vehicles") : t("repair_orders")}</h4>
+                  <h4>
+                    {tab == 2
+                      ? t("vehicles")
+                      : tab == 1
+                      ? t("stat_30")
+                      : t("repair_orders")}
+                  </h4>
                 </FlexBlock>
               )}
             </Block>

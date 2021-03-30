@@ -633,7 +633,7 @@ const MaterialsSection = (props) => {
                   <td scope="col">
                     <Block
                       className={struct.hide ? "d-none" : "show"}
-                      style={{}}
+                      style={status != 2 ? { paddingLeft: 15 } : {}}
                     >
                       {material_sum[struct.slug]
                         ? Number(material_sum[struct.slug]).toFixed(2)
@@ -645,7 +645,7 @@ const MaterialsSection = (props) => {
                 )
               )}
               <td>
-                <Block style={{ paddingTop: status != 2 ? 7 : 0 }}>
+                <Block style={{}}>
                   {material_sum["sum"]
                     ? Number(material_sum["sum"]).toFixed(2)
                     : "0.00"}
