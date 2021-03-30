@@ -555,7 +555,7 @@ const MaterialsSection = (props) => {
                                 {material[struct.slug]}
                               </FlexBlock>
                             )}
-                            {struct.required ? (
+                            {struct.required && status != 2 ? (
                               <Block className="requiredBlock"></Block>
                             ) : (
                               ""
