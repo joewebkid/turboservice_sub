@@ -782,7 +782,7 @@ const JobsSection = (props) => {
                     <td scope="col" key={k}>
                       <Block
                         className={struct.hide ? "d-none" : "show"}
-                        style={{}}
+                        style={status != 2 ? { paddingLeft: 15 } : {}}
                       >
                         {!num ? "0.00" : num.toFixed(2)}
                       </Block>

@@ -42,6 +42,7 @@ export const headers = [
     filterTo: "JobStartedTo",
     filterFrom: "JobStartedFrom",
     t: "jobs_started",
+    show_more_than: 1,
   },
   {
     title: "Jobs done",
@@ -50,6 +51,7 @@ export const headers = [
     filterTo: "JobDoneTo",
     filterFrom: "JobDoneFrom",
     t: "jobs_done",
+    show_more_than: 2,
   },
   // {
   //   title: "Expected issue",

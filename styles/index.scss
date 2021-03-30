@@ -479,6 +479,10 @@ input[type="number"] {
   }
 }
 
+.unuseable {
+  opacity: 0;
+}
+
 .tsHistory {
   & .table td,
   & .table th {

@@ -223,7 +223,11 @@ const Filter = memo((props) => {
                 <FlexBlock
                   className={
                     "dateRangeFilter" +
-                    (type_cab == "vehicles" ? " datapicker-top-left" : "")
+                    (type_cab == "vehicles" ? " datapicker-top-left" : "") +
+                    (h.show_more_than != undefined &&
+                    h.show_more_than > selectStatus
+                      ? " unuseable"
+                      : "")
                   }
                 >
                   <DataInput
