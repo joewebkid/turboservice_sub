@@ -218,10 +218,15 @@ export default function Index() {
                 SESSIONID={SESSIONID}
                 setLoading={setLoading}
                 loading={loading}
+                type_cab={type_cab}
               />
             </Block>
             <Block className={tab == 1 ? "m-3 mw" : "m-3 mw hide"}>
-              <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
+              {type_cab == "orders" ? (
+                <Statistics SESSIONID={SESSIONID} shownModal={shownModal} />
+              ) : (
+                <></>
+              )}
             </Block>
             <Block className={tab == 2 ? "m-3 mw" : "m-3 mw hide"}>
               {type_cab == "vehicles" ? (
