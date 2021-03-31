@@ -112,6 +112,9 @@ const en = (a = {}) => {
     category: "Category",
     vehicle_reg_date: "Vehicle reg. date",
     vehicle_last_repair_date: "Vehicle last repair date",
+
+    type: "Type",
+    name: "Name",
   };
 };
 
@@ -227,6 +230,9 @@ const ru = (a = {}) => {
     category: "Категория",
     vehicle_reg_date: "Дата регистрации ТС",
     vehicle_last_repair_date: "Дата последнего ремонта ТС",
+
+    type: "Тип",
+    name: "Заголовок",
   };
 };
 
@@ -344,6 +350,9 @@ const et = (a = {}) => {
     category: "Kategooria",
     vehicle_reg_date: "Sõiduki reg. kuupäev",
     vehicle_last_repair_date: "Sõiduki viimane remondikuupäev",
+
+    type: "Tüüp",
+    name: "Nimi",
   };
 };
 
