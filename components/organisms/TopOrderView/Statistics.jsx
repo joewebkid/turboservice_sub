@@ -19,7 +19,13 @@ const get_stat = (callback, SESSIONID, router) => {
       .then(function (response) {
         const { data } = response;
         const { result } = data;
-        const { Response } = result;
+        const { Response, Status, Message } = result;
+
+        if (Status == 2) {
+          router && router.push(`/login?message=${Message}`);
+          return;
+        }
+
         const { WorkshopStatistics30Days } = Response;
 
         callback(WorkshopStatistics30Days.data[0]);
