@@ -29,6 +29,8 @@ const Filter = memo((props) => {
     type_cab,
   } = props;
 
+  const status_tab_selected = type_cab == "vehicles" ? 2 : selectStatus;
+
   const debonceTime = process.env.NEXT_PUBLIC_FILTER_DEBONCE
     ? Number(process.env.NEXT_PUBLIC_FILTER_DEBONCE)
     : 1000;
@@ -56,9 +58,9 @@ const Filter = memo((props) => {
         .join("&");
 
       // console.log("filter_values", selectStatus);
-      if (selectStatus != undefined) {
-        localStorage.setItem("filter_status", selectStatus);
-        stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
+      if (status_tab_selected != undefined) {
+        localStorage.setItem("filter_status", status_tab_selected);
+        stringInput = stringInput + "&OrderStatusID[]=" + status_tab_selected;
       }
 
       setSearchString(stringInput);
@@ -74,10 +76,10 @@ const Filter = memo((props) => {
         })
         .join("&");
 
-      // console.log("selectStatus", selectStatus);
+      // console.log("status_tab_selected", status_tab_selected);
 
-      if (selectStatus != undefined) {
-        stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
+      if (status_tab_selected != undefined) {
+        stringInput = stringInput + "&OrderStatusID[]=" + status_tab_selected;
       }
 
       if (isFirstTime) {
@@ -102,12 +104,13 @@ const Filter = memo((props) => {
             setIsSearching(false);
             setDataLoading(false);
           },
-          router
+          router,
+          type_cab
         );
         setTimeout(() => {}, 10);
       }
     }
-  }, [selectStatus]);
+  }, [status_tab_selected]);
 
   useEffect(() => {
     if (isFirstTime) {
@@ -131,7 +134,8 @@ const Filter = memo((props) => {
           setIsSearching(false);
           setDataLoading(false);
         },
-        router
+        router,
+        type_cab
       );
       setTimeout(() => {}, 10);
     }
@@ -144,9 +148,9 @@ const Filter = memo((props) => {
     }
 
     let stringInput = search_string;
-    if (selectStatus != undefined) {
-      localStorage.setItem("filter_status", selectStatus);
-      stringInput = stringInput + "&OrderStatusID[]=" + selectStatus;
+    if (status_tab_selected != undefined) {
+      localStorage.setItem("filter_status", status_tab_selected);
+      stringInput = stringInput + "&OrderStatusID[]=" + status_tab_selected;
     }
 
     if (!isSearching && offset >= 0) {
@@ -164,7 +168,8 @@ const Filter = memo((props) => {
           setIsSearching(false);
           setDataLoading(false);
         },
-        router
+        router,
+        type_cab
       );
       setTimeout(() => {
         setIsSearching(false);
@@ -225,7 +230,7 @@ const Filter = memo((props) => {
                     "dateRangeFilter" +
                     (type_cab == "vehicles" ? " datapicker-top-left" : "") +
                     (h.show_more_than != undefined &&
-                    h.show_more_than > selectStatus
+                    h.show_more_than > status_tab_selected
                       ? " unuseable"
                       : "")
                   }
