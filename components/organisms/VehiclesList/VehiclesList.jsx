@@ -105,12 +105,9 @@ const get_orders = (
         const { data } = response;
         const { result } = data;
         const { Response, Status, Message } = result;
-        // console.log("router", router);
-        // console.log(Status);
-        // console.log(result.Status == 2);
+
         if (Status == 2) {
           router && router.push(`/login?message=${Message}`);
-          // console.log(router);
           return;
         }
 
@@ -124,7 +121,7 @@ const get_orders = (
       })
       .catch(function (error) {
         if (error.response && error.response.status == 401) {
-          router && router.push("/login?session&&redirectto=order/" + id);
+          router && router.push("/login-vh?session&&redirectto=order/" + id);
         }
       });
   else
