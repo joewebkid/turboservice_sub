@@ -6,22 +6,45 @@ import { formatDateForView } from "../../molecules/data";
 import Block from "../../atoms/Block";
 import { t } from "../../translation/data";
 
-const getJobsAndPartsList = (id, SESSIONID, callback) => {
+const getJobsAndPartsList = (
+  id,
+  SESSIONID,
+  callback,
+  prevData = [],
+  offset = 0
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_URL +
         "/api-v2/Contractors/JobsAndPartsListByVehicleID/" +
         id +
         "?SESSIONID=" +
-        SESSIONID
+        SESSIONID +
+        "&Total=1" +
+        (offset ? "&Offset=" + offset : "")
     )
     .then(function (response) {
       const { data } = response;
       const { result } = data;
       const { Response } = result;
       const { JobsAndPartsListByVehicleID } = Response;
-      // console.log(response);
-      callback(JobsAndPartsListByVehicleID.data);
+      const { data: dataRecord, totalRecords } = JobsAndPartsListByVehicleID;
+      // console.log(totalRecords);
+      callback([...prevData, ...dataRecord]);
+      // console.log("totalRecords - offset - 200", totalRecords - offset - 200);
+      // console.log(dataRecord.length);
+      // console.log(
+      //   `dataRecord.length(${dataRecord.length}) <= totalRecords(${totalRecords}) - offset(${offset})`,
+      //   dataRecord.length <= totalRecords - offset
+      // );
+      if (dataRecord.length < totalRecords - offset)
+        getJobsAndPartsList(
+          id,
+          SESSIONID,
+          callback,
+          [...prevData, ...dataRecord],
+          offset + 200
+        );
     })
     .catch(function (error) {
       console.log(error);
@@ -93,9 +116,9 @@ const TSHistory = (props) => {
                       <table className="table">
                         <thead>
                           <tr>
-                            <th>Type</th>
-                            <th>Name</th>
-                            <th>Amount</th>
+                            <th>{t("type")}</th>
+                            <th>{t("name")}</th>
+                            <th>{t("amount")}</th>
                           </tr>
                         </thead>
                         {!jobsAndPartsListFiltred ? (
@@ -103,9 +126,13 @@ const TSHistory = (props) => {
                         ) : (
                           jobsAndPartsListFiltred.map((job) => (
                             <tr>
-                              <td>{job.POS_TYPE_NAME}</td>
+                              <td style={{ width: "15%" }}>
+                                {job.POS_TYPE_NAME}
+                              </td>
                               <td style={{ width: "80%" }}>{job.NAME}</td>
-                              <td>{Number(job.AMOUNT).toFixed(2)}</td>
+                              <td style={{ width: "5%" }}>
+                                {Number(job.AMOUNT).toFixed(2)}
+                              </td>
                             </tr>
                           ))
                         )}
