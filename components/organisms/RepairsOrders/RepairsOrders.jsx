@@ -60,7 +60,8 @@ const get_orders = (
   offset,
   limit,
   onResponse,
-  router
+  router,
+  type_cab
 ) => {
   // console.log("Я иду на запрос", offset);
   if (SESSIONID)
@@ -129,6 +130,7 @@ const RepairsOrders = (props) => {
     filter_values,
     filter_status,
     saved_current_page,
+    type_cab,
   } = props;
   const router = useRouter();
 
@@ -193,12 +195,16 @@ const RepairsOrders = (props) => {
   return (
     <Fade>
       <Section className="border p-4 text-center mb-4 box">
-        <StatusTabs
-          statuses={statuses}
-          selectStatus={selectStatus}
-          setSelectStatus={setSelectStatus}
-          setCurrentPage={setCurrentPage}
-        />
+        {type_cab == "orders" ? (
+          <StatusTabs
+            statuses={statuses}
+            selectStatus={selectStatus}
+            setSelectStatus={setSelectStatus}
+            setCurrentPage={setCurrentPage}
+          />
+        ) : (
+          <></>
+        )}
         <Table responsive className="text-center repairs-orders">
           <thead>
             <tr>
@@ -221,6 +227,7 @@ const RepairsOrders = (props) => {
               offset={offset}
               filter_values_saved={filter_values}
               router={router}
+              type_cab={type_cab}
             />
             <tr>
               {headers.map((e, key) => (
