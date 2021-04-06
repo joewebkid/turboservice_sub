@@ -182,121 +182,125 @@ const Filter = memo((props) => {
     <>
       {filter_values ? (
         <tr>
-          {headers.map((h, key) => (
-            <th className={isSearching ? "loadingBlock" : ""} key={key}>
-              {h.type == "text" ? (
-                <FlexBlock className="filterControll">
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder={t("all")}
-                    onChange={(e) => {
-                      setCurrentPage(0);
-                      saveFilterValues({
-                        ...filter_values,
-                        [h.filter]: e.target.value,
-                      });
-                    }}
-                    readonly={isSearching ? 1 : false}
-                    value={
-                      Object.keys(filter_values).length
-                        ? filter_values[h.filter]
-                        : ""
-                    }
-                  />
-                  {filter_values[h.filter] != "" &&
-                  filter_values[h.filter] != undefined ? (
-                    <FlexBlock className="deleteBlockRight">
-                      <FlexBlock
-                        className="deleteLink delFilter"
-                        onClick={() => {
-                          setIsClearFilter(true);
-                          saveFilterValues({
-                            ...filter_values,
-                            [h.filter]: "",
-                          });
-                        }}
-                      >
-                        ✕
+          {headers.map((h, key) =>
+            type_cab == "vehicles" && h.hiddenOnVehicles ? (
+              <></>
+            ) : (
+              <th className={isSearching ? "loadingBlock" : ""} key={key}>
+                {h.type == "text" ? (
+                  <FlexBlock className="filterControll">
+                    <Form.Control
+                      required
+                      type="text"
+                      placeholder={t("all")}
+                      onChange={(e) => {
+                        setCurrentPage(0);
+                        saveFilterValues({
+                          ...filter_values,
+                          [h.filter]: e.target.value,
+                        });
+                      }}
+                      readonly={isSearching ? 1 : false}
+                      value={
+                        Object.keys(filter_values).length
+                          ? filter_values[h.filter]
+                          : ""
+                      }
+                    />
+                    {filter_values[h.filter] != "" &&
+                    filter_values[h.filter] != undefined ? (
+                      <FlexBlock className="deleteBlockRight">
+                        <FlexBlock
+                          className="deleteLink delFilter"
+                          onClick={() => {
+                            setIsClearFilter(true);
+                            saveFilterValues({
+                              ...filter_values,
+                              [h.filter]: "",
+                            });
+                          }}
+                        >
+                          ✕
+                        </FlexBlock>
                       </FlexBlock>
-                    </FlexBlock>
-                  ) : (
-                    <></>
-                  )}
-                </FlexBlock>
-              ) : h.type == "date" ? (
-                <FlexBlock
-                  className={
-                    "dateRangeFilter" +
-                    (type_cab == "vehicles" ? " datapicker-top-left" : "") +
-                    (h.show_more_than != undefined &&
-                    h.show_more_than > status_tab_selected
-                      ? " unuseable"
-                      : "")
-                  }
-                >
-                  <DataInput
-                    short
-                    clear
-                    placeholder={t("from")}
-                    className="dateFrom"
-                    callback={(e) => {
-                      // console.log(e);
-                      setCurrentPage(0);
-                      const formDate = formatDate(e);
+                    ) : (
+                      <></>
+                    )}
+                  </FlexBlock>
+                ) : h.type == "date" ? (
+                  <FlexBlock
+                    className={
+                      "dateRangeFilter" +
+                      (type_cab == "vehicles" ? " datapicker-top-left" : "") +
+                      (h.show_more_than != undefined &&
+                      h.show_more_than > status_tab_selected
+                        ? " unuseable"
+                        : "")
+                    }
+                  >
+                    <DataInput
+                      short
+                      clear
+                      placeholder={t("from")}
+                      className="dateFrom"
+                      callback={(e) => {
+                        // console.log(e);
+                        setCurrentPage(0);
+                        const formDate = formatDate(e);
+                        saveFilterValues({
+                          ...filter_values,
+                          [h.filterFrom]: formDate,
+                        });
+                      }}
+                      readonly={isSearching ? 1 : false}
+                      value={
+                        Object.keys(filter_values).length
+                          ? filter_values[h.filterFrom]
+                          : ""
+                      }
+                    />
+                    <DataInput
+                      short
+                      clear
+                      placeholder={t("to")}
+                      className="dateTo"
+                      callback={(e) => {
+                        // console.log(e);
+                        setCurrentPage(0);
+                        const formDate = formatDate(e);
+                        saveFilterValues({
+                          ...filter_values,
+                          [h.filterTo]: formDate,
+                        });
+                      }}
+                      readonly={isSearching}
+                      value={
+                        Object.keys(filter_values).length
+                          ? filter_values[h.filterTo]
+                          : ""
+                      }
+                    />
+                  </FlexBlock>
+                ) : h.type == "select" ? (
+                  <SelectInput
+                    {...props}
+                    style={h.style ? h.style : {}}
+                    header={t(h.t)}
+                    options={h.options}
+                    saveFilterValues={(values) => {
                       saveFilterValues({
                         ...filter_values,
-                        [h.filterFrom]: formDate,
+                        [h.filter]: values,
                       });
                     }}
-                    readonly={isSearching ? 1 : false}
-                    value={
-                      Object.keys(filter_values).length
-                        ? filter_values[h.filterFrom]
-                        : ""
-                    }
                   />
-                  <DataInput
-                    short
-                    clear
-                    placeholder={t("to")}
-                    className="dateTo"
-                    callback={(e) => {
-                      // console.log(e);
-                      setCurrentPage(0);
-                      const formDate = formatDate(e);
-                      saveFilterValues({
-                        ...filter_values,
-                        [h.filterTo]: formDate,
-                      });
-                    }}
-                    readonly={isSearching}
-                    value={
-                      Object.keys(filter_values).length
-                        ? filter_values[h.filterTo]
-                        : ""
-                    }
-                  />
-                </FlexBlock>
-              ) : h.type == "select" ? (
-                <SelectInput
-                  {...props}
-                  style={h.style ? h.style : {}}
-                  header={t(h.t)}
-                  options={h.options}
-                  saveFilterValues={(values) => {
-                    saveFilterValues({
-                      ...filter_values,
-                      [h.filter]: values,
-                    });
-                  }}
-                />
-              ) : (
-                //
-                <></>
-              )}
-            </th>
-          ))}
+                ) : (
+                  //
+                  <></>
+                )}
+              </th>
+            )
+          )}
 
           {isSearching ? (
             <FlexBlock
@@ -314,7 +318,9 @@ const Filter = memo((props) => {
         <></>
       )}{" "}
       <tr>
-        <td colSpan={headers.length}>
+        <td
+          colSpan={type_cab == "vehicles" ? headers.length - 1 : headers.length}
+        >
           <FlexBlock justify="flex-end">
             <div
               class="indexTab"

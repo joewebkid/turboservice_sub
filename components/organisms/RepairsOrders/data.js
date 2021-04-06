@@ -19,6 +19,7 @@ export const headers = [
     // filter: "ContractorWorkorder",
     filter: "ContractorWorkorderContains",
     t: "contractor_order",
+    hiddenOnVehicles: true,
   },
   {
     title: "Repair order #",

@@ -427,6 +427,13 @@ input[type="number"] {
   .leftBlock {
     height: 290px;
     margin-bottom: -123px;
+    &.vehicles {
+      height: 300px;
+      margin-bottom: -60px;
+      & .menuLeft {
+        height: 365px;
+      }
+    }
     display: flex;
     justify-content: center;
     & .menuLeft {
@@ -441,10 +448,16 @@ input[type="number"] {
     }
   }
   .lang_block {
-    position: relative;
+    // position: relative;
+    // z-index: 2;
+    // top: 44px;
+    // left: 33px;
+    position: absolute;
     z-index: 2;
-    top: 44px;
-    left: 33px;
+    top: 86px;
+    left: -10px;
+    margin: auto;
+    width: 100%;
   }
 }
 
@@ -513,4 +526,22 @@ input[type="number"] {
 }
 .lower-case {
   text-transform: lowercase;
+}
+
+.login-row {
+  & .form-group {
+    position: relative;
+    & .form-control {
+      position: relative;
+      background: transparent;
+      z-index: 1;
+    }
+    & .form-label {
+      position: absolute;
+      top: 6px;
+      left: 15px;
+      z-index: 0;
+      color: #797979;
+    }
+  }
 }

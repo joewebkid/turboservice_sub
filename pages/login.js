@@ -16,6 +16,7 @@ import { t } from "../components/translation/data";
 import LangChooser from "../components/atoms/LangChooser";
 import { langCode } from "../components/atoms/data";
 import Block from "../components/atoms/Block";
+import TextInput from "../components/atoms/TextInput";
 
 const MODAL_SHOWN = 0;
 
@@ -142,22 +143,31 @@ export const LoginPage = () => {
             ) : (
               <></>
             )}
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group controlId="formBasicLogin">
               <Form.Control
                 type="text"
-                placeholder={t("login_placeholder")}
+                // placeholder={t("login_placeholder")}
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
               />
+              {login ? (
+                <></>
+              ) : (
+                <Form.Label>{t("login_placeholder")}</Form.Label>
+              )}
             </Form.Group>
-
             <Form.Group controlId="formBasicPassword">
               <Form.Control
                 type="password"
-                placeholder={t("password") + " *"}
+                // placeholder={t("password") + " *"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              {password ? (
+                <></>
+              ) : (
+                <Form.Label>{t("password") + " *"}</Form.Label>
+              )}
             </Form.Group>
             {error ? <Alert variant="danger">{error}</Alert> : <></>}
             <Form.Group

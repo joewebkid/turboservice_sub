@@ -208,11 +208,15 @@ const RepairsOrders = (props) => {
         <Table responsive className="text-center repairs-orders">
           <thead>
             <tr>
-              {headers.map((e, key) => (
-                <th scope="col" style={e.style ? e.style : {}} key={key}>
-                  {t(e.t)}
-                </th>
-              ))}
+              {headers.map((e, key) =>
+                type_cab == "vehicles" && e.hiddenOnVehicles ? (
+                  <></>
+                ) : (
+                  <th scope="col" style={e.style ? e.style : {}} key={key}>
+                    {t(e.t)}
+                  </th>
+                )
+              )}
             </tr>
             <Filter
               setDataLoading={setDataLoading}
@@ -230,11 +234,15 @@ const RepairsOrders = (props) => {
               type_cab={type_cab}
             />
             <tr>
-              {headers.map((e, key) => (
-                <th scope="col" style={e.style ? e.style : {}} key={key}>
-                  {t(e.t)}
-                </th>
-              ))}
+              {headers.map((e, key) =>
+                type_cab == "vehicles" && e.hiddenOnVehicles ? (
+                  <></>
+                ) : (
+                  <th scope="col" style={e.style ? e.style : {}} key={key}>
+                    {t(e.t)}
+                  </th>
+                )
+              )}
             </tr>
           </thead>
           <tbody className={dataLoading ? "dataLoading" : ""}>
@@ -249,6 +257,8 @@ const RepairsOrders = (props) => {
                   }}
                 >
                   {headers.map((e, k) => {
+                    if (type_cab == "vehicles" && e.hiddenOnVehicles)
+                      return <></>;
                     let val = order[e.slug];
                     if (e.type == "date" && val) {
                       const d = new Date(val);
@@ -272,7 +282,14 @@ const RepairsOrders = (props) => {
                     router.push("/order/" + order["WORKORDER_ID"]);
                   }}
                 >
-                  <td scope="col" colSpan="10">
+                  <td
+                    scope="col"
+                    colSpan={
+                      type_cab == "vehicles"
+                        ? headers.length - 1
+                        : headers.length
+                    }
+                  >
                     <FlexBlock justify="space-between">
                       <Block>{order["REQUEST_TEXT"]}</Block>
                       <Block className=" mr-3" style={{ width: 24 }}>

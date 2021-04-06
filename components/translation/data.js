@@ -32,7 +32,7 @@ const en = (a = {}) => {
     cancel_start: "Cancel Start",
     repair_order_done: "Repair order done",
     contractor_repair_order: "Contractor repair order #",
-    milage: "Milage",
+    milage: "Mileage",
     order_type: "Order type",
     start_jobs: "Start jobs",
     estimated_time_end_of_jobs: "Estimated time end of jobs",

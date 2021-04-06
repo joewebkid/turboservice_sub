@@ -120,7 +120,7 @@ export default function Index() {
       />
       <Block fluid className="">
         <Block className="indexBlock">
-          <Block className="leftBlock">
+          <Block className={"leftBlock " + type_cab}>
             <Block className="menuLeft">
               <FlexBlock
                 justify="center"
