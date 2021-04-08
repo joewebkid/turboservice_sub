@@ -89,7 +89,7 @@ const get_orders = (
       })
       .catch(function (error) {
         if (error.response && error.response.status == 401) {
-          router && router.push("/login?session&&redirectto=order/" + id);
+          router && router.push("/login?session");
         }
       });
   else

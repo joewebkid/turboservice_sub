@@ -115,6 +115,10 @@ const en = (a = {}) => {
 
     type: "Type",
     name: "Name",
+
+    started: "Started",
+    finished: "Finished",
+    days_short: "d.",
   };
 };
 
@@ -233,6 +237,10 @@ const ru = (a = {}) => {
 
     type: "Тип",
     name: "Заголовок",
+
+    started: "Начат",
+    finished: "Окончен",
+    days_short: "дн.",
   };
 };
 
@@ -241,7 +249,7 @@ const et = (a = {}) => {
     stat_30: "30 päeva statistika",
     total_repair_orders_done: "Kokku teostatud töökäskusid",
     serviced_vehicles: "Teenindatud transpordivahendeid",
-    vehicles: "Sõiduk",
+    vehicles: "Transpordivahendid",
     viewer: "Autotootja",
     contractor: "Töövõtja",
     average_norm_hours: "Keskimine normtundide arv",
@@ -353,6 +361,10 @@ const et = (a = {}) => {
 
     type: "Tüüp",
     name: "Nimi",
+
+    started: "Algus",
+    finished: "Lõpp",
+    days_short: "p.",
   };
 };
 

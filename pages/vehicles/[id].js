@@ -53,6 +53,7 @@ const OrderView = () => {
   const [loading, setLoading] = useState(false);
   const [save_date, setSaveDate] = useState(false);
   const [order_status, setOrderStatus] = useState(false);
+  const [plate, setPlate] = useState(false);
   const [save_state, setSaveState] = useState({
     header: false,
     job: false,
@@ -75,6 +76,7 @@ const OrderView = () => {
         save_state={save_state}
         valide_state={valide_state}
         type_cab={"vehicles"}
+        plate={plate}
       />
       <Container fluid className="mt-3 orders-list-container order-container">
         {router.query.id ? (
@@ -82,6 +84,7 @@ const OrderView = () => {
             SESSIONID={SESSIONID}
             user_info={user_info}
             vehiclesId={router.query.id}
+            setPlate={setPlate}
           />
         ) : (
           <></>

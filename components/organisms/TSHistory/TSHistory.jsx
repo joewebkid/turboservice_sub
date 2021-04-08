@@ -96,7 +96,12 @@ const TSHistory = (props) => {
                 const jobsAndPartsListFiltred = jobsAndPartsList.filter(
                   (i) => i.WORKORDER_ID == order.WORKORDER_ID
                 );
-
+                const days_num =
+                  (new Date(order["WORKORDER_END_DATE"]).getTime() -
+                    new Date(order["WORKORDER_CREATE_DATE"]).getTime()) /
+                  1000 /
+                  60 /
+                  1440;
                 // jobsAndPartsListFiltred =
                 //   jobsAndPartsListFiltred === undefined
                 //     ? false
@@ -106,11 +111,16 @@ const TSHistory = (props) => {
                   <Block className="text-left box border mb-2">
                     <Block className="headerTableList">
                       {t("repair_order")}
-                      {order["WORKORDER_NUMBER"]}{" "}
-                      <span className="lower-case">{t("from")}</span>{" "}
-                      {formatDateForView(order["WORKORDER_END_DATE"], "/")}.
-                      <span className="lower-case">{t("milage")}</span>{" "}
-                      {order["VEHICLE_MILEAGE"]}. {order["ORDER_TYPE_NAME"]}
+                      {order["WORKORDER_NUMBER"]};{order["ORDER_TYPE_NAME"]}.{" "}
+                      <span>
+                        {t("milage")} {order["VEHICLE_MILEAGE"]}.{" "}
+                      </span>
+                      <br />
+                      <span>{t("started")}:</span>{" "}
+                      {formatDateForView(order["WORKORDER_CREATE_DATE"], "/")}{" "}
+                      <span>{t("finished")}:</span>{" "}
+                      {formatDateForView(order["WORKORDER_END_DATE"], "/")} ({" "}
+                      {days_num} {t("days_short")})
                     </Block>
                     <Block className="p-2">
                       <table className="table">
