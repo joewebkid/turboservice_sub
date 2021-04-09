@@ -119,6 +119,7 @@ const en = (a = {}) => {
     started: "Started",
     finished: "Finished",
     days_short: "d.",
+    vehicle_manufacture_year: "Year of manufacture",
   };
 };
 
@@ -241,6 +242,7 @@ const ru = (a = {}) => {
     started: "Начат",
     finished: "Окончен",
     days_short: "дн.",
+    vehicle_manufacture_year: "Год выпуска",
   };
 };
 
@@ -365,6 +367,7 @@ const et = (a = {}) => {
     started: "Algus",
     finished: "Lõpp",
     days_short: "p.",
+    vehicle_manufacture_year: "Väljalaskeaasta",
   };
 };
 
