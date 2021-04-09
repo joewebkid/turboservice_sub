@@ -252,7 +252,12 @@ const VehiclesList = (props) => {
                   className={key % 2 ? "second" : ""}
                   key={key}
                   onDoubleClick={() => {
-                    router.push("/vehicles/" + order["VEHICLE_ID"]);
+                    router.push(
+                      "/vehicles/" +
+                        order["VEHICLE_ID"] +
+                        "?plate=" +
+                        order["PLATE_NUMBER"]
+                    );
                   }}
                 >
                   {headers.map((e, k) => {
@@ -276,14 +281,26 @@ const VehiclesList = (props) => {
                 <tr
                   className={key % 2 ? "second" : ""}
                   onDoubleClick={() => {
-                    router.push("/vehicles/" + order["VEHICLE_ID"]);
+                    router.push(
+                      "/vehicles/" +
+                        order["VEHICLE_ID"] +
+                        "?plate=" +
+                        order["PLATE_NUMBER"]
+                    );
                   }}
                 >
                   <td scope="col" colSpan="10">
                     <FlexBlock justify="space-between">
                       <Block>{order["REQUEST_TEXT"]}</Block>
                       <Block className=" mr-3" style={{ width: 24 }}>
-                        <CustomLink href={"/vehicles/" + order["VEHICLE_ID"]}>
+                        <CustomLink
+                          href={
+                            "/vehicles/" +
+                            order["VEHICLE_ID"] +
+                            "?plate=" +
+                            order["PLATE_NUMBER"]
+                          }
+                        >
                           <svg
                             aria-hidden="true"
                             focusable="false"

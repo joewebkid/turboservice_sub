@@ -26,6 +26,7 @@ a {
 .leftStatBlock {
   display: block;
   text-align: left;
+  width: 370px;
 }
 .table-responsive {
   position: relative;
@@ -414,7 +415,7 @@ input[type="number"] {
   min-height: 450px;
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1500px) {
   .headerBlock {
     padding-left: 0 !important;
   }
@@ -431,7 +432,7 @@ input[type="number"] {
       height: 300px;
       margin-bottom: -60px;
       & .menuLeft {
-        height: 365px;
+        height: 380px;
       }
     }
     display: flex;
@@ -448,16 +449,17 @@ input[type="number"] {
     }
   }
   .lang_block {
-    // position: relative;
-    // z-index: 2;
-    // top: 44px;
-    // left: 33px;
-    position: absolute;
+    position: relative;
     z-index: 2;
-    top: 86px;
-    left: -10px;
-    margin: auto;
-    width: 100%;
+    top: 44px;
+    left: -150px;
+    // left: 33px;
+    // position: absolute;
+    // z-index: 2;
+    // top: 86px;
+    // left: -10px;
+    // margin: auto;
+    // width: 100%;
   }
 }
 

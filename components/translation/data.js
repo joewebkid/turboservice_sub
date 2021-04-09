@@ -107,7 +107,7 @@ const en = (a = {}) => {
     sure_delete_record: "Are you sure want to delete record?",
 
     VEHICLE_LAST_TO1: "Last TO",
-    download_parts_and_job_csv: "Download all repair history",
+    download_parts_and_job_csv: "Download repair history",
     required_field_login: `Field "Login" and "password" are required`,
     category: "Category",
     vehicle_reg_date: "Vehicle reg. date",
@@ -229,7 +229,7 @@ const ru = (a = {}) => {
     sure_delete_record: "Вы уверены, что хотите удалить запись?",
 
     VEHICLE_LAST_TO1: "Последнее проведенное ТО1",
-    download_parts_and_job_csv: "Скачать всю историю обслуживания",
+    download_parts_and_job_csv: "Скачать историю обслуживания",
     required_field_login: `Поля "Логин" и "Пароль" обязательны для заполнения`,
     category: "Категория",
     vehicle_reg_date: "Дата регистрации ТС",
@@ -352,7 +352,7 @@ const et = (a = {}) => {
     sure_delete_record: "Kas soovite kustutada kirje jäädavalt?",
 
     VEHICLE_LAST_TO1: "Viimane teostatud TH",
-    download_parts_and_job_csv: "Lae alla kogu remondiajalugu",
+    download_parts_and_job_csv: "Lae remondiajalugu",
     required_field_login: `Väljad „Kasutajanimi“ ja „Parool“ peavad olema täidetud.`,
     wrong_field_login: `Väljad „Kasutajanimi“ ja „Parool“ peavad olema täidetud.`,
     category: "Kategooria",

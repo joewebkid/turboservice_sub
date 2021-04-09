@@ -61,7 +61,7 @@ const OrderView = () => {
     recomendation: false,
   });
   const [valide_state, setValideState] = useState(true);
-  console.log(router);
+  // console.log(router);
   return (
     <>
       <TopOrderView
@@ -76,7 +76,6 @@ const OrderView = () => {
         save_state={save_state}
         valide_state={valide_state}
         type_cab={"vehicles"}
-        plate={plate}
       />
       <Container fluid className="mt-3 orders-list-container order-container">
         {router.query.id ? (

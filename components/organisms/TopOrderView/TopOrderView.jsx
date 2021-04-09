@@ -27,6 +27,9 @@ const TopOrderView = (props) => {
     vehicles,
   } = props;
 
+  const { query } = router;
+  const { plate } = query;
+
   if (typeof window !== "undefined" && router.route == "/order/[id]")
     window.onbeforeunload = function () {
       // console.log(save_state);
@@ -141,9 +144,17 @@ const TopOrderView = (props) => {
             <FlexBlock
               justify="center"
               align="center"
+              style={{ flexDirection: "column" }}
               className={repair_order_list ? "" : "lang_block"}
             >
-              <LangChooser />
+              {plate ? (
+                <Block style={{ fontWeight: 600, fontSize: 18 }}>{plate}</Block>
+              ) : (
+                <></>
+              )}
+              <Block>
+                <LangChooser />
+              </Block>
             </FlexBlock>
 
             <LogoName
