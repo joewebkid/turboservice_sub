@@ -87,7 +87,7 @@ export const LoginPage = () => {
   const router = useRouter();
 
   const [login, setLogin] = useState(
-    process.env.NEXT_PUBLIC_STATUS == "DEV" ? "SCA_zel" : ""
+    process.env.NEXT_PUBLIC_STATUS == "DEV" ? "SOL_ts" : ""
   );
   const [password, setPassword] = useState(
     process.env.NEXT_PUBLIC_STATUS == "DEV" ? "1" : ""
