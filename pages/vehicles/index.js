@@ -36,7 +36,8 @@ const logout = (SESSIONID, router) => {
       // console.log(result);
     })
     .catch(function (error) {
-      console.log(error);
+      // console.log(error);
+      router.push("/login");
       // router.push("/login");
     });
 };

@@ -39,6 +39,7 @@ const logout = (SESSIONID, router) => {
     })
     .catch(function (error) {
       console.log(error);
+      router.push("/login");
       // router.push("/login");
     });
 };

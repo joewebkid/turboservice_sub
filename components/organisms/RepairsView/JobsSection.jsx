@@ -17,7 +17,47 @@ import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import Fade from "react-reveal/Fade";
 import { t } from "../../translation/data";
 
-const get_jobs = (callback, id, SESSIONID, setMessage, setJobsNum) => {
+const get_jobs_auto = (
+  callback,
+  id,
+  SESSIONID,
+  setMessage,
+  setJobsNum,
+  old_data
+) => {
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "api-v2/Contractors/WorkorderJobs/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID +
+        "&Formats=1"
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const WorkorderContractJobs = Response["WorkorderContractJobs"];
+      // console.log(WorkorderContractJobs);
+      // console.log("WorkorderContractJobs.data.length", WorkorderContractJobs.data.length);
+      console.log([...old_data, ...WorkorderContractJobs.data]);
+      callback([...old_data, ...WorkorderContractJobs.data]);
+      // setJobsNum(WorkorderContractJobs.data.length);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+const get_jobs = (
+  callback,
+  id,
+  SESSIONID,
+  setMessage,
+  setJobsNum,
+  type_cab
+) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_URL +
@@ -36,6 +76,16 @@ const get_jobs = (callback, id, SESSIONID, setMessage, setJobsNum) => {
       callback(WorkorderJobs.data);
       // console.log("WorkorderJobs.data.length", WorkorderJobs.data.length);
       setJobsNum(WorkorderJobs.data.length);
+
+      if (type_cab == "vehicles")
+        get_jobs_auto(
+          callback,
+          id,
+          SESSIONID,
+          setMessage,
+          setJobsNum,
+          WorkorderJobs.data
+        );
     })
     .catch(function (error) {
       console.log(error);
@@ -421,7 +471,8 @@ const JobsSection = (props) => {
         router.query.id,
         SESSIONID,
         setMessage,
-        setJobsNumNotSaved
+        setJobsNumNotSaved,
+        type_cab
       );
   }, [router, refresh]);
 

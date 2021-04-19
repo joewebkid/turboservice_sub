@@ -72,6 +72,7 @@ const getWorkOrdersList = (id, SESSIONID, callback) => {
       console.log(error);
     });
 };
+
 const TSHistory = (props) => {
   const { SESSIONID, user_info, vehiclesId } = props;
   const [workOrderList, setWorkOrderList] = useState([]);
