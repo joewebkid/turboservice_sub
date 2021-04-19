@@ -13,7 +13,33 @@ import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import Fade from "react-reveal/Fade";
 import { t } from "../../translation/data";
 
-const get_parts = (callback, id, SESSIONID) => {
+const get_parts_auto = (callback, id, SESSIONID, old_data) => {
+  axios
+    .get(
+      process.env.NEXT_PUBLIC_URL +
+        "api-v2/Contractors/WorkorderParts/" +
+        id +
+        "?SESSIONID=" +
+        SESSIONID +
+        "&Formats=1"
+    )
+    .then(function (response) {
+      const { data } = response;
+      const { result } = data;
+      const { Response } = result;
+      const WorkorderParts = Response["WorkorderParts"];
+      // console.log(WorkorderParts);
+      // console.log("WorkorderParts.data.length", WorkorderParts.data.length);
+      console.log([...old_data, ...WorkorderParts.data]);
+      callback([...old_data, ...WorkorderParts.data]);
+      // setJobsNum(WorkorderParts.data.length);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+const get_parts = (callback, id, SESSIONID, type_cab) => {
   axios
     .get(
       process.env.NEXT_PUBLIC_URL +
@@ -30,6 +56,9 @@ const get_parts = (callback, id, SESSIONID) => {
       const { WorkorderContractParts } = Response;
 
       callback(WorkorderContractParts.data);
+
+      if (type_cab == "vehicles")
+        get_parts_auto(callback, id, SESSIONID, WorkorderContractParts.data);
       return response;
     })
     .catch(function (error) {
@@ -348,7 +377,7 @@ const MaterialsSection = (props) => {
 
   useEffect(() => {
     if (SESSIONID && router && router.query && router.query.id)
-      get_parts(setMaterials, router.query.id, SESSIONID);
+      get_parts(setMaterials, router.query.id, SESSIONID, type_cab);
   }, [router, refresh]);
   // console.log("materials", materials);
 
