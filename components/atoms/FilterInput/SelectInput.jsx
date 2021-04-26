@@ -7,7 +7,7 @@ const SelectInput = (props) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(value);
 
-  console.log(selected, value);
+  // console.log(selected, value);
   // saveFilterValues
 
   useEffect(() => {
