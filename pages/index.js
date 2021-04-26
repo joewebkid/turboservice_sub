@@ -115,7 +115,7 @@ export default function Index() {
 
   const [tab, setTab] = useState(0);
 
-  console.log(filter_values_vehicles);
+  // console.log(filter_values_vehicles);
 
   return (
     <>

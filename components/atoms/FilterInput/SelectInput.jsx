@@ -10,15 +10,23 @@ const SelectInput = (props) => {
   // console.log(selected, value);
   // saveFilterValues
 
+  // useEffect(() => {
+  //   console.log(options, value);
+  // }, [value]);
   useEffect(() => {
-    setSelected(value);
-  }, [value]);
+    if (options && typeof options[0] == "object") {
+      let opt_active = options.find((e) => Object.entries(e)[0][0] == value);
+      setSelected(Object.entries(opt_active)[0][1]);
+    } else {
+      setSelected(value);
+    }
+  }, [options]);
 
-  useEffect(() => {
-    // if (Object.keys(selected).length) {
-    //   saveFilterValues(Object.keys(selected).filter((e) => selected[e]));
-    // } else saveFilterValues("");
-  }, [selected]);
+  // useEffect(() => {
+  //   // if (Object.keys(selected).length) {
+  //   //   saveFilterValues(Object.keys(selected).filter((e) => selected[e]));
+  //   // } else saveFilterValues("");
+  // }, [selected]);
 
   return (
     <Block className="selectInput">
