@@ -16,7 +16,7 @@ const SelectInput = (props) => {
   useEffect(() => {
     if (options && typeof options[0] == "object") {
       let opt_active = options.find((e) => Object.entries(e)[0][0] == value);
-      setSelected(Object.entries(opt_active)[0][1]);
+      opt_active && setSelected(Object.entries(opt_active)[0][1]);
     } else {
       setSelected(value);
     }
