@@ -28,7 +28,7 @@ const get_jobs_auto = (
   axios
     .get(
       process.env.NEXT_PUBLIC_URL +
-        "api-v2/Contractors/WorkorderJobs/" +
+        "/api-v2/Contractors/WorkorderJobs/" +
         id +
         "?SESSIONID=" +
         SESSIONID +

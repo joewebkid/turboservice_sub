@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -93,6 +93,38 @@ const auth_login = (
       // return false;
     });
 };
+
+const logout = () => {
+  const SESSIONID = localStorage.getItem("SESSIONID");
+  if (SESSIONID) {
+    axios
+      .get(
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/auth/logout/" +
+          "?SESSIONID=" +
+          SESSIONID
+      )
+      .then(function (response) {
+        const { data } = response;
+        const { result } = data;
+        const { Message, Status } = result;
+
+        localStorage.removeItem("filter_values");
+        localStorage.removeItem("filter_status");
+        localStorage.removeItem("current_page");
+        localStorage.removeItem("SESSIONID");
+
+        router.push("/login");
+        // console.log(result);
+      })
+      .catch(function (error) {
+        console.log(error);
+        localStorage.removeItem("SESSIONID");
+        // router.push("/login");
+      });
+  }
+};
+
 export const LoginPage = () => {
   const router = useRouter();
 
@@ -102,6 +134,10 @@ export const LoginPage = () => {
   const [password, setPassword] = useState(
     process.env.NEXT_PUBLIC_STATUS == "DEV" ? "1" : ""
   );
+
+  useEffect(() => {
+    logout();
+  }, []);
 
   const [error, setError] = useState(false);
 

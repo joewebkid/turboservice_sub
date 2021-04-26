@@ -235,6 +235,7 @@ const VehiclesList = (props) => {
               filter_values_saved={filter_values}
               router={router}
               type_cab={type_cab}
+              vehicles_tab={true}
             />
             <tr>
               {headers.map((e, key) => (

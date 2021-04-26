@@ -6,9 +6,10 @@ import VehiclesList from "../../components/organisms/VehiclesList/VehiclesList";
 import VehiclesListBackup from "../../components/organisms/VehiclesList/VehiclesListBackup";
 import TopOrderView from "../../components/organisms/TopOrderView/TopOrderView";
 
-const get_user_data = (callback, router) => {
+const get_user_data = (callback, router, setfilter_values) => {
   const user_info = localStorage.getItem("user_info");
   const SESSIONID = localStorage.getItem("SESSIONID");
+  const SESSIONID = localStorage.getItem("filter_values_vehicle");
   if (SESSIONID) {
     if (user_info) callback(JSON.parse(user_info));
   } else router.push("/login");
@@ -45,11 +46,13 @@ const logout = (SESSIONID, router) => {
 const Vehicles = () => {
   const router = useRouter();
   useEffect(() => {
-    setSESSIONID(get_user_data(setUserInfo, router));
+    setSESSIONID(get_user_data(setUserInfo, router, setfilter_values));
   }, []);
   const [user_info, setUserInfo] = useState(false);
   const [SESSIONID, setSESSIONID] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [filter_values, setfilter_values] = useState({});
 
   return (
     <>

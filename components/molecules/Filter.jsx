@@ -27,6 +27,7 @@ const Filter = memo((props) => {
     filter_values_saved,
     router,
     type_cab,
+    vehicles_tab,
   } = props;
 
   const status_tab_selected = type_cab == "vehicles" ? 2 : selectStatus;
@@ -50,7 +51,14 @@ const Filter = memo((props) => {
   // console.log(filter_values, selected_statuses);
   useEffect(() => {
     if (!isSearching) {
-      localStorage.setItem("filter_values", JSON.stringify(filter_values));
+      if (vehicles_tab)
+        localStorage.setItem(
+          "filter_values_vehicles",
+          JSON.stringify(filter_values)
+        );
+      else {
+        localStorage.setItem("filter_values", JSON.stringify(filter_values));
+      }
       let stringInput = Object.keys(filter_values)
         .map(function (i) {
           return [i, filter_values[i]].join("=");
@@ -69,7 +77,15 @@ const Filter = memo((props) => {
 
   useEffect(() => {
     if (!isSearching) {
-      localStorage.setItem("filter_values", JSON.stringify(filter_values));
+      if (vehicles_tab)
+        localStorage.setItem(
+          "filter_values_vehicles",
+          JSON.stringify(filter_values)
+        );
+      else {
+        localStorage.setItem("filter_values", JSON.stringify(filter_values));
+        localStorage.setItem("filter_status", status_tab_selected);
+      }
       let stringInput = Object.keys(filter_values)
         .map(function (i) {
           return [i, filter_values[i]].join("=");
@@ -293,6 +309,11 @@ const Filter = memo((props) => {
                         [h.filter]: values,
                       });
                     }}
+                    value={
+                      Object.keys(filter_values).length
+                        ? filter_values[h.filter]
+                        : ""
+                    }
                   />
                 ) : (
                   //

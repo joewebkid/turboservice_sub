@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 
@@ -83,6 +83,38 @@ const auth_login = (
       // return false;
     });
 };
+
+const logout = () => {
+  const SESSIONID = localStorage.getItem("SESSIONID");
+  if (SESSIONID) {
+    axios
+      .get(
+        process.env.NEXT_PUBLIC_URL +
+          "/api-v2/auth/logout/" +
+          "?SESSIONID=" +
+          SESSIONID
+      )
+      .then(function (response) {
+        const { data } = response;
+        const { result } = data;
+        const { Message, Status } = result;
+
+        localStorage.removeItem("filter_values");
+        localStorage.removeItem("filter_status");
+        localStorage.removeItem("current_page");
+        localStorage.removeItem("SESSIONID");
+
+        router.push("/login");
+        // console.log(result);
+      })
+      .catch(function (error) {
+        console.log(error);
+        localStorage.removeItem("SESSIONID");
+        // router.push("/login");
+      });
+  }
+};
+
 export const LoginPage = () => {
   const router = useRouter();
 
@@ -94,6 +126,10 @@ export const LoginPage = () => {
   );
 
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    logout();
+  }, []);
 
   return (
     <Container className="login-container">

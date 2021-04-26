@@ -134,7 +134,7 @@ const Attached = (props) => {
               <span
                 className="deleteLink"
                 onClick={() => {
-                  if (confirm("Are you sure want to delete file?"))
+                  if (confirm(t("sure_delete_record")))
                     delete_file(
                       setFiles,
                       router.query.id,

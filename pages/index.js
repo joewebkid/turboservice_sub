@@ -20,23 +20,28 @@ const get_user_data = (
   setfilter_status,
   setcurrent_page,
   setactive_tab,
-  settype_cab
+  settype_cab,
+  setfilter_values_vehicles
 ) => {
   const user_info = localStorage.getItem("user_info");
   const SESSIONID = localStorage.getItem("SESSIONID");
   const filter_values = localStorage.getItem("filter_values");
+  const filter_values_vehicles = localStorage.getItem("filter_values_vehicles");
   const filter_status = localStorage.getItem("filter_status");
   const current_page = localStorage.getItem("current_page");
   const type_cab = localStorage.getItem("type_cab");
 
   const active_tab = localStorage.getItem("active_tab");
-  // console.log(filter_status);
+
+  console.log(filter_values_vehicles);
   // max_order_in_progess
   const shown_modal = localStorage.getItem("shown_modal");
 
   if (filter_status) setfilter_status(filter_status);
   if (current_page) setcurrent_page(current_page);
   if (filter_values) setfilter_values(JSON.parse(filter_values));
+  if (filter_values_vehicles)
+    setfilter_values_vehicles(JSON.parse(filter_values_vehicles));
   if (shown_modal == 0) setShownModal(false);
   if (SESSIONID) {
     if (user_info) callback(JSON.parse(user_info));
@@ -65,6 +70,7 @@ const logout = (SESSIONID, router) => {
       localStorage.removeItem("filter_values");
       localStorage.removeItem("filter_status");
       localStorage.removeItem("current_page");
+      localStorage.removeItem("SESSIONID");
 
       router.push("/login");
       // console.log(result);
@@ -88,7 +94,8 @@ export default function Index() {
         setfilter_status,
         setcurrent_page,
         setTab,
-        settype_cab
+        settype_cab,
+        setfilter_values_vehicles
       )
     );
   }, []);
@@ -102,10 +109,13 @@ export default function Index() {
   const [loading, setLoading] = useState(false);
 
   const [filter_values, setfilter_values] = useState({});
+  const [filter_values_vehicles, setfilter_values_vehicles] = useState({});
   const [filter_status, setfilter_status] = useState(0);
   const [type_cab, settype_cab] = useState(null);
 
   const [tab, setTab] = useState(0);
+
+  console.log(filter_values_vehicles);
 
   return (
     <>
@@ -235,7 +245,7 @@ export default function Index() {
                   SESSIONID={SESSIONID}
                   setLoading={setLoading}
                   loading={loading}
-                  filter_values={{}}
+                  filter_values={filter_values_vehicles}
                 />
               ) : (
                 <></>

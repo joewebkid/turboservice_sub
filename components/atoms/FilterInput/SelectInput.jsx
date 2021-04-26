@@ -6,7 +6,13 @@ const SelectInput = (props) => {
   const { options, saveFilterValues, header, value, style } = props;
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(value);
+
+  console.log(selected, value);
   // saveFilterValues
+
+  useEffect(() => {
+    setSelected(value);
+  }, [value]);
 
   useEffect(() => {
     // if (Object.keys(selected).length) {
