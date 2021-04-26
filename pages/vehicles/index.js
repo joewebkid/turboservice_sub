@@ -9,7 +9,7 @@ import TopOrderView from "../../components/organisms/TopOrderView/TopOrderView";
 const get_user_data = (callback, router, setfilter_values) => {
   const user_info = localStorage.getItem("user_info");
   const SESSIONID = localStorage.getItem("SESSIONID");
-  const SESSIONID = localStorage.getItem("filter_values_vehicle");
+  // const SESSIONID = localStorage.getItem("filter_values_vehicle");
   if (SESSIONID) {
     if (user_info) callback(JSON.parse(user_info));
   } else router.push("/login");
