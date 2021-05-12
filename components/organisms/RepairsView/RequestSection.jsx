@@ -8,13 +8,8 @@ import Fade from "react-reveal/Fade";
 import { t } from "../../translation/data";
 
 const RequestSection = (props) => {
-  const {
-    order_info,
-    callback_start,
-    callback_cancel,
-    callback_done,
-    status,
-  } = props;
+  const { order_info, callback_start, callback_cancel, callback_done, status } =
+    props;
   return (
     <>
       <Section className="text-center">
@@ -45,9 +40,7 @@ const RequestSection = (props) => {
                   variant="danger"
                   className="mr-2"
                   onClick={() => {
-                    if (confirm(t("sure_cancel_start"))) {
-                      callback_cancel();
-                    }
+                    callback_cancel();
                   }}
                 >
                   {t("cancel_start")}

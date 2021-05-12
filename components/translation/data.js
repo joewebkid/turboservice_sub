@@ -1,5 +1,6 @@
 const en = (a = {}) => {
   return {
+    cancel: "Cancel",
     stat_30: "Statistics for 30 days",
     total_repair_orders_done: "Total repair orders done",
     serviced_vehicles: "Serviced vehicles",
@@ -125,6 +126,7 @@ const en = (a = {}) => {
 
 const ru = (a = {}) => {
   return {
+    cancel: "Отмена",
     stat_30: "Статистика за 30 дней",
     total_repair_orders_done: "Всего выполнено заказ-нарядов",
     serviced_vehicles: "Обслужено транспортных средств",
@@ -248,6 +250,7 @@ const ru = (a = {}) => {
 
 const et = (a = {}) => {
   return {
+    cancel: "Tühista",
     stat_30: "30 päeva statistika",
     total_repair_orders_done: "Kokku teostatud töökäskusid",
     serviced_vehicles: "Teenindatud transpordivahendeid",

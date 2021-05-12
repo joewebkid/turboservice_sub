@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Spinner } from "react-bootstrap";
+import { Col, Row, Spinner, Modal, Button } from "react-bootstrap";
 import FlexBlock from "../../atoms/FlexBlock";
 import Section from "../../atoms/Section";
 // import JobsSection from "./JobsSection";
@@ -100,6 +100,32 @@ const get_order_info = (callback, id, router, SESSIONID, setOrderStatus) => {
       });
 };
 
+const Alert = (props) => {
+  const { show, modalText, modalFuncApprove, modalFuncCancel } = props;
+
+  return (
+    <Modal
+      show={show}
+      onHide={modalFuncCancel || modalFuncApprove}
+      animation={false}
+    >
+      <Modal.Body>{modalText}</Modal.Body>
+      <Modal.Footer>
+        {modalFuncCancel ? (
+          <Button variant="secondary" onClick={modalFuncCancel}>
+            {t("cancel")}
+          </Button>
+        ) : (
+          <></>
+        )}
+        <Button variant="primary" onClick={modalFuncApprove}>
+          Ок
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
 const Index = (props) => {
   const {
     SESSIONID,
@@ -125,7 +151,12 @@ const Index = (props) => {
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(0);
   const [message, setMessage] = useState({});
-  // console.log(jobsNum);
+
+  const [modalText, setModalText] = useState("");
+  const [modalShow, setModalShow] = useState(false);
+  const [modalFuncApprove, setModalFuncApprove] = useState(() => {});
+  const [modalFuncCancel, setModalFuncCancel] = useState(() => {});
+
   // const [order_info, setOrderInfo] = useState([]);
 
   useEffect(() => {
@@ -151,6 +182,12 @@ const Index = (props) => {
   // console.log(formatDateTimeForPost());
   return (
     <>
+      <Alert
+        show={modalShow}
+        modalText={modalText}
+        modalFuncApprove={modalFuncApprove}
+        modalFuncCancel={modalFuncCancel}
+      />
       {/* <Block
         onClick={() => {
           saveData();
@@ -184,41 +221,60 @@ const Index = (props) => {
                   );
                 }}
                 callback_cancel={() => {
-                  set_order_info(
-                    setOrderInfo,
-                    router.query.id,
-                    router,
-                    SESSIONID,
-                    {
-                      ...order_info,
-                      JOB_STARTED_DATE: "",
-                      EXPECTED_ISSUE_DATE: "",
-                    },
-                    false,
-                    setMessage
-                  );
+                  setModalText(t("sure_cancel_start"));
+                  setModalShow(true);
+                  setModalFuncApprove(() => () => {
+                    setModalShow(false);
+                    set_order_info(
+                      setOrderInfo,
+                      router.query.id,
+                      router,
+                      SESSIONID,
+                      {
+                        ...order_info,
+                        JOB_STARTED_DATE: "",
+                        EXPECTED_ISSUE_DATE: "",
+                      },
+                      false,
+                      setMessage
+                    );
+                  });
+                  setModalFuncCancel(() => () => setModalShow(false));
                 }}
                 callback_done={() => {
                   if (
                     order_info["WHEEL_TIGHTENING_TASK_ID"] == 0 ||
                     order_info["WHEEL_TIGHTENING_TASK_ID"] == null
                   ) {
-                    alert(t("wheels_tightening_error"));
+                    setModalText(t("wheels_tightening_error"));
+                    setModalShow(true);
+                    setModalFuncApprove(() => () => {
+                      setModalShow(false);
+                    });
+                    setModalFuncCancel(false);
                     return;
                   }
 
                   if (jobsNumNotSaved == 0) {
-                    alert(t("please_add_job"));
+                    setModalText(t("please_add_job"));
+                    setModalShow(true);
+                    setModalFuncApprove(() => () => {
+                      setModalShow(false);
+                    });
+                    setModalFuncCancel(false);
                     return;
                   }
 
                   saveData();
-                  // return;
-                  if (
+
+                  setModalText(
                     order_info["WHEEL_TIGHTENING_TASK_ID"] == 10
-                      ? confirm(t("sure_finish_order_wheel_tight_no"))
-                      : confirm(t("sure_finish_order"))
-                  ) {
+                      ? t("sure_finish_order_wheel_tight_no")
+                      : t("sure_finish_order")
+                  );
+                  setModalShow(true);
+                  setModalFuncApprove(() => () => {
+                    setModalShow(false);
                     set_order_info(
                       setOrderInfo,
                       router.query.id,
@@ -232,7 +288,9 @@ const Index = (props) => {
                       },
                       "done"
                     );
-                  }
+                  });
+                  setModalFuncCancel(() => () => setModalShow(false));
+                  // return;
                 }}
                 status={STATUS}
               />
