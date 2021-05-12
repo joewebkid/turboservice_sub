@@ -148,7 +148,7 @@ const Index = (props) => {
     );
   // console.log(order_info["ORDER_STATUS_ID"]);
   const STATUS = type_cab == "vehicles" ? 2 : order_info["ORDER_STATUS_ID"];
-  console.log(formatDateTimeForPost());
+  // console.log(formatDateTimeForPost());
   return (
     <>
       {/* <Block
@@ -177,7 +177,7 @@ const Index = (props) => {
                     SESSIONID,
                     {
                       ...order_info,
-                      JOB_STARTED_DATE: formatDateForPost(),
+                      JOB_STARTED_DATE: formatDateTimeForPost(),
                     },
                     false,
                     setMessage
