@@ -17,7 +17,7 @@ const TopSection = (props) => {
           {t("repair_order_for_tlt_reques", {
             repair_request_order_id: order_info["REQUEST_NUMBER"],
             repair_order_id: order_info["WORKORDER_NUMBER"],
-            date: formatDateForView(order_info["REQUEST_DATE"], "/"),
+            date: formatDateForView(order_info["WORKORDER_CREATE_DATE"], "/"),
           })}
         </h5>
         <FlexBlock

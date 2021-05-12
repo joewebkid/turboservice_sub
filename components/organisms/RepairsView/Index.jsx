@@ -13,7 +13,7 @@ import Attached from "./Attached";
 import { useRouter } from "next/router";
 // import Fade from "react-reveal/Fade";
 import axios from "axios";
-import { formatDateForPost } from "../../molecules/data";
+import { formatDateForPost, formatDateTimeForPost } from "../../molecules/data";
 // import XMLData from "./repair_data.xml";
 // import repair_data
 // import { XMLParser } from "react-xml-parser";
@@ -86,7 +86,7 @@ const get_order_info = (callback, id, router, SESSIONID, setOrderStatus) => {
         const { result } = data;
         const { Response } = result;
         const { WorkorderHeader } = Response;
-
+        console.log(WorkorderHeader);
         if (WorkorderHeader.data) {
           callback(WorkorderHeader.data);
           setOrderStatus(WorkorderHeader.data.ORDER_STATUS_ID);
@@ -148,7 +148,7 @@ const Index = (props) => {
     );
   // console.log(order_info["ORDER_STATUS_ID"]);
   const STATUS = type_cab == "vehicles" ? 2 : order_info["ORDER_STATUS_ID"];
-
+  console.log(formatDateTimeForPost());
   return (
     <>
       {/* <Block
@@ -228,7 +228,7 @@ const Index = (props) => {
                         ...order_info,
                         ORDER_STATUS_ID: 2,
                         ORDER_STATUS_NAME: "COMPLETED",
-                        JOBS_DONE_DATE: formatDateForPost(),
+                        JOBS_DONE_DATE: formatDateTimeForPost(),
                       },
                       "done"
                     );
