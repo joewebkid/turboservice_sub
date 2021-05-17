@@ -299,7 +299,7 @@ const et = (a = {}) => {
     sum: "Summa",
     spare_parts_and_materials: "Varuosad ja materjalid",
     product_code: "Kauba kood",
-    brand: "Tootja",
+    brand: "Autotootja",
     product_name: "Kauba nimetus",
     total: "Kokku",
     vat: "KM",
@@ -357,7 +357,7 @@ const et = (a = {}) => {
     sure_delete_record: "Kas soovite kustutada kirje jäädavalt?",
 
     VEHICLE_LAST_TO1: "Viimane teostatud TH",
-    download_parts_and_job_csv: "Lae remondiajalugu",
+    download_parts_and_job_csv: "Lae alla remondiajalugu",
     required_field_login: `Väljad „Kasutajanimi“ ja „Parool“ peavad olema täidetud.`,
     wrong_field_login: `Väljad „Kasutajanimi“ ja „Parool“ peavad olema täidetud.`,
     category: "Kategooria",
