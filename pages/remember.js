@@ -56,6 +56,7 @@ export const RememberPasswordPage = () => {
               src="/TLT-Logo.png"
               alt="Aktsiaselts Tallinna Linnatransport (TLT)"
               height="64"
+              style={{display: "none"}}
             />
           </FlexBlock>
           <h3>{t("tlt_Repair_orders")}</h3>

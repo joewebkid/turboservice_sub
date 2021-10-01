@@ -142,6 +142,7 @@ export default function Index() {
                   src="/TLT-Logo.png"
                   alt="Aktsiaselts Tallinna Linnatransport (TLT)"
                   height="64"
+                  style={{display: "none"}}
                 />
               </FlexBlock>
               {type_cab == "vehicles" ? (

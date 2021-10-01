@@ -150,6 +150,7 @@ export const LoginPage = () => {
               src="/TLT-Logo.png"
               alt="Aktsiaselts Tallinna Linnatransport (TLT)"
               height="64"
+              style={{display: "none"}}
             />
           </FlexBlock>
 

@@ -11,14 +11,28 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "date-fns": "^2.16.1",
-    "next": "10.0.4",
-    "react": "17.0.1",
+    "next": "^10.2.3",
+    "react": "^17.0.2",
     "react-bootstrap": "^1.4.0",
-    "react-dom": "17.0.1",
+    "react-dom": "^17.0.2",
     "react-nice-dates": "^3.0.7",
     "react-reveal": "^1.2.2",
     "react-text-mask": "^5.4.3",
     "sass": "^1.30.0",
     "text-mask-addons": "^3.8.0"
-  }
+  },
+  "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joewebkid/turboservice_sub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joewebkid/turboservice_sub/issues"
+  },
+  "homepage": "https://github.com/joewebkid/turboservice_sub#readme"
 }
